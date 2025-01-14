@@ -22,143 +22,8 @@ function get_username(){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($page_title) ? $page_title : "Default Title"; ?></title>
-    <style>
-        /* Basic styling for the header */
-        header {
-            background-color: #f0f0f0;
-            padding: 0 2rem;
-            margin: 0;
-            display: flex; /* Use flexbox for layout */
-            justify-content: space-between; /* Align items to left and right */
-            align-items: center; /* Vertically center items */
-        }
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        nav a {
-            text-decoration: none;
-            color: #333;
-        }
-        nav.sidebar {
-            width: 250px;
-            background-color: #f0f0f0;
-            padding: 10px;
-            box-sizing: border-box;
-            flex-direction: column;
-        }
-        nav.sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: block;
-        }
-
-        nav.sidebar li {
-            margin-bottom: 10px;
-        }
-        nav.sidebar a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #333;
-            border-radius: 5px;
-        }
-        nav.sidebar a:hover {
-            background-color: #ddd;
-        }
-        .user-info{
-            display: flex;
-            align-items: center;
-            color: #800000;
-            font-size: large;
-            padding: 10px;
-        }
-        .user-info span{
-            margin-right: 10px;
-        }
-        .bg-primary-color {
-            background-color: #800000;
-        }
-        .text-primary-color {
-            color: #800000;
-        }
-        .bg-white {
-            background-color: #FFF;
-        }
-        .text-white {
-            color: #FFF;
-        }
-        .p-8 {
-            padding: 8px;
-        }
-        .btn {
-            border-radius: 5rem;
-            padding: .5rem 1rem;
-            text-decoration: none;
-            color: #800000;
-        }
-        .header-school-name {
-            display: flex;
-            flex-direction: row;
-            gap: .5rem;
-            justify-content: center;
-        }
-        #img-logo {
-            padding-top: 1.3rem;
-        }
-        body {
-            display: flex; /* Use flexbox for the body */
-            flex-direction: column; /* Stack content vertically */
-            min-height: 100vh; /* Ensure body takes up at least full viewport height */
-            margin: 0; /* Remove default body margins */
-        }
-
-        main {
-            display: flex;
-            flex: 1; /* Allow main content to expand and fill available space */
-            padding: 0; /* Add some padding to the main content */
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .footer-section {
-            margin-bottom: 20px;
-            flex: 1 1 200px;
-        }
-
-        .footer-section h4 {
-            margin-bottom: 10px;
-        }
-
-        .footer-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-section a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .content {
-            flex: 1; /* Allow content to expand horizontally */
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-    </style>
+    <script src="../scripts/script.js"></script>
+    <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
     <header class="bg-primary-color">
@@ -184,11 +49,45 @@ function get_username(){
                     </div>
                     <hr>
                 </li>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Courses</a></li>
-                <li><a href="#">Students</a></li>
-                <li><a href="#">Teachers</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
+
+                <li><a href="#">Users</a>
+                    <ul> <li><a href="manage_admins.php">Manage Admins</a></li>
+                        <li><a href="manage_registrars.php">Manage Registrars</a></li>
+                        <li><a href="manage_teachers.php">Manage Teachers</a></li>
+                        <li><a href="manage_students.php">Manage Students</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#">Courses</a>
+                    <ul> <li><a href="manage_courses.php">Manage Courses</a></li>
+                        <li><a href="course_scheduling.php">Course Scheduling</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#">Enrollment</a>
+                    <ul>
+                        <li><a href="manage_enrollments.php">Manage Enrollments</a></li>
+                        <li><a href="enrollment_reports.php">Enrollment Reports</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#">Academic Records</a>
+                    <ul>
+                        <li><a href="grades_management.php">Grades Management</a></li>
+                        <li><a href="transcript_generation.php">Transcript Generation</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#">Settings</a>
+                    <ul>
+                        <li><a href="general_settings.php">General Settings</a></li>
+                        <li><a href="academic_terms.php">Academic Terms</a></li>
+                        <li><a href="email_settings.php">Email Settings</a></li>
+                    </ul>
+                </li>
+                <li><a href="reports.php">Reports</a></li>
+                <li><a href="logs.php">Logs</a></li>
             </ul>
         </nav>
         <div class="content">
