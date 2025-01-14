@@ -1,6 +1,7 @@
 <?php 
 
     include('database/conn.php');
+    include('layouts/header.php');
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = sanitize_input($conn, $_POST["username"]);
@@ -49,18 +50,17 @@
     $conn->close();
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h2>Login</h2>
-    <?php if (isset($error_message)) { echo "<p style='color: red;'>$error_message</p>"; } ?>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        Username: <input type="text" name="username" required><br><br>
-        Password: <input type="password" name="password" required><br><br>
-        <input type="submit" value="Login">
-    </form>
-</body>
-</html>
+    <div class="login-container">
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="login-form">
+            <div class="form-container">
+                <img src="images/dcsa.webp" alt="School logo" width="100" height="100">
+                <h2>Login</h2>
+                <?php if (isset($error_message)) { echo "<p style='color: red;padding-bottom: 1rem;'>$error_message</p>"; } ?>
+            </div>
+            Username: <input type="text" name="username" required><br><br>
+            Password: <input type="password" name="password" required><br><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+<?php include('layouts/footer.php'); ?>
