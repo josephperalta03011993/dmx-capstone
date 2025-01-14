@@ -132,6 +132,27 @@ body {
     flex-direction: column; /* Stack content vertically */
     min-height: 100vh; /* Ensure body takes up at least full viewport height */
     margin: 0; /* Remove default body margins */
+    font-family: "Roboto", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+}
+
+.kodchasan-semibold {
+    font-family: "Kodchasan", serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
 }
 
 main {
@@ -176,3 +197,69 @@ footer {
     padding: 0 20px;
     box-sizing: border-box;
 }
+
+/* Registration Form */
+/* Basic form styling */
+form {
+    max-width: 500px; /* Set a maximum width for the form */
+}
+
+label {
+    display: block; /* Make labels appear above their inputs */
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    margin-top: .5rem;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* Include padding and border in width calculation */
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: .5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Style for error and success messages */
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.success-message {
+    color: green;
+    margin-bottom: 10px;
+}
+/* Responsive adjustments */
+@media (max-width: 400px) {
+    form {
+        padding: 10px;
+    }
+    input[type="submit"] {
+        width: 100%;
+    }
+}
+
+/* End registration form */

@@ -3,19 +3,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sidebarLinks.forEach(link => {
         link.addEventListener('click', (event) => {
-            event.preventDefault();
-            console.log("Link clicked:", link);
-
             const parentLi = link.parentElement;
-            parentLi.classList.toggle('active');
-            console.log("Toggled active class on:", parentLi);
+            const submenu = parentLi.querySelector('ul');
+            
+            if (submenu) {
+                event.preventDefault();
+                console.log("Link clicked:", link); 
+                parentLi.classList.toggle('active');
+                console.log("Toggled active class on:", parentLi);    
 
-            sidebarLinks.forEach(otherLink => {
-                if (otherLink !== link && otherLink.parentElement.classList.contains('active')) {
-                    otherLink.parentElement.classList.remove('active');
-                    console.log("Removed active class from:", otherLink.parentElement);
-                }
-            });
+                // close other open submenu
+                sidebarLinks.forEach(otherLink => {
+                    if (otherLink !== link && otherLink.parentElement.classList.contains('active')) {
+                        otherLink.parentElement.classList.remove('active');
+                        console.log("Removed active class from:", otherLink.parentElement);
+                    }
+                });
+            } else {
+                console.log(`Navigate to ${link.getAttribute('href')}`);
+            }
+
         });
     });
 });

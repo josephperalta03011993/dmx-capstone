@@ -22,20 +22,23 @@ function get_username(){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($page_title) ? $page_title : "Default Title"; ?></title>
-    <script src="../scripts/script.js"></script>
-    <link rel="stylesheet" href="../styles/style.css">
+    <script src="../../scripts/script.js"></script>
+    <link rel="stylesheet" href="../../styles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="bg-primary-color">
         <div class="header-school-name">
-            <img src="../images/dcsa.webp" alt="logo" width="45" height="40" id="img-logo">
+            <img src="../../images/dcsa.webp" alt="logo" width="45" height="40" id="img-logo">
             <h1 class="text-white">
                 Datamex College of Saint Adeline
             </h1>
         </div>
         
         <div class="user-info">
-            <a href="../logout.php" class="bg-white p-8 btn">Logout</a>
+            <a href="../../logout.php" class="bg-white p-8 btn">Logout</a>
         </div>
     </header>
     <main>
@@ -49,10 +52,11 @@ function get_username(){
                     </div>
                     <hr>
                 </li>
-                <li><a href="dashboard.php">Dashboard</a></li>
-
+                <li><a href="../dashboard/index.php">Dashboard</a></li>
                 <li><a href="#">Users</a>
-                    <ul> <li><a href="manage_admins.php">Manage Admins</a></li>
+                    <ul>
+                        <li><a href="../users/register.php">Create New User</a></li> 
+                        <li><a href="manage_admins.php">Manage Admins</a></li>
                         <li><a href="manage_registrars.php">Manage Registrars</a></li>
                         <li><a href="manage_teachers.php">Manage Teachers</a></li>
                         <li><a href="manage_students.php">Manage Students</a></li>

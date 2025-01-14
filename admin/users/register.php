@@ -1,5 +1,5 @@
 <?php
-include('../database/conn.php');
+include('../../database/conn.php');
 
 $registration_success = null;
 $registration_error = null;
@@ -39,24 +39,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
     }
 }
 
-// ... (database connection close as before)
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Registration</title>
-</head>
-<body>
-    <h2>User Registration</h2>
+<?php include('../../layouts/header.php'); ?>
+
+    <h2>User Registration</h2><hr><br>
 
     <?php if ($registration_success) { echo "<p style='color: green;'>$registration_success</p>"; } ?>
     <?php if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"; } ?>
 
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        Username: <input type="text" name="reg_username" required><br><br>
-        Password: <input type="password" name="reg_password" required><br><br>
-        Confirm Password: <input type="password" name="reg_confirm_password" required><br><br>
+        Username: <input type="text" name="reg_username" required><br>
+        Password: <input type="password" name="reg_password" required><br>
+        Confirm Password: <input type="password" name="reg_confirm_password" required><br>
         User Type:
         <select name="reg_user_type" required>
             <option value="admin">Admin</option>
@@ -67,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
         <input type="submit" name="register" value="Register">
     </form>
 
-    <p>Already have an account? <a href="../index.php">Login here</a>.</p>
+    <!-- <p>Already have an account? <a href="../index.php">Login here</a>.</p> -->
 
-</body>
-</html>
+<?php include('../../layouts/footer.php'); ?>

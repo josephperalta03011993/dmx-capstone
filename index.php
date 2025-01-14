@@ -22,7 +22,7 @@
                 // Redirect based on user type
                 switch ($row["user_type"]) {
                     case "admin":
-                        header("Location: admin/admin_dashboard.php");
+                        header("Location: admin/dashboard/index.php");
                         break;
                     case "registrar":
                         header("Location: registrar/registrar_dashboard.php");
