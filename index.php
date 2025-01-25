@@ -1,5 +1,5 @@
 <?php 
-
+     
     include('database/conn.php');
     include('layouts/header.php');
 
@@ -8,7 +8,7 @@
         $password = sanitize_input($conn, $_POST["password"]);
 
         // Query the database based on username
-        $sql = "SELECT id, user_type, password FROM users WHERE username = '$username'";
+        $sql = "SELECT user_id, user_type, password FROM users WHERE username = '$username'";
         $result = $conn->query($sql);
 
         if ($result->num_rows == 1) {
@@ -16,7 +16,7 @@
             // Verify password using password_verify() if you are hashing passwords
             if (password_verify($password, $row["password"])) { // Use password_hash() for registration
             //if ($password == $row["password"]){ // For plain text password for testing only NEVER USE IN PRODUCTION
-                $_SESSION["user_id"] = $row["id"];
+                $_SESSION["user_id"] = $row["user_id"];
                 $_SESSION["user_type"] = $row["user_type"];
                 $_SESSION["username"] = $username; // Store username in session
 

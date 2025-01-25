@@ -1,0 +1,27 @@
+Test Accounts:
+admin01
+admin1234
+
+Accomplishments:
+* DATABASE
+1. Students Table - Done 
+2. Teachers Table - Done
+3. Courses Table - Done
+4. Enrollments Table - Done
+5. Grades Table - Done
+6. Users Table - Done
+7. Departments Table - Done
+8. Announcements Table - Done
+9. Registrars Table - Done
+10. Admins Table - Done
+11. Payments Table - Done
+12. Schedule Table - Done
+13. Section Table - Done
+
+* MODULES / FEATURES
+1. Login - Done 
+2. Login for different users (admin, teacher, student, registrar) to go to different dashboard
+   base on roles - Done 
+3. Menu / Navigation - Done
+4. Adding / Creating of new users - Done
+5. Logout with destroy session - Done
