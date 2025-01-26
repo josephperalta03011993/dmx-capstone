@@ -1,6 +1,6 @@
 <?php 
-     
-    include('database/conn.php');
+    $page_title = "Login - Datamex College of Saint Adeline";
+    include_once('database/conn.php');
     include('layouts/header.php');
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -46,21 +46,51 @@
             $error_message = "Invalid username.";
         }
     }
-    
-    $conn->close();
 ?>
 
     <div class="login-container">
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="login-form">
-            <div class="form-container">
-                <img src="images/dcsa.webp" alt="School logo" width="100" height="100">
-                <h2>Login</h2>
-                <?php if (isset($error_message)) { echo "<p style='color: red;padding-bottom: 1rem;'>$error_message</p>"; } ?>
-            </div>
-            Username: <input type="text" name="username" required><br><br>
-            Password: <input type="password" name="password" required><br><br>
-            <input type="submit" value="Login">
-        </form>
+        <div class="login-announcements">
+            <h2 class="p-05 pl-1 pr-1">Announcements</h2><hr>
+            <?php 
+          
+                $sql = "SELECT * FROM announcements ORDER BY created_at DESC LIMIT 5"; 
+                $result = $conn->query($sql);
+
+                if($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $createdDate = new DateTime($row["created_at"]);
+                        $content = $row["content"];
+
+                        echo "<h3 class='p-1'>" . $row["title"] . "</h3>";
+                        echo "<p class='p-1'>" . $content . "</p>";
+                        echo "<p class='p-1'>" . $createdDate->format('l, F j, Y h:i A') . "</p><hr>";
+                    }
+                } else {
+                    echo "<p class='p1'>No announcements.</p>";
+                }
+       
+            ?>
+        </div>
+        <div class="login-div">
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="card">
+                <div class="form-container">
+                    <img src="images/dcsa.webp" alt="School logo" width="100" height="100">
+                    <h2>Login</h2>
+                    <?php if (isset($error_message)) { echo "<p style='color: red;padding-bottom: 1rem;'>$error_message</p>"; } ?>
+                </div>
+                Username: <input type="text" name="username" required><br><br>
+                Password: <input type="password" name="password" required><br><br>
+                <input type="submit" value="Login">
+            </form>
+        </div>
     </div>
 
-<?php include('layouts/footer.php'); ?>
+<?php 
+    $conn->close();
+    include('layouts/footer.php'); 
+?>
+
+<script>
+    const element = $0;
+    element.innerHTML = element.innerHTML.replace(/\r?\n/g, '<br>');
+</script>

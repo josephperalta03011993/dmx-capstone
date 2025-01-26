@@ -25,3 +25,5 @@ Accomplishments:
 3. Menu / Navigation - Done
 4. Adding / Creating of new users - Done
 5. Logout with destroy session - Done
+6. Creating Announcements - Done
+7. Announcements is now showing up to the login page - Done

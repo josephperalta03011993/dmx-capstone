@@ -9,7 +9,10 @@
     // save announcement request
     if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create_announcement"])) {
         $title = sanitize_input($conn, $_POST["announcement_title"]);
-        $content = sanitize_input($conn, $_POST["announcement_content"]);
+
+        $content = $_POST["announcement_content"];
+        $content = str_replace("/\r/\n", "<br>", $content);
+
         $startDate = sanitize_input($conn, $_POST["announcement_start_date"]);
         $endDate = sanitize_input($conn, $_POST["announcement_end_date"]);
         $createdAt = date("Y-m-d H:i:s");
