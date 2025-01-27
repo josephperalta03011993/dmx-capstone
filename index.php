@@ -28,13 +28,13 @@
                         header("Location: admin/dashboard/index.php");
                         break;
                     case "registrar":
-                        header("Location: registrar/registrar_dashboard.php");
+                        header("Location: registrar/dashboard/index.php");
                         break;
                     case "teacher":
-                        header("Location: teacher/teacher_dashboard.php");
+                        header("Location: teacher/dashboard/index.php");
                         break;
                     case "student":
-                        header("Location: student/student_dashboard.php");
+                        header("Location: student/dashboard/index.php");
                         break;
                     default:
                         // Handle unknown user types

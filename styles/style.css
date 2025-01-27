@@ -397,7 +397,7 @@ input[type="submit"]:hover {
     padding: 10px;
     box-sizing: border-box;
 }
-.form-group {
+.one-col-form-group {
     flex: 1; /* Each field takes 100% width */
     padding: 10px;
     box-sizing: border-box;

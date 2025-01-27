@@ -70,11 +70,13 @@ $user_type = get_user_type();
     </header>
     <main>
         <?php 
-            $user_type = get_user_type();
-            if(strtolower($user_type) === 'admin') 
+            $user_type = strtolower(get_user_type());
+            if($user_type === 'admin' || 
+                       $user_type === 'student' || 
+                       $user_type === 'teacher' || 
+                       $user_type === 'registrar')
             {
                 include('nav.php'); 
             }
         ?>
         <div class="content">
-

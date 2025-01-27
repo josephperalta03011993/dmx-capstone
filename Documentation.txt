@@ -35,3 +35,9 @@ Accomplishments:
 13. Department reports print or download - done 
 14. Department delete - done
 15. Department update - done 
+16. Course list with search - 
+17. Couse delete - 
+18. Course print and download - 
+19. Course Edit - 
+20. Course Add New - 
+21. Department Add New - 
