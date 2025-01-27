@@ -210,7 +210,7 @@ footer {
 }
 .content {
     flex: 1; /* Allow content to expand horizontally */
-    padding: 0 20px;
+    padding: 0 20px 20px 20px; 
     box-sizing: border-box;
 }
 
@@ -336,3 +336,43 @@ input[type="submit"]:hover {
 }
 
 /* End registration form */
+
+/* Users Page */
+#myTable th{
+    background-color: #00014B;
+    color: white;
+}
+
+#btn_edit{
+    background-color: #0D6EFD;
+    color: white;
+    padding: .3rem .5rem;
+    text-decoration: none;
+    font-size: 14px;
+    border: 1px solid black;
+}
+
+#btn_del{
+    background-color: #DC354B;
+    color: white;
+    padding: .3rem .5rem;
+    text-decoration: none;
+    font-size: 14px;
+    border: 1px solid black;
+}
+
+#btn_edit:hover{
+    background-color: #073780;
+}
+
+#btn_del:hover{
+    background-color: #7e1b28;
+}
+
+.dt-button {
+    background-color: #649E65 !important;
+    color: white !important;
+    padding: .3rem .8rem !important;
+}
+
+/* End user page */

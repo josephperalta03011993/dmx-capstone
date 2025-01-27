@@ -13,10 +13,7 @@
                 <li><a href="#"><i class="fa-solid fa-user"></i> Users</a>
                     <ul>
                         <li><a href="../users/register.php">Create New User</a></li> 
-                        <li><a href="manage_admins.php">Manage Admins</a></li>
-                        <li><a href="manage_registrars.php">Manage Registrars</a></li>
-                        <li><a href="manage_teachers.php">Manage Teachers</a></li>
-                        <li><a href="manage_students.php">Manage Students</a></li>
+                        <li><a href="manage_admins.php">Manage Users</a></li>
                     </ul>
                 </li>
 

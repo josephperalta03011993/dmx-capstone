@@ -53,7 +53,9 @@
             <h2 class="p-05 pl-1 pr-1">Announcements</h2><hr>
             <?php 
           
-                $sql = "SELECT * FROM announcements ORDER BY created_at DESC LIMIT 5"; 
+                $sql = "SELECT * FROM announcements 
+                        WHERE end_date >= CURDATE() 
+                        ORDER BY created_at DESC"; 
                 $result = $conn->query($sql);
 
                 if($result->num_rows > 0) {

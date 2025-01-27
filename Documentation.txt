@@ -27,3 +27,5 @@ Accomplishments:
 5. Logout with destroy session - Done
 6. Creating Announcements - Done
 7. Announcements is now showing up to the login page - Done
+8. Reports printable CSV, PDF, Excel - Done 
+9. User List View - Done

@@ -1,6 +1,6 @@
 <?php
 include('../../database/conn.php');
-
+$page_title = "User Registration - Datamex College of Saint Adeline";
 $registration_success = null;
 $registration_error = null;
 
