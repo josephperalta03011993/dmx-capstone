@@ -15,6 +15,13 @@ function get_username(){
     return isset($_SESSION["username"]) ? $_SESSION["username"] : null;
 }
 
+
+function get_fullname(){
+    $first_name = isset($_SESSION["first_name"]) ? $_SESSION["first_name"] : null;
+    $last_name = isset($_SESSION["last_name"]) ? $_SESSION["last_name"] : null;
+    return $first_name . " " . $last_name;
+}
+
 $user_type = get_user_type();
 ?>
 

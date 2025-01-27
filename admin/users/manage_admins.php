@@ -35,7 +35,7 @@
                 echo "<td>".$row['username']."</td>";
                 echo "<td>".$row['user_type']."</td>";
                 echo "<td>
-                        <a href='edit_admin.php?id=".$row['user_id']."' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a> 
+                        <a href='edit_admin.php?user_id=".$row['user_id']."' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a> 
                         <a href='delete_admin.php?id=".$row['user_id']."' id='btn_del' onclick='return confirmDelete()'><i class='fa-solid fa-trash'></i> Delete</a>
                     </td>";
                 echo "</tr>";

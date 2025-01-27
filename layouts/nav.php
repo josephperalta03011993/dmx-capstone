@@ -3,7 +3,7 @@
                 <li>
                     <div class="user-info">
                         <?php if(is_logged_in()): ?>
-                            <strong><span>Welcome, <?php echo get_username(); ?>!</span></strong>
+                            <strong><span>Welcome, <?php echo get_fullname(); ?>!</span></strong>
                         <?php endif; ?>
                     </div>
                     <hr>
@@ -13,7 +13,7 @@
                 <li><a href="#"><i class="fa-solid fa-user"></i> Users</a>
                     <ul>
                         <li><a href="../users/register.php">Create New User</a></li> 
-                        <li><a href="manage_admins.php">Manage Users</a></li>
+                        <li><a href="../users/manage_admins.php">Manage Users</a></li>
                     </ul>
                 </li>
 

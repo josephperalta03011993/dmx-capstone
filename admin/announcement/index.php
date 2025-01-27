@@ -55,7 +55,10 @@
     <label for="announcement_end_date">End Date:</label>
     <input type="date" id="announcement_end_date" name="announcement_end_date" required><br><br>
 
-    <input type="submit" name="create_announcement" id="create_announcement" value="Create Announcement">
+    <button type="submit" name="create_announcement" id="create_announcement" class="btn_submit">
+        <i class="fa-solid fa-floppy-disk"></i> Create Announcement
+    </button>
+
 </form>
 
 <?php include('../../layouts/footer.php'); ?>

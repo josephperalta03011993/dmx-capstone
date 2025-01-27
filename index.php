@@ -8,7 +8,7 @@
         $password = sanitize_input($conn, $_POST["password"]);
 
         // Query the database based on username
-        $sql = "SELECT user_id, user_type, password FROM users WHERE username = '$username'";
+        $sql = "SELECT user_id, user_type, first_name, last_name, password FROM users WHERE username = '$username'";
         $result = $conn->query($sql);
 
         if ($result->num_rows == 1) {
@@ -19,6 +19,8 @@
                 $_SESSION["user_id"] = $row["user_id"];
                 $_SESSION["user_type"] = $row["user_type"];
                 $_SESSION["username"] = $username; // Store username in session
+                $_SESSION["first_name"] = $row["first_name"]; 
+                $_SESSION["last_name"] = $row["last_name"]; 
 
                 // Redirect based on user type
                 switch ($row["user_type"]) {
@@ -75,14 +77,14 @@
         </div>
         <div class="login-div">
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="card">
-                <div class="form-container">
+                <div class="login-form-container">
                     <img src="images/dcsa.webp" alt="School logo" width="100" height="100">
                     <h2>Login</h2>
                     <?php if (isset($error_message)) { echo "<p style='color: red;padding-bottom: 1rem;'>$error_message</p>"; } ?>
                 </div>
                 Username: <input type="text" name="username" required><br><br>
                 Password: <input type="password" name="password" required><br><br>
-                <input type="submit" value="Login">
+                <button type="submit" class="btn_submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
             </form>
         </div>
     </div>

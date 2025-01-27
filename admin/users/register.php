@@ -83,11 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                 </select>
             </div>
             <div class="form-group full-width">
-                <input type="submit" name="register" value="Register">
+                <button type="submit" name="register" class="btn_submit">
+                    <i class="fa-solid fa-floppy-disk"></i> Register User
+                </button>
             </div>
         </div>
     </form>
-
-    <!-- <p>Already have an account? <a href="../index.php">Login here</a>.</p> -->
 
 <?php include('../../layouts/footer.php'); ?>
