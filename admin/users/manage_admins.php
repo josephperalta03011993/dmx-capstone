@@ -1,17 +1,21 @@
 <?php
     include('../../database/conn.php');
     $page_title = "User Registration - Datamex College of Saint Adeline";
-    $success = null;
-    $error = null;
 
+    // Retrieve success and error messages from session
+    $success = isset($_SESSION['success']) ? $_SESSION['success'] : null;
+    $error = isset($_SESSION['error']) ? $_SESSION['error'] : null;
+
+    // Clear session messages after retrieval
+    unset($_SESSION['success'], $_SESSION['error']);
 ?>
 
-<?php include('../../layouts/header.php'); ?>
+<?php include('../../layouts/header.php'); ?>   
 
     <h2>Users</h2><hr><br>
 
-    <?php if ($success) { echo "<p style='color: green;'>$registration_success</p>"; } ?>
-    <?php if ($error) { echo "<p style='color: red;'>$registration_error</p>"; } ?>
+    <?php if ($success) { echo "<p style='color: green;'>$success</p>"; } ?>
+    <?php if ($error) { echo "<p style='color: red;'>$error</p>"; } ?>
 
     <?php 
         $sql = "SELECT * FROM users";
@@ -30,7 +34,10 @@
                 echo "<td>".$row['first_name']." ". $row['last_name'] . "</td>";
                 echo "<td>".$row['username']."</td>";
                 echo "<td>".$row['user_type']."</td>";
-                echo "<td><a href='edit_admin.php?id=".$row['user_id']."' id='btn_edit'>Edit</a> <a href='delete_admin.php?id=".$row['user_id']."' id='btn_del'>Delete</a></td>";
+                echo "<td>
+                        <a href='edit_admin.php?id=".$row['user_id']."' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a> 
+                        <a href='delete_admin.php?id=".$row['user_id']."' id='btn_del' onclick='return confirmDelete()'><i class='fa-solid fa-trash'></i> Delete</a>
+                    </td>";
                 echo "</tr>";
             }
             echo "</tbody></table>";
@@ -38,5 +45,9 @@
             echo "0 results";
         }
     ?> 
-
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this user?");
+    }
+</script>
 <?php include('../../layouts/footer.php'); ?>
