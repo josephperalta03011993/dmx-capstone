@@ -28,4 +28,10 @@ Accomplishments:
 6. Creating Announcements - Done
 7. Announcements is now showing up to the login page - Done
 8. Reports printable CSV, PDF, Excel - Done 
-9. User List View - Done
+9. User List View with Search - Done
+10 User Edit Details Page - Done
+11. Delete user from admin page - done
+12. Department list view - done 
+13. Department reports print or download - done 
+14. Department delete - done
+15. Department update - done 

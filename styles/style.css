@@ -117,6 +117,7 @@ nav.sidebar ul ul li:last-child a {
     padding: .5rem 1rem;
     text-decoration: none;
     color: #800000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 .header-school-name {
     display: flex;
@@ -309,6 +310,7 @@ input[type="submit"], .btn_submit {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-bottom: 1rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 input[type="submit"]:hover {
@@ -349,7 +351,8 @@ input[type="submit"]:hover {
     padding: .3rem .5rem;
     text-decoration: none;
     font-size: 14px;
-    border: 1px solid black;
+    border-radius: 5rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 #btn_del{
@@ -358,7 +361,8 @@ input[type="submit"]:hover {
     padding: .3rem .5rem;
     text-decoration: none;
     font-size: 14px;
-    border: 1px solid black;
+    border-radius: 5rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 #btn_edit:hover{
@@ -373,6 +377,9 @@ input[type="submit"]:hover {
     background-color: #649E65 !important;
     color: white !important;
     padding: .3rem .8rem !important;
+    border-radius: 5rem !important;
+    border: none !important;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 /* End user page */
@@ -390,9 +397,17 @@ input[type="submit"]:hover {
     padding: 10px;
     box-sizing: border-box;
 }
+.form-group {
+    flex: 1; /* Each field takes 100% width */
+    padding: 10px;
+    box-sizing: border-box;
+}
 .form-group.full-width {
     flex: 1 1 100%; /* Full width for submit button */
     text-align: left;
 }
 
+.th-action {
+    width: 15%;
+}
 /* End of user registration */
