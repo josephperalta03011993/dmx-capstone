@@ -12,7 +12,11 @@
 
 <?php include('../../layouts/header.php'); ?>   
 
-    <h2>Departments</h2><hr><br>
+    <div class="page-header-title">
+        <h2>Departments</h2>
+        <a href='add_department.php' id='btn_add' class="btn_add"><i class='fa-solid fa-plus'></i> Add New</a>
+    </div>    
+    <hr><br>
 
     <?php if ($success) { echo "<p style='color: green;'>$success</p>"; } ?>
     <?php if ($error) { echo "<p style='color: red;'>$error</p>"; } ?>

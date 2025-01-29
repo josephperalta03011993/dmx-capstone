@@ -44,3 +44,8 @@ Accomplishments:
 22. Announcements Edit - 
 23. Announcements View List - 
 24. Announcements Delete - 
+25. Admin Dashboard - 
+26. Schedule Add New - 
+27. Schedule Edit - 
+28. Schedule Delete - 
+29. Schedule list - 
