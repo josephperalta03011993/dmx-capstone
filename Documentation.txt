@@ -40,7 +40,7 @@ Accomplishments:
 18. Course print and download - done
 19. Course Edit - done
 20. Course Add New - 
-21. Department Add New - 
+21. Department Add New - done
 22. Announcements Edit - 
 23. Announcements View List - 
 24. Announcements Delete - 
@@ -49,3 +49,6 @@ Accomplishments:
 27. Schedule Edit - 
 28. Schedule Delete - 
 29. Schedule list - 
+30. Registrar enroll student - 
+31. Registrar update payment - 
+32. Registrar update student info & status(enrolled, graduate, dropped) - 
