@@ -90,9 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update"])) {
         </div>
         <div class="form-group">
             <label for="reg_course_description">Course Description:</label>
-            <textarea name="reg_course_description" id="reg_course_description" rows="4" cols="50">
-                <?php echo $course['course_description']; ?>
-            </textarea>
+            <textarea name="reg_course_description" id="reg_course_description" rows="4" cols="50"><?php echo $course['course_description']; ?></textarea>
         </div>
         <div class="form-group full-width">
             <button type="submit" name="update" class="btn_submit">

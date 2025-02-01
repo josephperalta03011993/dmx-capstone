@@ -41,9 +41,9 @@ Accomplishments:
 19. Course Edit - done
 20. Course Add New - 
 21. Department Add New - done
-22. Announcements Edit - 
-23. Announcements View List - 
-24. Announcements Delete - 
+22. Announcements Edit - done
+23. Announcements View List - done
+24. Announcements Delete - done
 25. Admin Dashboard - 
 26. Schedule Add New - 
 27. Schedule Edit - 

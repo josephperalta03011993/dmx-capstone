@@ -15,7 +15,7 @@
         ?>
         <li><a href="../dashboard/index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
 
-        <li><a href="../announcement/index.php"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
+        <li><a href="../announcement/manage_announcement.php"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
         
         <li><a href="#"><i class="fa-solid fa-user"></i> Users</a>
             <ul>

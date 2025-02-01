@@ -287,6 +287,10 @@ select {
     font-size: 16px;
 }
 
+textarea {
+    text-indent: 0 !important;
+}
+
 input[type="date"] {
     margin-top: .5rem;
     width: 50%;
@@ -434,3 +438,31 @@ input[type="submit"]:hover {
     width: 15%;
 }
 /* End of user registration */
+
+/* Admin dashboard */
+#container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#container > div {
+    flex: 1;
+    padding: 1rem;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
+    background-color: #00014B;
+    color: white;
+    border: 1px solid #00014B;
+}
+
+#container > div:hover {
+    flex: 1;
+    padding: 1rem;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
+    border:1px solid #00014B;
+    background-color: white;
+    color: #00014B;
+    transition: 0.5s ease;
+}
+/* End of admin dashboard */
