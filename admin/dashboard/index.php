@@ -51,6 +51,11 @@ $result_enrollment = $conn->query($sql_enrollment);
 $row_enrollment = $result_enrollment->fetch_assoc();
 $total_enrollment = $row_enrollment['COUNT(enrollment_id)'];
 
+// Query to get the total schedule
+$sql_schedule = "SELECT COUNT(schedule_id) FROM schedules";
+$result_schedule = $conn->query($sql_schedule);
+$row_schedule = $result_schedule->fetch_assoc();
+$total_schedule = $row_schedule['COUNT(schedule_id)'];
 ?>
 
 <h2>Admin Dashboard</h2>
@@ -79,6 +84,9 @@ $total_enrollment = $row_enrollment['COUNT(enrollment_id)'];
     </div>
     <div>
         <h3><i class="fa-solid fa-school"></i> Total Enrollment: <?php echo $total_enrollment; ?></h3>
+    </div>
+    <div>
+        <h3><i class="fa-solid fa-calendar"></i> Total Schedule: <?php echo $total_schedule; ?></h3>
     </div>
 </div>
 

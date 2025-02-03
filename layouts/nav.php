@@ -27,7 +27,7 @@
         <li><a href="#"><i class="fa-solid fa-book"></i> Courses</a>
             <ul> 
                 <li><a href="../courses/manage_courses.php">Manage Courses</a></li>
-                <li><a href="../course_scheduling.php">Course Scheduling</a></li>
+                <li><a href="../courses/course_scheduling.php">Course Scheduling</a></li>
             </ul>
         </li>
 
