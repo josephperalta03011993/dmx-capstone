@@ -441,14 +441,13 @@ input[type="submit"]:hover {
 
 /* Admin dashboard */
 #container {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
 #container > div {
-    flex: 1;
     padding: 1rem;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
     background-color: #00014B;

@@ -27,6 +27,30 @@ $result_courses = $conn->query($sql_courses);
 $row_courses = $result_courses->fetch_assoc();
 $total_courses = $row_courses['total_courses'];
 
+// Query to get the total number of sections
+$sql_sections = "SELECT COUNT(section_id) AS total_sections FROM sections";
+$result_sections = $conn->query($sql_sections);
+$row_sections = $result_sections->fetch_assoc();
+$total_sections = $row_sections['total_sections'];
+
+// Query to get the total number of rooms
+$sql_rooms = "SELECT COUNT(room_id) AS total_rooms FROM rooms";
+$result_registrars = $conn->query($sql_rooms);
+$row_rooms = $result_registrars->fetch_assoc();
+$total_rooms = $row_rooms['total_rooms'];
+
+// Query to get the total depertments
+$sql_department = "SELECT COUNT(department_id) AS total_department FROM departments";
+$result_department = $conn->query($sql_department);
+$row_department = $result_department->fetch_assoc();
+$total_department = $row_department['total_department'];
+
+// Query to get the total enrollment
+$sql_enrollment = "SELECT COUNT(enrollment_id) FROM enrollments";
+$result_enrollment = $conn->query($sql_enrollment);
+$row_enrollment = $result_enrollment->fetch_assoc();
+$total_enrollment = $row_enrollment['COUNT(enrollment_id)'];
+
 ?>
 
 <h2>Admin Dashboard</h2>
@@ -43,6 +67,18 @@ $total_courses = $row_courses['total_courses'];
     </div>
     <div>
         <h3><i class="fa-solid fa-book"></i> Total Courses: <?php echo $total_courses; ?></h3>
+    </div>
+    <div>
+        <h3><i class="fa-solid fa-people-line"></i> Total Sections: <?php echo $total_sections; ?></h3>
+    </div>
+    <div>
+        <h3><i class="fa-solid fa-door-open"></i> Total Rooms: <?php echo $total_rooms; ?></h3>
+    </div>
+    <div>
+        <h3><i class="fa-solid fa-door-open"></i> Total Department: <?php echo $total_department; ?></h3>
+    </div>
+    <div>
+        <h3><i class="fa-solid fa-school"></i> Total Enrollment: <?php echo $total_enrollment; ?></h3>
     </div>
 </div>
 
