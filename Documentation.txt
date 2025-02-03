@@ -39,12 +39,12 @@ Accomplishments:
 17. Couse delete - done
 18. Course print and download - done
 19. Course Edit - done
-20. Course Add New - 
+20. Course Add New - done
 21. Department Add New - done
 22. Announcements Edit - done
 23. Announcements View List - done
 24. Announcements Delete - done
-25. Admin Dashboard - 
+25. Admin Dashboard - ongoing
 26. Schedule Add New - 
 27. Schedule Edit - 
 28. Schedule Delete - 
@@ -52,3 +52,12 @@ Accomplishments:
 30. Registrar enroll student - 
 31. Registrar update payment - 
 32. Registrar update student info & status(enrolled, graduate, dropped) - 
+33. Room add new tbl(room_id, room_name, capacity) - done
+34. Sections list with search - donee
+35. Sections add new - 
+36. Sections edit - 
+37. Sections delete - 
+38. Rooms list with search - done
+39. Rooms add new - 
+40. Rooms edit - 
+41. Rooms delete - 

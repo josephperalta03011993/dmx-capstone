@@ -7,6 +7,12 @@ $username = "root";
 $password = "";
 $dbname = "dmx-capstone";
 
+// Database Server Credentials:
+// $servername = "localhost";
+// $username = "u105832525_dmx_username";
+// $password = "=2[!OwpR";
+// $dbname = "u105832525_dmx_capstone";
+
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 

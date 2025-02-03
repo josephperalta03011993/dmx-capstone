@@ -27,9 +27,17 @@
         <li><a href="#"><i class="fa-solid fa-book"></i> Courses</a>
             <ul> 
                 <li><a href="../courses/manage_courses.php">Manage Courses</a></li>
-                <li><a href="../departments/manage_departments.php">Manage Derpartments</a></li>
-                <li><a href="course_scheduling.php">Course Scheduling</a></li>
+                <li><a href="../course_scheduling.php">Course Scheduling</a></li>
             </ul>
+        </li>
+
+        <li><a href="../departments/manage_departments.php"><i class="fa-solid fa-building-user"></i> Departments</a>
+        </li>
+
+        <li><a href="../sections/manage_sections.php"><i class="fa-solid fa-people-line"></i> Sections</a>
+        </li>
+
+        <li><a href="../rooms/manage_rooms.php"><i class="fa-solid fa-door-open"></i> Rooms</a>
         </li>
 
         <?php } else if($user_type == 'registrar') { ?>
