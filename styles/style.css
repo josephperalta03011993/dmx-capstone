@@ -275,6 +275,7 @@ label {
 input[type="text"],
 input[type="number"],
 input[type="password"],
+input[type="time"],
 textarea,
 select {
     margin-top: .5rem;
@@ -289,6 +290,10 @@ select {
 
 textarea {
     text-indent: 0 !important;
+}
+
+input[type="time"] {
+    width: 50%;
 }
 
 input[type="date"] {

@@ -45,7 +45,7 @@ Accomplishments:
 23. Announcements View List - done
 24. Announcements Delete - done
 25. Admin Dashboard - done
-26. Schedule Add New - 
+26. Schedule Add New - done
 27. Schedule Edit - 
 28. Schedule Delete - 
 29. Schedule list - done

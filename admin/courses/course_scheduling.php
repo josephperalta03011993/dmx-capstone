@@ -39,11 +39,16 @@
             echo "<th class='th-action'>Actions</th>";
             echo "</tr></thead><tbody>";
             while($row = $result->fetch_assoc()) {
+                $startTime24 = $row['start_time'];
+                $startTime12 = date("h:i A", strtotime($startTime24));
+                $endTime24 = $row['end_time'];
+                $endTime12 = date("h:i A", strtotime($endTime24));
+
                 echo "<tr>";
                 echo "<td>".$row['section_name']."</td>";
                 echo "<td>".$row['day_of_week']."</td>";
-                echo "<td>".$row['start_time']."</td>";
-                echo "<td>".$row['end_time']."</td>";
+                echo "<td>".$startTime12."</td>";
+                echo "<td>".$endTime12."</td>";
                 echo "<td>
                         <a href='edit_schedule.php?id=".$row['schedule_id']."' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a> 
                         <a href='delete_schedule.php?id=".$row['schedule_id']."' id='btn_del' onclick='return confirmDelete()'><i class='fa-solid fa-trash'></i> Delete</a>
