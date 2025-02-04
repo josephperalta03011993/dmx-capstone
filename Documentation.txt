@@ -47,7 +47,7 @@ Accomplishments:
 25. Admin Dashboard - done
 26. Schedule Add New - done
 27. Schedule Edit - 
-28. Schedule Delete - 
+28. Schedule Delete - done
 29. Schedule list - done
 30. Registrar enroll student - 
 31. Registrar update payment - 
