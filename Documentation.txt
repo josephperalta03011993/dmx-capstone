@@ -57,7 +57,7 @@ Accomplishments:
 34. Sections list with search - done
 35. Sections add new (Should be unique) - ? why section have only 1 instructor it should have 1 or more
 36. Sections edit - 
-37. Sections delete - 
+37. Sections delete - done
 38. Rooms list with search - done
 39. Rooms add new - done
 40. Rooms edit - done
