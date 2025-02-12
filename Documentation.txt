@@ -1,6 +1,6 @@
 Test Accounts:
-admin01
-admin1234
+admin3@gmail.com
+admin3123
 
 Accomplishments:
 * DATABASE
@@ -17,8 +17,9 @@ Accomplishments:
 11. Payments Table - Done
 12. Schedule Table - Done
 13. Section Table - Done
+14. Room Table - Done
 
-* MODULES / FEATURES
+* FEATURES / FUNCTIONALITY
 1. Login - Done 
 2. Login for different users (admin, teacher, student, registrar) to go to different dashboard
    base on roles - Done 
@@ -54,10 +55,10 @@ Accomplishments:
 32. Registrar update student info & status(enrolled, graduate, dropped) - 
 33. Room add new tbl(room_id, room_name, capacity) - done
 34. Sections list with search - done
-35. Sections add new - 
+35. Sections add new (Should be unique) - ? why section have only 1 instructor it should have 1 or more
 36. Sections edit - 
 37. Sections delete - 
 38. Rooms list with search - done
-39. Rooms add new - 
-40. Rooms edit - 
-41. Rooms delete - 
+39. Rooms add new - done
+40. Rooms edit - done
+41. Rooms delete - done

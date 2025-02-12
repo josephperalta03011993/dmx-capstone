@@ -37,7 +37,7 @@
                 echo "<td>".$row['room_name']."</td>";
                 echo "<td>".$row['capacity']."</td>";
                 echo "<td>
-                        <a href='edit_room?id=".$row['room_id']."' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a> 
+                        <a href='edit_room.php?id=".$row['room_id']."' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a> 
                         <a href='delete_room.php?id=".$row['room_id']."' id='btn_del' onclick='return confirmDelete()'><i class='fa-solid fa-trash'></i> Delete</a>
                     </td>";
                 echo "</tr>";
