@@ -50,13 +50,13 @@ Accomplishments:
 27. Schedule Edit - done
 28. Schedule Delete - done
 29. Schedule list - done
-30. Registrar enroll student - 
-31. Registrar update payment - 
-32. Registrar update student info & status(enrolled, graduate, dropped) - 
+30. Registrar enroll student - NEXT
+31. Registrar update payment - NEXT
+32. Registrar update student info & status(enrolled, graduate, dropped) - NEXT
 33. Room add new tbl(room_id, room_name, capacity) - done
 34. Sections list with search - done
-35. Sections add new (Should be unique) - ? why section have only 1 instructor it should have 1 or more
-36. Sections edit - 
+35. Sections add new - done
+36. Sections edit - NEXT
 37. Sections delete - done
 38. Rooms list with search - done
 39. Rooms add new - done
