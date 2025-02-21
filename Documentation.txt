@@ -2,6 +2,9 @@ Test Accounts:
 admin3@gmail.com
 admin3123
 
+registrar1
+registrar1
+
 Accomplishments:
 * DATABASE
 1. Students Table - Done 
