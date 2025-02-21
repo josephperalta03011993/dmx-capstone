@@ -44,7 +44,7 @@ if ($result->num_rows > 0) {
     echo "<th>End Time</th>";
     echo "<th>Enrollment Date</th>";
     echo "<th>Status</th>";
-    echo "<th class='th-action'>Actions</th>";
+    echo "<th>Actions</th>";
     echo "</tr></thead><tbody>";
     while ($row = $result->fetch_assoc()) {
         echo "<tr>";
@@ -58,8 +58,9 @@ if ($result->num_rows > 0) {
         echo "<td>" . $row['enrollment_date'] . "</td>";
         echo "<td>" . $row['status'] . "</td>";
         echo "<td>
-                <a href='edit_enrollment.php?id=" . $row['enrollment_id'] . "' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a> 
-                <a href='delete_enrollment.php?id=" . $row['enrollment_id'] . "' id='btn_del' onclick='return confirmDelete()'><i class='fa-solid fa-trash'></i> Delete</a>
+                <a href='edit_enrollment.php?id=" . $row['enrollment_id'] . "' id='btn_edit'>
+                    <i class='fa-solid fa-pen-to-square'></i> Edit
+                </a> 
             </td>";
         echo "</tr>";
     }

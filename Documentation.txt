@@ -53,7 +53,7 @@ Accomplishments:
 27. Schedule Edit - done
 28. Schedule Delete - done
 29. Schedule list - done
-30. Registrar enroll student - NEXT
+30. Registrar add student - NEXT
 31. Registrar update payment - NEXT
 32. Registrar update student info & status(enrolled, graduate, dropped) - NEXT
 33. Room add new tbl(room_id, room_name, capacity) - done
@@ -65,3 +65,8 @@ Accomplishments:
 39. Rooms add new - done
 40. Rooms edit - done
 41. Rooms delete - done
+42. Registrar add enrollment - 
+42. Registrar edit enrollment details - 
+43. Registrar view list of enrollments - 
+44. Print / download report for enrollment details - 
+45. Registrar | Checking for enrollment time overlap when adding enrollment for same day - done
