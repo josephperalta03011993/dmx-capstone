@@ -65,8 +65,8 @@ Accomplishments:
 39. Rooms add new - done
 40. Rooms edit - done
 41. Rooms delete - done
-42. Registrar add enrollment - 
-42. Registrar edit enrollment details - 
+42. Registrar add enrollment - done | NOTE: When adding enrollment section make sure section has schedule otherwise it won't show up in the enrollment list
+42. Registrar edit enrollment details - done
 43. Registrar view list of enrollments - 
 44. Print / download report for enrollment details - 
 45. Registrar | Checking for enrollment time overlap when adding enrollment for same day - done
