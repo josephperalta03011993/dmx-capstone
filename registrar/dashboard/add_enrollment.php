@@ -21,28 +21,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create_enrollment"]))
     $enrollment_date = sanitize_input($conn, $_POST["enrollment_date"]);
     $status = sanitize_input($conn, $_POST['status']);
 
-    // Check for time overlaps
-    $overlap_sql = "SELECT s.start_time, s.end_time FROM schedules s
-                    JOIN enrollments e ON s.section_id = e.section_id
-                    WHERE e.student_id = ? AND s.day_of_week = (SELECT day_of_week FROM schedules WHERE section_id = ?)";
-    $overlap_stmt = mysqli_prepare($conn, $overlap_sql);
-    mysqli_stmt_bind_param($overlap_stmt, "ii", $student_id, $section_id);
-    mysqli_stmt_execute($overlap_stmt);
-    $overlap_result = mysqli_stmt_get_result($overlap_stmt);
-
-    $new_schedule_sql = "SELECT start_time, end_time FROM schedules WHERE section_id = ?";
-    $new_schedule_stmt = mysqli_prepare($conn, $new_schedule_sql);
-    mysqli_stmt_bind_param($new_schedule_stmt, "i", $section_id);
-    mysqli_stmt_execute($new_schedule_stmt);
-    $new_schedule_result = mysqli_stmt_get_result($new_schedule_stmt);
-    $new_schedule_row = mysqli_fetch_assoc($new_schedule_result);
-
     $overlap = false;
-    while ($row = mysqli_fetch_assoc($overlap_result)) {
-        if (($new_schedule_row['start_time'] >= $row['start_time'] && $new_schedule_row['start_time'] < $row['end_time']) ||
-            ($new_schedule_row['end_time'] > $row['start_time'] && $new_schedule_row['end_time'] <= $row['end_time'])) {
-            $overlap = true;
-            break;
+    $schedule_sql = "SELECT day_of_week, start_time, end_time FROM schedules WHERE section_id = ?";
+    $schedule_stmt = mysqli_prepare($conn, $schedule_sql);
+    mysqli_stmt_bind_param($schedule_stmt, "i", $section_id);
+    mysqli_stmt_execute($schedule_stmt);
+    $schedule_result = mysqli_stmt_get_result($schedule_stmt);
+
+    while ($schedule_row = mysqli_fetch_assoc($schedule_result)) {
+        $overlap_sql = "SELECT s.start_time, s.end_time FROM schedules s
+                        JOIN enrollments e ON s.section_id = e.section_id
+                        WHERE e.student_id = ? AND s.day_of_week = ?";
+        $overlap_stmt = mysqli_prepare($conn, $overlap_sql);
+        mysqli_stmt_bind_param($overlap_stmt, "is", $student_id, $schedule_row['day_of_week']);
+        mysqli_stmt_execute($overlap_stmt);
+        $overlap_result = mysqli_stmt_get_result($overlap_stmt);
+
+        if($overlap_result->num_rows > 0){
+            $new_start_time = $schedule_row['start_time'];
+            $new_end_time = $schedule_row['end_time'];
+
+            while ($row = mysqli_fetch_assoc($overlap_result)) {
+                if (($new_start_time >= $row['start_time'] && $new_start_time < $row['end_time']) ||
+                    ($new_end_time > $row['start_time'] && $new_end_time <= $row['end_time'])) {
+                    $overlap = true;
+                    break 2; // Break out of both loops
+                }
+            }
         }
     }
 

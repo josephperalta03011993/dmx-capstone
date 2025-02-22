@@ -44,7 +44,7 @@
             <li><a href="#"><i class="fa-solid fa-school"></i> Enrollment</a>
                 <ul>
                     <li><a href="manage_enrollments.php">Manage Enrollments</a></li>
-                    <!-- <li><a href="enrollment_reports.php">Enrollment Reports</a></li> -->
+                    <li><a href="enrollment_reports.php">Enrollment Reports</a></li>
                 </ul>
             </li>
 
