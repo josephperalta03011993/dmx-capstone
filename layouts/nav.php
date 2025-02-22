@@ -48,7 +48,7 @@
                 </ul>
             </li>
 
-            <li><a href="#"><i class="fa-solid fa-file"></i> Manage Payments</a></li>
+            <li><a href="manage_payments.php"><i class="fa-solid fa-file"></i> Manage Payments</a></li>
         
         <?php } else if($user_type == 'teacher') {?>
             <li><a href="#"><i class="fa-solid fa-file"></i> Manage Grades</a>
