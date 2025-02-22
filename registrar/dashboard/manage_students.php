@@ -22,16 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_student"])) {
     $state = sanitize_input($conn, $_POST["state"]);
     $zip_code = sanitize_input($conn, $_POST["zip_code"]);
     $country = sanitize_input($conn, $_POST["country"]);
-    $enrollment_date = sanitize_input($conn, $_POST["enrollment_date"]);
     $parent_guardian_name = sanitize_input($conn, $_POST["parent_guardian_name"]);
     $parent_guardian_phone = sanitize_input($conn, $_POST["parent_guardian_phone"]);
     $parent_guardian_email = sanitize_input($conn, $_POST["parent_guardian_email"]);
     $emergency_contact_name = sanitize_input($conn, $_POST["emergency_contact_name"]);
     $emergency_contact_phone = sanitize_input($conn, $_POST["emergency_contact_phone"]);
 
-    $update_sql = "UPDATE students SET first_name=?, last_name=?, middle_name=?, date_of_birth=?, gender=?, email=?, phone_number=?, address_line1=?, address_line2=?, city=?, state=?, zip_code=?, country=?, enrollment_date=?, parent_guardian_name=?, parent_guardian_phone=?, parent_guardian_email=?, emergency_contact_name=?, emergency_contact_phone=? WHERE student_id=?";
+    $update_sql = "UPDATE students SET first_name=?, last_name=?, middle_name=?, date_of_birth=?, gender=?, email=?, phone_number=?, address_line1=?, address_line2=?, city=?, state=?, zip_code=?, country=?, parent_guardian_name=?, parent_guardian_phone=?, parent_guardian_email=?, emergency_contact_name=?, emergency_contact_phone=? WHERE student_id=?";
     $update_stmt = mysqli_prepare($conn, $update_sql);
-    mysqli_stmt_bind_param($update_stmt, "ssssssssssssssssssi", $first_name, $last_name, $middle_name, $date_of_birth, $gender, $email, $phone_number, $address_line1, $address_line2, $city, $state, $zip_code, $country, $enrollment_date, $parent_guardian_name, $parent_guardian_phone, $parent_guardian_email, $emergency_contact_name, $emergency_contact_phone, $student_id);
+    mysqli_stmt_bind_param($update_stmt, "ssssssssssssssssssi", $first_name, $last_name, $middle_name, $date_of_birth, $gender, $email, $phone_number, $address_line1, $address_line2, $city, $state, $zip_code, $country, $parent_guardian_name, $parent_guardian_phone, $parent_guardian_email, $emergency_contact_name, $emergency_contact_phone, $student_id);
 
     if (mysqli_stmt_execute($update_stmt)) {
         $success = "Student updated successfully!";
@@ -73,7 +72,6 @@ $students_result = $conn->query($students_sql);
                 <th>Barangay</th>
                 <th>Zip Code</th>
                 <th>Country</th>
-                <th>Enrollment Date</th>
                 <th>Parent/Guardian Name</th>
                 <th>Parent/Guardian Phone</th>
                 <th>Parent/Guardian Email</th>
@@ -101,7 +99,6 @@ $students_result = $conn->query($students_sql);
                     echo "<td>" . htmlspecialchars($row['state']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['zip_code']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['country']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['enrollment_date']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['parent_guardian_name']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['parent_guardian_phone']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['parent_guardian_email']) . "</td>";

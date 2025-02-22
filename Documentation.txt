@@ -53,7 +53,7 @@ Accomplishments:
 27. Schedule Edit - done
 28. Schedule Delete - done
 29. Schedule list - done
-30. Registrar add student - NEXT
+30. Registrar add student - done
 31. Registrar update payment - done
 32. Registrar update student info & status(enrolled, graduate, dropped) - NEXT
 33. Room add new tbl(room_id, room_name, capacity) - done
