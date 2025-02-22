@@ -46,7 +46,11 @@ $students_result = $conn->query($students_sql);
 
 ?>
 
-<h2>Manage Students</h2>
+<div class="page-header-title">
+    <h2>Manage Students</h2>
+    <a href="add_student.php" id="btn_add" name="btn_add"><i class="fa-solid fa-plus"></i> Add New Student</a>
+</div>
+<hr><br>
 
 <?php if ($success) { echo "<p style='color: green;'>$success</p>"; } ?>
 <?php if ($error) { echo "<p style='color: red;'>$error</p>"; } ?>
@@ -66,7 +70,7 @@ $students_result = $conn->query($students_sql);
                 <th>Address Line 1</th>
                 <th>Address Line 2</th>
                 <th>City</th>
-                <th>State</th>
+                <th>Barangay</th>
                 <th>Zip Code</th>
                 <th>Country</th>
                 <th>Enrollment Date</th>

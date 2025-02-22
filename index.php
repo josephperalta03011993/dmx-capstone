@@ -28,7 +28,7 @@
                         header("Location: admin/dashboard/index.php");
                         break;
                     case "registrar":
-                        header("Location: registrar/dashboard/index.php");
+                        header("Location: registrar/dashboard/manage_students.php");
                         break;
                     case "teacher":
                         header("Location: teacher/dashboard/index.php");
