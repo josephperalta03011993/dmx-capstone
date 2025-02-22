@@ -54,7 +54,7 @@ Accomplishments:
 28. Schedule Delete - done
 29. Schedule list - done
 30. Registrar add student - NEXT
-31. Registrar update payment - NEXT
+31. Registrar update payment - done
 32. Registrar update student info & status(enrolled, graduate, dropped) - NEXT
 33. Room add new tbl(room_id, room_name, capacity) - done
 34. Sections list with search - done
@@ -67,6 +67,8 @@ Accomplishments:
 41. Rooms delete - done
 42. Registrar add enrollment - done | NOTE: When adding enrollment section make sure section has schedule otherwise it won't show up in the enrollment list
 42. Registrar edit enrollment details - done
-43. Registrar view list of enrollments - 
-44. Print / download report for enrollment details - 
+43. Registrar view list of enrollments - done
+44. Print / download report for enrollment details - done
 45. Registrar | Checking for enrollment time overlap when adding enrollment for same day - done
+46. Registrar enrollees report total number of enrolled per section - done
+47. Enrollment Report add 'View Details' then it will show the list of all the students enrolled in that section - done
