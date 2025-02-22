@@ -41,6 +41,12 @@
         </li>
 
         <?php } else if($user_type == 'registrar') { ?>
+            <li><a href="#"><i class="fa-solid fa-person"></i> Students</a>
+                <ul>
+                    <li><a href="manage_students.php">Manage Students</a></li>
+                </ul>
+            </li>
+
             <li><a href="#"><i class="fa-solid fa-school"></i> Enrollment</a>
                 <ul>
                     <li><a href="manage_enrollments.php">Manage Enrollments</a></li>

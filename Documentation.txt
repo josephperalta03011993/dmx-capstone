@@ -59,7 +59,7 @@ Accomplishments:
 33. Room add new tbl(room_id, room_name, capacity) - done
 34. Sections list with search - done
 35. Sections add new - done
-36. Sections edit - NEXT
+36. Sections edit - done
 37. Sections delete - done
 38. Rooms list with search - done
 39. Rooms add new - done
@@ -72,3 +72,4 @@ Accomplishments:
 45. Registrar | Checking for enrollment time overlap when adding enrollment for same day - done
 46. Registrar enrollees report total number of enrolled per section - done
 47. Enrollment Report add 'View Details' then it will show the list of all the students enrolled in that section - done
+48. Registrar student list - done
