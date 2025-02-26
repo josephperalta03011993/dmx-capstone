@@ -4,19 +4,19 @@ include_once('../../database/conn.php');
 include_once('../../layouts/header.php');
 
 // Query to get the total number of students
-$sql_students = "SELECT COUNT(*) AS total_students FROM users WHERE user_type = 'student'"; 
+$sql_students = "SELECT COUNT(*) AS total_students FROM students"; 
 $result_students = $conn->query($sql_students);
 $row_students = $result_students->fetch_assoc();
 $total_students = $row_students['total_students'];
 
 // Query to get the total number of teachers
-$sql_teachers = "SELECT COUNT(*) AS total_teachers FROM users WHERE user_type = 'teacher'"; 
+$sql_teachers = "SELECT COUNT(*) AS total_teachers FROM teachers"; 
 $result_teachers = $conn->query($sql_teachers);
 $row_teachers = $result_teachers->fetch_assoc();
 $total_teachers = $row_teachers['total_teachers'];
 
 // Query to get the total number of registrars
-$sql_registrars = "SELECT COUNT(*) AS total_registrars FROM users WHERE user_type = 'registrar'"; 
+$sql_registrars = "SELECT COUNT(*) AS total_registrars FROM registrars"; 
 $result_registrars = $conn->query($sql_registrars);
 $row_registrars = $result_registrars->fetch_assoc();
 $total_registrars = $row_registrars['total_registrars'];

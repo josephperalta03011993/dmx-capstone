@@ -218,7 +218,9 @@ footer {
 /* Registration Form */
 /* Basic form styling */
 form {
-    max-width: 500px; /* Set a maximum width for the form */
+    /* Set a maximum width for the form */
+    max-width: 100%; /* Allow form to stretch fully */
+    width: 100%; /* Ensure it takes full available width */
 }
 
 .login-container {
@@ -227,6 +229,10 @@ form {
     gap: 2rem;
     justify-content: space-around;
     padding: 2rem;
+}
+
+.login-container form {
+    max-width: 300px;
 }
 
 .login-form-container {

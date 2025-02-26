@@ -5,6 +5,9 @@ admin3123
 registrar1
 registrar1
 
+teacher1
+teacher1
+
 Accomplishments:
 * DATABASE
 1. Students Table - Done 
@@ -55,7 +58,7 @@ Accomplishments:
 29. Schedule list - done
 30. Registrar add student - done
 31. Registrar update payment - done
-32. Registrar update student info & status(enrolled, graduate, dropped) - NEXT
+32. Registrar update student info & status(enrolled, graduate, dropped) - done
 33. Room add new tbl(room_id, room_name, capacity) - done
 34. Sections list with search - done
 35. Sections add new - done

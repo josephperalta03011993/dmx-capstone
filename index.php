@@ -31,7 +31,7 @@
                         header("Location: registrar/dashboard/manage_students.php");
                         break;
                     case "teacher":
-                        header("Location: teacher/dashboard/index.php");
+                        header("Location: teacher/dashboard/classes.php");
                         break;
                     case "student":
                         header("Location: student/dashboard/index.php");

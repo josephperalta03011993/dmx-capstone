@@ -57,11 +57,12 @@
             <li><a href="manage_payments.php"><i class="fa-solid fa-file"></i> Manage Payments</a></li>
         
         <?php } else if($user_type == 'teacher') {?>
-            <li><a href="#"><i class="fa-solid fa-file"></i> Manage Grades</a>
-                <ul>
-                    <li><a href="grades_management.php">Grades Management</a></li>
-                </ul>
+            <li>
+                <a href="classes.php"><i class="fa-solid fa-list"></i> View Class List</a>
             </li>
+            <!-- <li>
+                <a href="#"><i class="fa-solid fa-file"></i> Manage Grades</a>
+            </li> -->
         
         <?php } else if($user_type == 'student') { ?>
             <li><a href="#"><i class="fa-solid fa-file"></i> View Grades</a></li>
