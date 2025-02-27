@@ -2,12 +2,6 @@ Test Accounts:
 admin3@gmail.com
 admin3123
 
-registrar1
-registrar1
-
-teacher1
-teacher1
-
 Accomplishments:
 * DATABASE
 1. Students Table - Done 
@@ -24,6 +18,7 @@ Accomplishments:
 12. Schedule Table - Done
 13. Section Table - Done
 14. Room Table - Done
+15. Teacher Section - Done
 
 * FEATURES / FUNCTIONALITY
 1. Login - Done 
@@ -76,3 +71,14 @@ Accomplishments:
 46. Registrar enrollees report total number of enrolled per section - done
 47. Enrollment Report add 'View Details' then it will show the list of all the students enrolled in that section - done
 48. Registrar student list - done
+49. Teacher classes list - done 
+50. Teacher students list in a class - done 
+51. Teacher input grades per student - done
+52. Student list of courses - 
+53. Student viewing of grades - 
+54. Student announcements/events list - 
+55. Student profile / info - 
+56. Registration add registrar to tbl users and registrar tbl - done  
+57. Registrar add teacher to tbl users and teacher tbl - done
+58. Register admin add to users and admins tbl - done
+59. Register students add to users and students tbl - done

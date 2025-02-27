@@ -12,33 +12,90 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
     $confirm_password = $_POST["reg_confirm_password"];
     $user_type = sanitize_input($conn, $_POST["reg_user_type"]);
 
-    // Basic Validation (Improve this significantly in a real app)
+    // Basic Validation
     if (empty($username) || empty($password) || empty($confirm_password) || empty($user_type)) {
         $registration_error = "All fields are required.";
     } elseif ($password != $confirm_password) {
         $registration_error = "Passwords do not match.";
-    } elseif (strlen($password) < 8){
+    } elseif (strlen($password) < 8) {
         $registration_error = "Password must be at least 8 characters long.";
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Hash the password
 
-        //Check if username already exist
-        $check_username_sql = "SELECT username FROM users WHERE username = '$username'";
-        $check_username_result = $conn->query($check_username_sql);
+        // Check if username already exists
+        $check_username_sql = "SELECT username FROM users WHERE username = ?";
+        $check_stmt = mysqli_prepare($conn, $check_username_sql);
+        mysqli_stmt_bind_param($check_stmt, "s", $username);
+        mysqli_stmt_execute($check_stmt);
+        $check_username_result = mysqli_stmt_get_result($check_stmt);
 
-        if ($check_username_result->num_rows > 0){
-            $registration_error = "Username already exist.";
+        if (mysqli_num_rows($check_username_result) > 0) {
+            $registration_error = "Username already exists.";
         } else {
+            // Insert into users table
             $sql = "INSERT INTO users (username, password, user_type, first_name, last_name) 
-                    VALUES ('$username', '$hashed_password', '$user_type', '$first_name', '$last_name')";
+                    VALUES (?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "sssss", $username, $hashed_password, $user_type, $first_name, $last_name);
 
-            if ($conn->query($sql) === TRUE) {
-                $registration_success = "Registration successful!";
+            if (mysqli_stmt_execute($stmt)) {
+                // Get the newly inserted user_id
+                $user_id = mysqli_insert_id($conn);
+
+                // Insert into the appropriate table based on user_type
+                switch ($user_type) {
+                    case "admin":
+                        $admin_sql = "INSERT INTO admins (user_id, first_name, last_name) 
+                                      VALUES (?, ?, ?)";
+                        $admin_stmt = mysqli_prepare($conn, $admin_sql);
+                        mysqli_stmt_bind_param($admin_stmt, "iss", $user_id, $first_name, $last_name);
+                        if (!mysqli_stmt_execute($admin_stmt)) {
+                            $registration_error = "Error adding admin: " . mysqli_error($conn);
+                        }
+                        break;
+
+                    case "registrar":
+                        $registrar_sql = "INSERT INTO registrars (user_id, first_name, last_name) 
+                                          VALUES (?, ?, ?)";
+                        $registrar_stmt = mysqli_prepare($conn, $registrar_sql);
+                        mysqli_stmt_bind_param($registrar_stmt, "iss", $user_id, $first_name, $last_name);
+                        if (!mysqli_stmt_execute($registrar_stmt)) {
+                            $registration_error = "Error adding registrar: " . mysqli_error($conn);
+                        }
+                        break;
+
+                    case "teacher":
+                        $teacher_sql = "INSERT INTO teachers (user_id, first_name, last_name) 
+                                        VALUES (?, ?, ?)";
+                        $teacher_stmt = mysqli_prepare($conn, $teacher_sql);
+                        mysqli_stmt_bind_param($teacher_stmt, "iss", $user_id, $first_name, $last_name);
+                        if (!mysqli_stmt_execute($teacher_stmt)) {
+                            $registration_error = "Error adding teacher: " . mysqli_error($conn);
+                        }
+                        break;
+
+                    case "student":
+                        $student_sql = "INSERT INTO students (user_id, first_name, last_name) 
+                                        VALUES (?, ?, ?)";
+                        $student_stmt = mysqli_prepare($conn, $student_sql);
+                        mysqli_stmt_bind_param($student_stmt, "iss", $user_id, $first_name, $last_name);
+                        if (!mysqli_stmt_execute($student_stmt)) {
+                            $registration_error = "Error adding student: " . mysqli_error($conn);
+                        }
+                        break;
+
+                    default:
+                        $registration_error = "Invalid user type.";
+                        break;
+                }
+
+                if (!$registration_error) {
+                    $registration_success = "Registration successful!";
+                }
             } else {
-                $registration_error = "Error: " . $sql . "<br>" . $conn->error;
+                $registration_error = "Error: " . mysqli_error($conn);
             }
         }
-
     }
 }
 
