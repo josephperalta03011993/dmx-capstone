@@ -67,7 +67,7 @@
         <?php } else if($user_type == 'student') { ?>
             <li><a href="index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
             <li><a href="announcement.php"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
-            <li><a href="#"><i class="fa-solid fa-file"></i> View Grades</a></li>
+            <li><a href="grades.php"><i class="fa-solid fa-file"></i> View Grades</a></li>
             <li><a href="schedule.php"><i class="fa-solid fa-calendar"></i> View Schedules</a></li>
         <?php } else {
             echo "Unknown user type.";
