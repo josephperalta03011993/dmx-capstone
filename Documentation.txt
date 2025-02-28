@@ -75,8 +75,8 @@ Accomplishments:
 50. Teacher students list in a class - done 
 51. Teacher input grades per student - done
 52. Student list of courses - done
-53. Student viewing of grades - 
-54. Student announcements/events list - 
+53. Student viewing of grades - done
+54. Student announcements/events list - done
 55. Student profile / info - 
 56. Registration add registrar to tbl users and registrar tbl - done  
 57. Registrar add teacher to tbl users and teacher tbl - done

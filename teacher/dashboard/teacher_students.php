@@ -192,7 +192,7 @@ if ($teacher_row = mysqli_fetch_assoc($teacher_result)) {
             </tbody>
         </table>
         <br>
-        <button type="submit" name="save_grades" class="btn">Save Grades</button>
+        <button type="submit" name="save_grades" id="btn_add" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> Save Grades</button>
     </form>
 <?php } ?>
 

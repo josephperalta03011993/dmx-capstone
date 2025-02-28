@@ -127,7 +127,7 @@ $payment_method_options = explode("','", $matches[1]);
                     echo "<option value='" . htmlspecialchars($option) . "'" . (isset($row['payment_status']) && $row['payment_status'] == $option ? " selected" : "") . ">" . htmlspecialchars($option) . "</option>";
                 }
                 echo "</select></td>";
-                echo "<td><button type='submit' name='update_payment' id='btn_edit'>Update</button></form></td>";
+                echo "<td><button type='submit' name='update_payment' id='btn_edit' class='btn'>Update</button></form></td>";
                 echo "</tr>";
             }
         } else {

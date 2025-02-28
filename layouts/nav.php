@@ -34,7 +34,15 @@
         <li><a href="../departments/manage_departments.php"><i class="fa-solid fa-building-user"></i> Departments</a>
         </li>
 
-        <li><a href="../sections/manage_sections.php"><i class="fa-solid fa-people-line"></i> Sections</a>
+        <li><a href="#"><i class="fa-solid fa-people-line"></i> Sections</a>
+            <ul>
+                <li>
+                    <a href="../sections/manage_sections.php"><i class="fa-solid fa-people-line"></i> Manage Sections</a>
+                </li>
+                <li>
+                    <a href="../sections/teacher_assignments.php"><i class="fa-solid fa-chalkboard-user"></i> Assign Teacher</a>
+                </li>
+            </ul>
         </li>
 
         <li><a href="../rooms/manage_rooms.php"><i class="fa-solid fa-door-open"></i> Rooms</a>

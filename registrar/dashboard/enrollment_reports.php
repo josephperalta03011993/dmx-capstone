@@ -51,7 +51,7 @@ $enrollments_result = $conn->query($enrollments_sql);
                 echo "<td>" . htmlspecialchars($row['enrollment_count']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['room_name']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['capacity']) . "</td>";
-                echo "<td><button class='view-details' data-section-id='" . htmlspecialchars($row['section_id']) . "'>View Details</button></td>";
+                echo "<td><button class='view-details' data-section-id='" . htmlspecialchars($row['section_id']) . "'><i class='fa-solid fa-eye'></i> View Details</button></td>";
                 echo "</tr>";
             }
         } else {

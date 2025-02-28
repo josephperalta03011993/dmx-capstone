@@ -114,10 +114,11 @@ nav.sidebar ul ul li:last-child a {
 }
 .btn {
     border-radius: 5rem;
-    padding: .5rem 1rem;
+    padding: .3rem .5rem;
     text-decoration: none;
     color: #800000;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: none;
 }
 .header-school-name {
     display: flex;
@@ -365,11 +366,12 @@ input[type="submit"]:hover {
 #btn_add {
     background-color: #0D6EFD;
     color: white;
-    padding: .3rem .5rem;
+    padding: .5rem 1rem;
     text-decoration: none;
     font-size: 14px;
     border-radius: 5rem;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border: none;
 }
 
 #btn_edit{
@@ -571,7 +573,7 @@ input[type="submit"]:hover {
     background-color: gray;
     color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    padding: .5rem 1rem;
+    padding: .3rem .5rem;
     border-radius: 1rem;
 }
 /* End modal */

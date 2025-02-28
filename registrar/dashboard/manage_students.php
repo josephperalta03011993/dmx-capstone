@@ -105,7 +105,7 @@ $students_result = $conn->query($students_sql);
                     echo "<td>" . htmlspecialchars($row['emergency_contact_name']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['emergency_contact_phone']) . "</td>";
                     echo "<td>";
-                    echo "<a href='edit_student.php?id=" . $row['student_id'] . "' id='btn_edit'>Edit</a>";
+                    echo "<a href='edit_student.php?id=" . $row['student_id'] . "' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a>";
                     echo "</td>";
                     echo "</tr>";
                 }
