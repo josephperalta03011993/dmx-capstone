@@ -67,7 +67,7 @@
 
                         echo "<h3 class='p-1'>" . $row["title"] . "</h3>";
                         echo "<p class='p-1'>" . $content . "</p>";
-                        echo "<p class='p-1'>" . $createdDate->format('l, F j, Y h:i A') . "</p><hr>";
+                        echo "<p class='p-1' style='    color:gray;'>Posted: " . $createdDate->format('l, F j, Y h:i A') . "</p><hr>";
                     }
                 } else {
                     echo "<p class='p1'>No announcements.</p>";
@@ -82,10 +82,11 @@
                     <h2>Login</h2>
                     <?php if (isset($error_message)) { echo "<p style='color: red;padding-bottom: 1rem;'>$error_message</p>"; } ?>
                 </div>
-                Username: <input type="text" name="username" required><br><br>
-                Password: <input type="password" name="password" required><br><br>
+                Username: <input type="text" name="username" required><br>
+                Password: <input type="password" name="password" required><br>
                 <button type="submit" class="btn_submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
             </form>
+            <a href="enroll-now.php" target="_blank" rel="noopener noreferrer" class="btn-enroll-now">ENROLL NOW !!!</a>
         </div>
     </div>
 

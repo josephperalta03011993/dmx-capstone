@@ -83,3 +83,40 @@ Accomplishments:
 58. Register admin add to users and admins tbl - done
 59. Register students add to users and students tbl - done
 60. Student schedule list - done
+61. Slot reservation for students (Enroll Now) | status 'reserved' - done
+
+ERROR LIST
+- registration of student
+- error in schedule add
+- enroll now button in the landing page (reservation of slot)
+  - registrar will see this registrations
+  - button review, add, reject 
+  - status (registered) -> change to enrolled after admit of registrar
+
+- Student reservation -> registrar naka reserve "ADMIT" 
+                    -> admin view all "enrolled" students (auto populate) for username, password creation
+
+- change button add_enrollment.php to "Admit"
+
+ADMIN 
+- search student for creating user account
+- auto populate other details 
+- disabled other details except username, password 
+- Official Enrolled List 
+
+- payment_status update not being updated
+
+REGISTRAR 
+- create dashboard
+  - rooms 
+  - courses 
+  - students 
+  - reserved
+- clickable dashboard also admin 
+
+TEACHER | STUDENT 
+- editable fields 
+  - current address 
+  - guardian/parents and contact details 
+  - phone number 
+  - email 

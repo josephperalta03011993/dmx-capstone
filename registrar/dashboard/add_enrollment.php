@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create_enrollment"]))
         </div>
     </div>
     <button type="submit" name="create_enrollment" id="create_enrollment" class="btn_submit">
-        <i class="fa-solid fa-floppy-disk"></i> Create Enrollment
+        <i class="fa-solid fa-floppy-disk"></i> Admit Student
     </button>
 </form>
 
