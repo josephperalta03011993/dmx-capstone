@@ -14,6 +14,12 @@
     $result_reserved = $conn->query($sql_reserved);
     $row_reserved = $result_reserved->fetch_assoc();
     $total_reserved = $row_reserved['total_students'];
+
+    // Query to get total enrolled
+    $sql_enrolled = "SELECT COUNT(*) AS total_enrolled FROM enrollments";
+    $result_enrolled = $conn->query($sql_enrolled);
+    $row_enrolled = $result_enrolled->fetch_assoc();
+    $total_enrolled = $row_enrolled['total_enrolled'];
 ?>
 
 <h2>Registrar Dashboard</h2>
@@ -24,6 +30,9 @@
     </div>
     <div id="total-reservation-container">
         <h3><i class="fa-solid fa-graduation-cap"></i> <a href="manage_students.php?status=all" id="total-reservation-link">Total Students: </a><?php echo $total_students; ?></h3>
+    </div>
+    <div id="total-reservation-container">
+        <h3><i class="fa-solid fa-graduation-cap"></i> <a href="manage_enrollments.php" id="total-reservation-link">Total Enrolled: </a><?php echo $total_enrolled; ?></h3>
     </div>
 </div>
 
