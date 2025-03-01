@@ -594,3 +594,20 @@ input[type="submit"]:hover {
     border-radius: 1rem;
 }
 /* End modal */
+
+#total-reservation-container {
+    background-color: #00014B;
+    color: white;
+}
+
+#total-reservation-container a {
+    text-decoration: none;
+    color: white;
+}
+
+#total-reservation-container:hover {
+    a {
+        color: #00014B;
+        text-decoration: none;
+    }
+}

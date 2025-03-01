@@ -84,6 +84,7 @@ Accomplishments:
 59. Register students add to users and students tbl - done
 60. Student schedule list - done
 61. Slot reservation for students (Enroll Now) | status 'reserved' - done
+62. Registrar dashboard total reserved - done
 
 ERROR LIST
 - registration of student

@@ -49,9 +49,11 @@
         </li>
 
         <?php } else if($user_type == 'registrar') { ?>
+            <li><a href="index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+
             <li><a href="#"><i class="fa-solid fa-person"></i> Students</a>
                 <ul>
-                    <li><a href="manage_students.php">Manage Students</a></li>
+                    <li><a href="manage_students.php?status=all">Manage Students</a></li>
                 </ul>
             </li>
 

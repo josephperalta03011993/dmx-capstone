@@ -5,6 +5,7 @@ include_once('../../layouts/header.php');
 
 $success = null;
 $error = null;
+$status = $_GET['status'];
 
 // Update Student
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_student"])) {
@@ -40,8 +41,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_student"])) {
 }
 
 // Get Student Data
-$students_sql = "SELECT * FROM students";
-$students_result = $conn->query($students_sql);
+if($status == 'all' || $status == '') {
+    $students_sql = "SELECT * FROM students";
+    $students_result = $conn->query($students_sql);
+} else {
+    $students_sql = "SELECT * FROM students WHERE status = 'reserved'";
+    $students_result = $conn->query($students_sql);
+}
 
 ?>
 
@@ -77,6 +83,7 @@ $students_result = $conn->query($students_sql);
                 <th>Parent/Guardian Email</th>
                 <th>Emergency Contact Name</th>
                 <th>Emergency Contact Phone</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -104,6 +111,7 @@ $students_result = $conn->query($students_sql);
                     echo "<td>" . htmlspecialchars($row['parent_guardian_email']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['emergency_contact_name']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['emergency_contact_phone']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['status']) . "</td>";
                     echo "<td>";
                     echo "<a href='edit_student.php?id=" . $row['student_id'] . "' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a>";
                     echo "</td>";
