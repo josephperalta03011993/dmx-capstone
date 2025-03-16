@@ -5,7 +5,7 @@ include_once('../../layouts/header.php');
 
 $success = null;
 $error = null;
-$status = $_GET['status'];
+$status = isset($_GET['status']) ? $_GET['status'] : ''; // Check if 'status' exists, otherwise default to an empty string.
 
 // Update Student
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_student"])) {
@@ -37,6 +37,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_student"])) {
         $success = "Student updated successfully!";
     } else {
         $error = "Error updating student: " . mysqli_error($conn);
+    }
+}
+
+// Admit Student
+if (isset($_GET['admit_id'])) {
+    $admit_id = sanitize_input($conn, $_GET['admit_id']);
+    $admit_sql = "UPDATE students SET status = 'enrolled' WHERE student_id = ?";
+    $admit_stmt = mysqli_prepare($conn, $admit_sql);
+    mysqli_stmt_bind_param($admit_stmt, "i", $admit_id);
+
+    if (mysqli_stmt_execute($admit_stmt)) {
+        $success = "Student admitted successfully!";
+    } else {
+        $error = "Error admitting student: " . mysqli_error($conn);
     }
 }
 
@@ -114,6 +128,9 @@ if($status == 'all' || $status == '') {
                     echo "<td>" . htmlspecialchars($row['status']) . "</td>";
                     echo "<td>";
                     echo "<a href='edit_student.php?id=" . $row['student_id'] . "' id='btn_edit'><i class='fa-solid fa-pen-to-square'></i> Edit</a>";
+                    if($row['status'] == 'reserved'){
+                        echo "<br><br><a href='?admit_id=" . $row['student_id'] . "' id='btn_admit'><i class='fa-solid fa-check'></i> Admit</a>";
+                    }
                     echo "</td>";
                     echo "</tr>";
                 }

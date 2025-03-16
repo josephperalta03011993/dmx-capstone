@@ -4,7 +4,7 @@
     include_once('../../layouts/header.php');
 
     // Query to get the total number of students reserved
-    $sql_students = "SELECT COUNT(*) AS total_students FROM students"; 
+    $sql_students = "SELECT COUNT(*) AS total_students FROM students WHERE status = 'enrolled'"; 
     $result_students = $conn->query($sql_students);
     $row_students = $result_students->fetch_assoc();
     $total_students = $row_students['total_students'];

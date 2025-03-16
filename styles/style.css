@@ -391,8 +391,18 @@ input[type="submit"]:hover {
     border: none;
 }
 
-#btn_edit{
+#btn_edit {
     background-color: #006262;
+    color: white;
+    padding: .3rem .5rem;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 5rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#btn_admit {
+    background-color: green;
     color: white;
     padding: .3rem .5rem;
     text-decoration: none;
@@ -413,6 +423,10 @@ input[type="submit"]:hover {
 
 #btn_edit:hover{
     background-color: #004A4A;;
+}
+
+#btn_admit:hover {
+    background-color: darkgreen;
 }
 
 #btn_add:hover{
