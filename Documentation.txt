@@ -127,8 +127,8 @@ March 8
 - deduc reserve students sa total students registrar dashboard - (Count status = 'enrolled') DONE
 - add 'ADMIT' button in the student reserved list action -> status change to 'enrolled' - DONE
 - user registration add 'student number field' - 2023027, 230037, 2023016, 20250001, 2023016-A
-- 2025-0308-0001 - for confirmation 
-- manual enrollment of student 'admit button' change student status to 'enrolled'
+- 2025-0308-0001 - for confirmation - FORMAT needs to be verified
+- manual enrollment of student 'admit button' change student status to 'enrolled' - DONE
 - admin viewing grades of all students per subject (ung courses filter 1/0 'All or Active' )
 - profile edit for all users
 - if student 

@@ -64,9 +64,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create_enrollment"]))
             // Execute the statement
             if (mysqli_stmt_execute($stmt)) {
                 $success = "Enrollment created successfully!";
+
+                // Update student status to 'enrolled'
+                $update_student_sql = "UPDATE students SET status = 'enrolled' WHERE student_id = ?";
+                $update_student_stmt = mysqli_prepare($conn, $update_student_sql);
+
+                if ($update_student_stmt) {
+                    mysqli_stmt_bind_param($update_student_stmt, "i", $student_id);
+                    if (!mysqli_stmt_execute($update_student_stmt)) {
+                        $error = "Enrollment created successfully, but error updating student status: " . mysqli_error($conn);
+                    }
+                    mysqli_stmt_close($update_student_stmt);
+                } else {
+                    $error = "Enrollment created successfully, but error preparing student status update: " . mysqli_error($conn);
+                }
+
             } else {
                 $error = "Error creating enrollment: " . mysqli_error($conn);
             }
+            mysqli_stmt_close($stmt);
+        } else {
+            $error = "Error preparing enrollment statement: " . mysqli_error($conn);
         }
     }
 }
