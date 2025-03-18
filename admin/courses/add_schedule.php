@@ -44,7 +44,7 @@
             <?php
                 $sql_section_list = "SELECT s.section_id, s.section_name, c.course_name 
                                     FROM sections s 
-                                    LEFT JOIN courses c ON s.course_id = c.course_id";
+                                    LEFT JOIN courses c ON s.section_id = c.course_id";
                 $result = mysqli_query($conn, $sql_section_list);
                 if (mysqli_num_rows($result) > 0) {
                     echo "<select id='section_id' name='section_id' required>";
