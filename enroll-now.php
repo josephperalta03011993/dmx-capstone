@@ -14,39 +14,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["enroll-now"])) {
     $date_of_birth = sanitize_input($conn, $_POST['date_of_birth']);
     $gender = sanitize_input($conn, $_POST['gender']);
     $email = sanitize_input($conn, $_POST['email']);
+
     // Check for duplicate email
     $sql_check_email = "SELECT email FROM students WHERE email = ?";
     $stmt = mysqli_prepare($conn, $sql_check_email);
     mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt); // Store the result
 
-    if ($stmt->num_rows > 0) {
-        echo "Email already exists.";
-    }
-
-    $phone_number = sanitize_input($conn, $_POST['phone_number']);
-    $address_line1 = sanitize_input($conn, $_POST['address_line1']);
-    $address_line2 = sanitize_input($conn, $_POST['address_line2']);
-    $city = sanitize_input($conn, $_POST['city']);
-    $state = sanitize_input($conn, $_POST['state']);
-    $zip_code = sanitize_input($conn, $_POST['zip_code']);
-    $country = sanitize_input($conn, $_POST['country']);
-    $enrollment_date = date("Y-m-d");
-    $parent_guardian_name = sanitize_input($conn, $_POST['parent_guardian_name']);
-    $parent_guardian_phone = sanitize_input($conn, $_POST['parent_guardian_phone']);
-    $parent_guardian_email = sanitize_input($conn, $_POST['parent_guardian_email']);
-    $emergency_contact_name = sanitize_input($conn, $_POST['emergency_contact_name']);
-    $emergency_contact_phone = sanitize_input($conn, $_POST['emergency_contact_phone']);
-    $status = "reserved";
-
-    $sql = "INSERT INTO students (first_name, last_name, middle_name, date_of_birth, gender, email, phone_number, address_line1, address_line2, city, state, zip_code, country, enrollment_date, parent_guardian_name, parent_guardian_phone, parent_guardian_email, emergency_contact_name, emergency_contact_phone, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss", $first_name, $last_name, $middle_name, $date_of_birth, $gender, $email, $phone_number, $address_line1, $address_line2, $city, $state, $zip_code, $country, $enrollment_date, $parent_guardian_name, $parent_guardian_phone, $parent_guardian_email, $emergency_contact_name, $emergency_contact_phone, $status);
-
-    if (mysqli_stmt_execute($stmt)) {
-        $success = "Student added successfully!";
+    if (mysqli_stmt_num_rows($stmt) > 0) {
+        $error = "Email already exists.";
     } else {
-        $error = "Error adding student: " . mysqli_error($conn);
+        $phone_number = sanitize_input($conn, $_POST['phone_number']);
+        $address_line1 = sanitize_input($conn, $_POST['address_line1']);
+        $address_line2 = sanitize_input($conn, $_POST['address_line2']);
+        $city = sanitize_input($conn, $_POST['city']);
+        $state = sanitize_input($conn, $_POST['state']);
+        $zip_code = sanitize_input($conn, $_POST['zip_code']);
+        $country = sanitize_input($conn, $_POST['country']);
+        $enrollment_date = date("Y-m-d");
+        $parent_guardian_name = sanitize_input($conn, $_POST['parent_guardian_name']);
+        $parent_guardian_phone = sanitize_input($conn, $_POST['parent_guardian_phone']);
+        $parent_guardian_email = sanitize_input($conn, $_POST['parent_guardian_email']);
+        $emergency_contact_name = sanitize_input($conn, $_POST['emergency_contact_name']);
+        $emergency_contact_phone = sanitize_input($conn, $_POST['emergency_contact_phone']);
+        $status = "reserved";
+
+        $sql = "INSERT INTO students (first_name, last_name, middle_name, date_of_birth, gender, email, phone_number, address_line1, address_line2, city, state, zip_code, country, enrollment_date, parent_guardian_name, parent_guardian_phone, parent_guardian_email, emergency_contact_name, emergency_contact_phone, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss", $first_name, $last_name, $middle_name, $date_of_birth, $gender, $email, $phone_number, $address_line1, $address_line2, $city, $state, $zip_code, $country, $enrollment_date, $parent_guardian_name, $parent_guardian_phone, $parent_guardian_email, $emergency_contact_name, $emergency_contact_phone, $status);
+
+        if (mysqli_stmt_execute($stmt)) {
+            $success = "Student added successfully!";
+        } else {
+            $error = "Error adding student: " . mysqli_error($conn);
+        }
     }
+
+    
 }
 ?>
 
@@ -58,12 +63,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["enroll-now"])) {
 <form method="post" action="enroll-now.php">
     <div class="form-container-reservation">
         <div class="form-group">
-            <label for="first_name">First Name:</label>
+            <label for="first_name"><span style='color:red'>*</span> First Name:</label>
             <input type="text" id="first_name" name="first_name" required><br>
         </div>
 
         <div class="form-group">
-            <label for="last_name">Last Name:</label>
+            <label for="last_name"><span style='color:red'>*</span> Last Name:</label>
             <input type="text" id="last_name" name="last_name" required><br>
         </div>
 
@@ -73,12 +78,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["enroll-now"])) {
         </div>
 
         <div class="form-group">
-            <label for="date_of_birth">Date of Birth:</label>
+            <label for="date_of_birth"><span style='color:red'>*</span> Date of Birth:</label>
             <input type="date" id="date_of_birth" name="date_of_birth" required><br>
         </div>
 
         <div class="form-group">
-            <label for="gender">Gender:</label>
+            <label for="gender"><span style='color:red'>*</span> Gender:</label>
             <select id="gender" name="gender" required>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -87,17 +92,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["enroll-now"])) {
         </div>
 
         <div class="form-group">
-            <label for="email">Email:</label>
+            <label for="email"><span style='color:red'>*</span> Email:</label>
             <input type="email" id="email" name="email" required><br>
         </div>
 
         <div class="form-group">
-            <label for="phone_number">Phone Number:</label>
+            <label for="phone_number"><span style='color:red'>*</span> Phone Number:</label>
             <input type="text" id="phone_number" name="phone_number" required><br>
         </div>
 
         <div class="form-group">
-            <label for="address_line1">Address Line 1:</label>
+            <label for="address_line1"><span style='color:red'>*</span> Address Line 1:</label>
             <input type="text" id="address_line1" name="address_line1" required><br>
         </div>
 
