@@ -1,8 +1,8 @@
 <?php
 // Enable error reporting
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 include('../../database/conn.php');
 $page_title = "User Registration - Datamex College of Saint Adeline";
@@ -19,7 +19,7 @@ $enrolled_student = isset($_POST['enrolled_student']) ? $_POST['enrolled_student
 
 // Debugging: Check database connection
 if (!$conn) {
-    die("Database connection failed: " . mysqli_connect_error());
+    die("Database connection failed: " . mysqli_error());
 }
 
 // Helper function to insert into user-type-specific tables
@@ -35,9 +35,6 @@ function insert_user_type($conn, $table, $user_id, $first_name, $last_name) {
 
 // Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
-    // echo "<pre>POST Data: ";
-    // var_dump($_POST);
-    // echo "</pre>";
 
     $user_type = sanitize_input($conn, $reg_user_type);
     $username = sanitize_input($conn, $reg_username);
@@ -67,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
             $effective_student_id = !empty($selected_student_id) ? $selected_student_id : $enrolled_student;
 
             if ($user_type === "student" && !empty($effective_student_id)) {
-                // Fetch names from students table using student_id
                 $fetch_student_sql = "SELECT first_name, last_name FROM students WHERE student_id = ?";
                 $fetch_stmt = mysqli_prepare($conn, $fetch_student_sql);
                 mysqli_stmt_bind_param($fetch_stmt, "i", $effective_student_id);
@@ -87,7 +83,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                 $first_name = sanitize_input($conn, $reg_first_name);
                 $last_name = sanitize_input($conn, $reg_last_name);
                 if (empty($first_name) || empty($last_name)) {
-                    $registration_error = "First and last names are required.";
+                    $registration_error = "First and last names are required for $user_type.";
+                } else {
+                    echo "Non-student: First Name = $first_name, Last Name = $last_name<br>";
                 }
             } else {
                 $registration_error = "Please select an enrolled student.";
@@ -102,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                     $user_id = mysqli_insert_id($conn);
 
                     if ($user_type === "student" && !empty($effective_student_id)) {
-                        // Update students table with new user_id
                         $update_sql = "UPDATE students SET user_id = ? WHERE student_id = ?";
                         $update_stmt = mysqli_prepare($conn, $update_sql);
                         mysqli_stmt_bind_param($update_stmt, "ii", $user_id, $effective_student_id);
@@ -116,6 +113,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                         $result = insert_user_type($conn, $table, $user_id, $first_name, $last_name);
                         if (!$result['success']) {
                             $registration_error = "Error adding $user_type: " . $result['error'];
+                        } else {
+                            echo "Inserted into $table successfully<br>";
                         }
                     }
 
@@ -123,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                         $registration_success = "Registration successful!";
                     }
                 } else {
-                    $registration_error = "Error: " . mysqli_error($conn);
+                    $registration_error = "Error inserting into users: " . mysqli_error($conn);
                 }
                 mysqli_stmt_close($stmt);
             }
@@ -159,7 +158,7 @@ if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"
         <div id="enrolled_student_section" style="display: <?php echo $reg_user_type === 'student' ? 'block' : 'none'; ?>;">
             <div class="form-group">
                 <label for="enrolled_student">Select Enrolled Student:</label>
-                <select name="enrolled_student" id="enrolled_student" required>
+                <select name="enrolled_student" id="enrolled_student">
                     <option value="">-- Select a Student --</option>
                     <?php
                     $enrolled_students_sql = "SELECT student_id, first_name, last_name FROM students WHERE status = 'enrolled'";
@@ -216,8 +215,6 @@ if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"
         const isStudent = this.value === 'student';
         document.getElementById('enrolled_student_section').style.display = isStudent ? 'block' : 'none';
         document.getElementById('name_section').style.display = isStudent ? 'none' : 'block';
-        document.getElementById('reg_first_name').disabled = isStudent;
-        document.getElementById('reg_last_name').disabled = isStudent;
         if (!isStudent) {
             document.getElementById('selected_student_id').value = '';
             document.getElementById('enrolled_student').selectedIndex = 0;
