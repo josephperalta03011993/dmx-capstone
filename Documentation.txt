@@ -132,3 +132,17 @@ March 8
 - admin viewing grades of all students per subject (ung courses filter 1/0 'All or Active' )
 - profile edit for all users
 - if student 
+
+March 17 Update Needs:
+Admin
+Enrolment 
+Bases ed-SHS
+College
+The course should also have basic ed
+It should be schedules per year 
+Cards should have basic ed like hardcopy 
+Teacher 
+Class schedule 
+
+Registrar
+Dapat meron pag nag enrol sya yun mag accept nag mag eenrol
