@@ -88,22 +88,22 @@ Accomplishments:
 63. Registrar dashboard total students with link - done 
 
 ERROR LIST
-- registration of student
-- error in schedule add
+- registration of student - done 
+- error in schedule add - done 
 - enroll now button in the landing page (reservation of slot)
-  - registrar will see this registrations
+  - registrar will see this registrations reserved - done
   - button review, add, reject 
-  - status (registered) -> change to enrolled after admit of registrar
+  - status (registered) -> change to enrolled after admit of registrar - done
 
 - Student reservation -> registrar naka reserve "ADMIT" 
-                    -> admin view all "enrolled" students (auto populate) for username, password creation
+                    -> admin view all "enrolled" students (auto populate) for username, password creation - DONE
 
-- change button add_enrollment.php to "Admit"
+- change button add_enrollment.php to "Admit" - done
 
 ADMIN 
-- search student for creating user account
-- auto populate other details 
-- disabled other details except username, password 
+- search student for creating user account - done
+- auto populate other details - done
+- disabled other details except username, password - done
 - Official Enrolled List 
 
 - payment_status update not being updated
