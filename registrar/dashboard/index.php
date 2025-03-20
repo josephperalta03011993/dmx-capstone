@@ -29,10 +29,10 @@
         <h3><i class="fa-solid fa-graduation-cap"></i> <a href="manage_students.php?status=reserved" id="total-reservation-link">Total Reservation: </a><?php echo $total_reserved; ?></h3>
     </div>
     <div id="total-reservation-container">
-        <h3><i class="fa-solid fa-graduation-cap"></i> <a href="manage_students.php?status=all" id="total-reservation-link">Total Students: </a><?php echo $total_students; ?></h3>
+        <h3><i class="fa-solid fa-graduation-cap"></i> <a href="manage_students.php?status=all" id="total-reservation-link">Total Enrolled Students: </a><?php echo $total_students; ?></h3>
     </div>
     <div id="total-reservation-container">
-        <h3><i class="fa-solid fa-graduation-cap"></i> <a href="manage_enrollments.php" id="total-reservation-link">Total Enrolled: </a><?php echo $total_enrolled; ?></h3>
+        <h3><i class="fa-solid fa-graduation-cap"></i> <a href="manage_enrollments.php" id="total-reservation-link">Total Enrollment: </a><?php echo $total_enrolled; ?></h3>
     </div>
 </div>
 

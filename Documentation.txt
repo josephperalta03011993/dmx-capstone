@@ -106,7 +106,7 @@ ADMIN
 - disabled other details except username, password - done
 - Official Enrolled List 
 
-- payment_status update not being updated
+- payment_status update not being updated - done
 
 REGISTRAR 
 - create dashboard
@@ -141,6 +141,7 @@ College
 The course should also have basic ed
 It should be schedules per year 
 Cards should have basic ed like hardcopy 
+
 Teacher 
 Class schedule 
 
