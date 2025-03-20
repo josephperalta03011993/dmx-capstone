@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $input = strtolower(trim($input));
 
     // Check for keyword matches
-    $sql = "SELECT response FROM chatbot_responses WHERE LOWER(keyword) = ?";
+    $sql = "SELECT response FROM chatbot_responses WHERE ? LIKE CONCAT('%', LOWER(keyword), '%')";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $input);
     $stmt->execute();
