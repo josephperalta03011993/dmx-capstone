@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->Port = 587;
 
                     // Recipients
-                    $mail->setFrom('your-email@gmail.com', 'Datamex College');
+                    $mail->setFrom('dmxcapstone@gmail.com', 'Datamex College');
                     $mail->addAddress($email); // Student's email
 
                     // Content

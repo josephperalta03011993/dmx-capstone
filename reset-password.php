@@ -5,6 +5,7 @@ include('layouts/header.php');
 
 $success_message = '';
 $error_message = '';
+$show_form = false;
 
 if (isset($_GET['token'])) {
     $token = sanitize_input($conn, $_GET['token']);
@@ -19,6 +20,7 @@ if (isset($_GET['token'])) {
     if ($result->num_rows == 1) {
         $user = $result->fetch_assoc();
         $user_id = $user['user_id'];
+        $show_form = true; // Show the form if token is valid
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $new_password = password_hash(sanitize_input($conn, $_POST["password"]), PASSWORD_DEFAULT);
@@ -30,6 +32,7 @@ if (isset($_GET['token'])) {
             
             if ($stmt->execute()) {
                 $success_message = "Password reset successfully. <a href='index.php'>Login here</a>";
+                $show_form = false; // Hide form after success
             } else {
                 $error_message = "Error resetting password. Please try again.";
             }
@@ -53,7 +56,7 @@ if (isset($_GET['token'])) {
                     if ($success_message) { echo "<p style='color: green; padding-bottom: 1rem;'>$success_message</p>"; }
                     if ($error_message) { echo "<p style='color: red; padding-bottom: 1rem;'>$error_message</p>"; }
                 ?>
-                <?php if (!$success_message && !$error_message) { ?>
+                <?php if ($show_form) { ?>
                     <p>Enter your new password.</p>
                     New Password: <input type="password" name="password" required><br>
                     <button type="submit" class="btn_submit">Reset Password</button>
