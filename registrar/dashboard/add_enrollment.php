@@ -132,7 +132,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create_enrollment"]))
         </div>
         <div class="one-col-form-group">
             <label for="enrollment_date">Enrollment Date:</label>
-            <input type="date" id="enrollment_date" name="enrollment_date" required><br>
+            <input type="date" 
+                id="enrollment_date" 
+                name="enrollment_date" 
+                value="<?php echo date('Y-m-d'); ?>" 
+                max="<?php echo date('Y-m-d'); ?>" 
+                required>
+            <br>
         </div>
         <div class="one-col-form-group">
             <label for="status">Status:</label>
