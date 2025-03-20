@@ -47,7 +47,6 @@ $schedule_result = $schedule_stmt->get_result();
 ?>
 
 <h2 class="page-header-title">My Class Schedule</h2>
-<p>Welcome, <?php echo htmlspecialchars($teacher['first_name'] . ' ' . $teacher['last_name']); ?></p>
 
 <?php if ($schedule_result->num_rows > 0): ?>
     <table id="myTable">
