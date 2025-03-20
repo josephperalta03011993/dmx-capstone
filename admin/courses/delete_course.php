@@ -5,39 +5,61 @@ $success = null;
 $error = null;
 
 // Check if 'id' is passed in the query string
-if (isset($_GET['id'])) {
-    // Sanitize the input to prevent SQL injection
-    $id = intval($_GET['id']);
+if (!isset($_GET['id'])) {
+    $error = "No ID specified.";
+    $_SESSION['error'] = $error;
+    header("Location: manage_courses.php");
+    exit;
+}
 
-    if ($id > 0) {
-        // Prepare the SQL query to delete the course
-        $query = "DELETE FROM courses WHERE course_id = ?";
+// Sanitize the input to prevent SQL injection
+$id = intval($_GET['id']);
+if ($id <= 0) {
+    $error = "Invalid ID provided.";
+    $_SESSION['error'] = $error;
+    header("Location: manage_courses.php");
+    exit;
+}
 
-        if ($stmt = $conn->prepare($query)) {
-            // Bind the parameter and execute the statement
-            $stmt->bind_param('i', $id);
+// Check for dependent enrollments
+$check_query = "SELECT COUNT(*) as enrollment_count FROM enrollments WHERE course_id = ?";
+if ($check_stmt = $conn->prepare($check_query)) {
+    $check_stmt->bind_param('i', $id);
+    $check_stmt->execute();
+    $result = $check_stmt->get_result();
+    $row = $result->fetch_assoc();
+    $enrollment_count = $row['enrollment_count'];
+    $check_stmt->close();
 
-            if ($stmt->execute()) {
-                // Check if a row was deleted
-                if ($stmt->affected_rows > 0) {
-                    $success = "Course has been deleted successfully.";
-                } else {
-                    $error = "No Course found with ID $id.";
-                }
-            } else {
-                $error = "Error executing query: " . $stmt->error;
-            }
-
-            // Close the statement
-            $stmt->close();
-        } else {
-            $error = "Error preparing query: " . $conn->error;
-        }
-    } else {
-        $error = "Invalid ID provided.";
+    if ($enrollment_count > 0) {
+        $error = "Cannot delete course with ID $id because it has $enrollment_count enrollment(s). Please remove or reassign these enrollments first.";
+        $_SESSION['error'] = $error;
+        header("Location: manage_courses.php");
+        exit;
     }
 } else {
-    $error = "No ID specified.";
+    $error = "Error checking enrollments: " . $conn->error;
+    $_SESSION['error'] = $error;
+    header("Location: manage_courses.php");
+    exit;
+}
+
+// Proceed with deletion if no enrollments
+$query = "DELETE FROM courses WHERE course_id = ?";
+if ($stmt = $conn->prepare($query)) {
+    $stmt->bind_param('i', $id);
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            $success = "Course with ID $id has been deleted successfully.";
+        } else {
+            $error = "No course found with ID $id.";
+        }
+    } else {
+        $error = "Error executing query: " . $stmt->error;
+    }
+    $stmt->close();
+} else {
+    $error = "Error preparing query: " . $conn->error;
 }
 
 // Close the database connection
@@ -45,7 +67,7 @@ $_SESSION['success'] = $success;
 $_SESSION['error'] = $error;
 $conn->close();
 
-// Redirect back 
+// Redirect back
 header("Location: manage_courses.php");
 exit;
 ?>
