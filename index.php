@@ -122,7 +122,6 @@
         if (window.style.display === 'none' || window.style.display === '') {
             window.style.display = 'block';
             toggleBtn.style.display = 'none';
-            // Optional: Show welcome message on first open
             const chatbox = document.getElementById('chatbox');
             if (!chatbox.innerHTML) {
                 chatbox.innerHTML = `<p><strong>Bot:</strong> Hi! How can I assist you today?</p>`;
@@ -148,10 +147,11 @@
         .then(response => response.json())
         .then(data => {
             chatbox.innerHTML += `<p><strong>Bot:</strong> ${data.reply}</p>`;
-            chatbox.scrollTop = chatbox.scrollHeight;
+            chatbox.scrollTop = chatbox.scrollHeight; // Ensure latest message is visible
         })
         .catch(error => {
             chatbox.innerHTML += `<p><strong>Bot:</strong> Oops, something went wrong!</p>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
         });
 
         document.getElementById('chatInput').value = '';
