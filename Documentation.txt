@@ -156,4 +156,20 @@ TODO:
 2. Chat bot in php (FAQ) - 
 3. Validation in enrollment date calendar (disabled future date) - DONE
 4. Auto populate enrollment date - today | backdate pwede - DONE 
-5. 
+
+Chatbot Keywords:
+enrollment
+password
+contact
+schedule
+login
+fees
+courses
+support
+deadline
+requirements
+hours
+location
+hello
+bye
+help
