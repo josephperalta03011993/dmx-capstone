@@ -3,6 +3,15 @@ $page_title = "Forgot Password - Datamex College of Saint Adeline";
 include_once('database/conn.php');
 include('layouts/header.php');
 
+// Load PHPMailer files manually
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+// Use the PHPMailer namespace
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $success_message = '';
 $error_message = '';
 
@@ -25,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Get email if user_type is student
         $email = null;
         if ($user_type === 'student') {
-            $sql = "SELECT email FROM students WHERE user_id = ?"; // Assuming user_id links students to users
+            $sql = "SELECT email FROM students WHERE user_id = ?"; // Adjust if linking by username
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("i", $user_id);
             $stmt->execute();
@@ -52,16 +61,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("ssi", $reset_token, $token_expiry, $user_id);
             
             if ($stmt->execute()) {
-                // Send reset email
-                $reset_link = "https://datamexadelinesucat.com/reset-password.php?token=" . $reset_token;
-                $subject = "Password Reset Request";
-                $message = "Hello $username,\n\nClick this link to reset your password: $reset_link\n\nThis link will expire in 1 hour.";
-                $headers = "From: dmxcapstone@gmail.com";
-                
-                if (mail($email, $subject, $message, $headers)) {
+                // Send reset email using PHPMailer
+                $reset_link = "https://datamexadelinesucat.com/reset-password.php?token=" . $reset_token; // Adjust for production
+                $mail = new PHPMailer(true);
+
+                try {
+                    // Server settings
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'dmxcapstone@gmail.com'; // Your Gmail address
+                    $mail->Password = 'nwsoyafhwfzbqjyk'; // Your Gmail App Password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+
+                    // Recipients
+                    $mail->setFrom('your-email@gmail.com', 'Datamex College');
+                    $mail->addAddress($email); // Student's email
+
+                    // Content
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Password Reset Request';
+                    $mail->Body    = "Hello $username,<br><br>Click this link to reset your password: <a href='$reset_link'>$reset_link</a><br><br>This link will expire in 1 hour.";
+                    $mail->AltBody = "Hello $username,\n\nClick this link to reset your password: $reset_link\n\nThis link will expire in 1 hour.";
+
+                    $mail->send();
                     $success_message = "A password reset link has been sent to your email.";
-                } else {
-                    $error_message = "Failed to send email. Please try again later.";
+                } catch (Exception $e) {
+                    $error_message = "Failed to send email. Mailer Error: {$mail->ErrorInfo}";
                 }
             } else {
                 $error_message = "Error processing request. Please try again.";
