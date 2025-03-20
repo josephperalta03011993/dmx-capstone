@@ -625,3 +625,13 @@ input[type="submit"]:hover {
         text-decoration: none;
     }
 }
+
+/* Chat style */
+.chatbot-container {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+#chatbox p {
+    margin: 5px 0;
+}

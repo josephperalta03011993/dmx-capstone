@@ -93,6 +93,13 @@
         </div>
     </div>
 
+    <!-- Add this inside your <div class="login-container"> -->
+<div class="chatbot-container">
+    <div id="chatbox" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;"></div>
+    <input type="text" id="chatInput" placeholder="Ask me something..." style="width: 80%; padding: 5px;">
+    <button onclick="sendMessage()" style="padding: 5px;">Send</button>
+</div>
+
 <?php 
     $conn->close();
     include('layouts/footer.php'); 
@@ -101,4 +108,31 @@
 <script>
     const element = $0;
     element.innerHTML = element.innerHTML.replace(/\r?\n/g, '<br>');
+
+    // chat bot
+    function sendMessage() {
+    const input = document.getElementById('chatInput').value;
+    if (!input) return;
+
+    // Display user message
+    const chatbox = document.getElementById('chatbox');
+    chatbox.innerHTML += `<p><strong>You:</strong> ${input}</p>`;
+    
+    // Send to backend
+    fetch('chatbot.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `message=${encodeURIComponent(input)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        chatbox.innerHTML += `<p><strong>Bot:</strong> ${data.reply}</p>`;
+        chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to bottom
+    })
+    .catch(error => {
+        chatbox.innerHTML += `<p><strong>Bot:</strong> Oops, something went wrong!</p>`;
+    });
+
+    document.getElementById('chatInput').value = ''; // Clear input
+}
 </script>

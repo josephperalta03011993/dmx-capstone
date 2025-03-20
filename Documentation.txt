@@ -152,7 +152,7 @@ MARCH 20, 2025 MEETING
 * Need to create new list of todo/tasks that needed for next weeks final defense.
 
 TODO:
-1. Forgot password (Question verification, email) - 
+1. Forgot password (Question verification, email) - DONE
 2. Chat bot in php (FAQ) - 
 3. Validation in enrollment date calendar (disabled future date) - DONE
 4. Auto populate enrollment date - today | backdate pwede - DONE 
