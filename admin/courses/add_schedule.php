@@ -53,7 +53,7 @@
                     }
                     echo "</select><br><br>";
                 } else {
-                    echo "No section available. <a href='add_section.php'>Create Section</a>";
+                    echo "No section available. <a href='../sections/add_section.php'>Create Section</a>";
                 }
             ?>
         </div>
