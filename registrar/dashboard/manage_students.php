@@ -77,6 +77,7 @@ if($status == 'all' || $status == '') {
 <div style="max-width: 1100px; overflow-x: auto;">
     <table id="myTable" class="display">
         <thead>
+            <?php if ($students_result && $students_result->num_rows > 0) { ?>
             <tr>
                 <th>Student ID</th>
                 <th>First Name</th>
@@ -100,6 +101,7 @@ if($status == 'all' || $status == '') {
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
+            <?php } ?>
         </thead>
         <tbody>
             <?php
@@ -135,7 +137,7 @@ if($status == 'all' || $status == '') {
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='21'>No students found.</td></tr>";
+                echo "No students found.";
             }
             ?>
         </tbody>
