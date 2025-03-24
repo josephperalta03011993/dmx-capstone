@@ -83,6 +83,7 @@
             <li><a href="announcement.php"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
             <li><a href="grades.php"><i class="fa-solid fa-file"></i> View Grades</a></li>
             <li><a href="schedule.php"><i class="fa-solid fa-calendar"></i> View Schedules</a></li>
+            <li><a href="balance.php"><i class="fa-solid fa-money-bill"></i> Balance</a></li>
         <?php } else {
             echo "Unknown user type.";
         }
