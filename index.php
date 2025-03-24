@@ -81,10 +81,12 @@
             </div>
             Username: <input type="text" name="username" required><br>
             Password: <input type="password" name="password" required><br>
-            <div style="text-align: right; margin-bottom: 1rem;">
-                <a href="forgot-password.php" style="font-size: 0.9rem; color: #0066cc;">Forgot Password?</a>
+            <div style="text-align: center; width: 100%;">
+                <button type="submit" class="btn_submit" style="width:100%"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
             </div>
-            <button type="submit" class="btn_submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <a href="forgot-password.php" style="font-size: 0.9rem; color: #0066cc;">Forgot Password?</a><br>
+            </div>
         </form>
         <a href="enroll-now.php" target="_blank" rel="noopener noreferrer" class="btn-enroll-now">ENROLL NOW !!!</a>
     </div>
