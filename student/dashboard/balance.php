@@ -40,7 +40,7 @@ $payments = $stmt->get_result();
 // Calculate total paid (only Completed payments)
 $sql = "SELECT SUM(amount) as total_paid 
         FROM payments 
-        WHERE student_id = ? AND payment_status = 'Completed'";
+        WHERE student_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $student_id);
 $stmt->execute();
@@ -61,12 +61,6 @@ $stmt->close();
         <!-- Balance Info (Top Left) -->
         <div class="balance-info">
             <h3>Balance Summary</h3>
-            <p>
-                TESTING:
-                <?php echo $total_paid ?>
-                <?php echo $total_paid_row ?>
-                <?php echo $total_due ?>
-            </p>
             <p>Total Amount Paid: <?php echo number_format($total_paid, 2); ?></p>
             <p>
                 <?php if ($balance <= 0): ?>
