@@ -24,7 +24,7 @@ if (!$teacher) {
     exit();
 }
 
-// Get current username from the users table (assuming there's a users table)
+// Get current username from the users table
 $sql = "SELECT username FROM users WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -158,8 +158,12 @@ $stmt->close();
                         <input type="password" name="new_password" placeholder="Enter new password (optional)">
                     </div>
                     <div class="form-group">
+                        <label>Confirm New Password:</label>
+                        <input type="password" name="confirm_new_password" placeholder="Confirm new password (if changing)">
+                    </div>
+                    <div class="form-group">
                         <label>Confirm Current Password:</label>
-                        <input type="password" name="current_password" required placeholder="Enter current password">
+                        <input type="password" name="current_password" placeholder="Required only for username/password changes">
                     </div>
                 </div>
 
