@@ -500,6 +500,15 @@ input[type="submit"]:hover {
     border: 1px solid #00014B;
 }
 
+#container > div > a {
+    color: white;
+    text-decoration: none;
+}
+
+#container > div > a:hover {
+    color: #00014B;
+}
+
 #container > div:hover {
     flex: 1;
     padding: 1rem;
@@ -508,6 +517,12 @@ input[type="submit"]:hover {
     background-color: white;
     color: #00014B;
     transition: 0.5s ease;
+}
+
+#container > div:hover {
+    a {
+        color: #00014B;
+    }
 }
 /* End of admin dashboard */
 

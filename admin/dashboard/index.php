@@ -62,31 +62,49 @@ $total_schedule = $row_schedule['COUNT(schedule_id)'];
 
 <div id="container">
     <div>
-        <h3><i class="fa-solid fa-graduation-cap"></i> Total Students: <?php echo $total_students; ?></h3>
+        <a href="students-list.php">
+            <h3><i class="fa-solid fa-graduation-cap"></i> Total Students: <?php echo $total_students; ?></h3>
+        </a>
     </div>
     <div>
-        <h3><i class="fa-solid fa-chalkboard-user"></i> Total Teachers: <?php echo $total_teachers; ?></h3>
+        <a href="teacher-list.php">
+            <h3><i class="fa-solid fa-chalkboard-user"></i> Total Teachers: <?php echo $total_teachers; ?></h3>
+        </a>
     </div>
     <div>
-        <h3><i class="fa-solid fa-building"></i> Total Registrars: <?php echo $total_registrars; ?></h3>
+        <a href="registrar-list.php">
+            <h3><i class="fa-solid fa-building"></i> Total Registrars: <?php echo $total_registrars; ?></h3>
+        </a>
     </div>
     <div>
-        <h3><i class="fa-solid fa-book"></i> Total Courses: <?php echo $total_courses; ?></h3>
+        <a href="../courses/manage_courses.php">
+            <h3><i class="fa-solid fa-book"></i> Total Courses: <?php echo $total_courses; ?></h3>
+        </a>
     </div>
     <div>
-        <h3><i class="fa-solid fa-people-line"></i> Total Sections: <?php echo $total_sections; ?></h3>
+        <a href="../sections/manage_sections.php" class="admin-dashboard-link">
+            <h3><i class="fa-solid fa-people-line"></i> Total Sections: <?php echo $total_sections; ?></h3>
+        </a>
     </div>
     <div>
-        <h3><i class="fa-solid fa-door-open"></i> Total Rooms: <?php echo $total_rooms; ?></h3>
+        <a href="../rooms/manage_rooms.php" class="admin-dashboard-link">
+            <h3><i class="fa-solid fa-door-open"></i> Total Rooms: <?php echo $total_rooms; ?></h3>
+        </a>
     </div>
     <div>
-        <h3><i class="fa-solid fa-door-open"></i> Total Department: <?php echo $total_department; ?></h3>
+        <a href="../departments/manage_departments.php" class="admin-dashboard-link">
+            <h3><i class="fa-solid fa-door-open"></i> Total Department: <?php echo $total_department; ?></h3>
+        </a>
     </div>
     <div>
-        <h3><i class="fa-solid fa-school"></i> Total Enrollment: <?php echo $total_enrollment; ?></h3>
+        <a href="enrollment-list.php">
+            <h3><i class="fa-solid fa-school"></i> Total Enrollment: <?php echo $total_enrollment; ?></h3>
+        </a>
     </div>
     <div>
-        <h3><i class="fa-solid fa-calendar"></i> Total Schedule: <?php echo $total_schedule; ?></h3>
+        <a href="../courses/course_scheduling.php">
+            <h3><i class="fa-solid fa-calendar"></i> Total Schedule: <?php echo $total_schedule; ?></h3>
+        </a>
     </div>
 </div>
 
