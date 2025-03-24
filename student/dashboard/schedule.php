@@ -20,15 +20,18 @@ $student_result = mysqli_stmt_get_result($student_stmt);
 if ($student_row = mysqli_fetch_assoc($student_result)) {
     $student_id = $student_row['student_id'];
 
-    // Fetch schedule for enrolled courses
+    // Fetch schedule for enrolled courses including teacher info
     $schedule_sql = "SELECT c.course_code, c.course_name, s.section_name, 
                             sch.day_of_week, sch.start_time, sch.end_time, 
-                            r.room_name
+                            r.room_name,
+                            t.first_name, t.last_name
                      FROM enrollments e
                      INNER JOIN sections s ON e.section_id = s.section_id
                      INNER JOIN courses c ON e.course_id = c.course_id
                      INNER JOIN schedules sch ON e.section_id = sch.section_id
                      LEFT JOIN rooms r ON e.room_id = r.room_id
+                     LEFT JOIN teacher_sections ts ON s.section_id = ts.section_id
+                     LEFT JOIN teachers t ON ts.teacher_id = t.teacher_id
                      WHERE e.student_id = ? AND e.status = 'active'
                      ORDER BY sch.day_of_week, sch.start_time";
     $schedule_stmt = mysqli_prepare($conn, $schedule_sql);
@@ -55,7 +58,7 @@ if ($student_row = mysqli_fetch_assoc($student_result)) {
                     <th>Day</th>
                     <th>Time</th>
                     <th>Room</th>
-                    <th type="hidden"></th>
+                    <th>Teacher</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,7 +69,7 @@ if ($student_row = mysqli_fetch_assoc($student_result)) {
                         <td><?php echo htmlspecialchars($schedule['day_of_week']); ?></td>
                         <td><?php echo htmlspecialchars($schedule['start_time'] . " - " . $schedule['end_time']); ?></td>
                         <td><?php echo htmlspecialchars($schedule['room_name'] ?? 'TBA'); ?></td>
-                        <td type="hidden"></td>
+                        <td><?php echo htmlspecialchars(($schedule['first_name'] ?? '') . ' ' . ($schedule['last_name'] ?? 'TBA')); ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
