@@ -129,7 +129,13 @@ $payments_result = $conn->query($payments_sql);
                 echo "<input type='number' name='amount' value='" . (isset($row['amount']) ? htmlspecialchars($row['amount']) : '') . "'>";
                 echo "</td>";
                 echo "<td data-value='" . (isset($row['payment_date']) && !empty($row['payment_date']) ? htmlspecialchars($row['payment_date']) : 'N/A') . "'>
-                    <input type='date' name='payment_date' value='" . (isset($row['payment_date']) ? htmlspecialchars($row['payment_date']) : date('Y-m-d')) . "'></td>";
+                        <input 
+                            type='date' 
+                            name='payment_date' 
+                            value='" . (isset($row['payment_date']) ? htmlspecialchars($row['payment_date']) : date('Y-m-d')) . "'
+                            max='" . date('Y-m-d') ."'    
+                        >
+                    </td>";
                 echo "<td data-value='" . (isset($row['payment_method']) && !empty($row['payment_method']) ? htmlspecialchars($row['payment_method']) : 'N/A') . "'>
                     <select name='payment_method'>";
                 foreach ($payment_method_options as $option) {
