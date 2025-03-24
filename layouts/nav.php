@@ -47,9 +47,12 @@
 
         <li><a href="../rooms/manage_rooms.php"><i class="fa-solid fa-door-open"></i> Rooms</a>
         </li>
+        
+        <li><a href="../profile/index.php"><i class="fa-solid fa-user"></i> Profile</a></li>
 
         <?php } else if($user_type == 'registrar') { ?>
             <li><a href="index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+            <li><a href="profile.php"><i class="fa-solid fa-user"></i> Profile</a></li>
 
             <li><a href="#"><i class="fa-solid fa-person"></i> Students</a>
                 <ul>
