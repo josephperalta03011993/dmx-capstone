@@ -62,13 +62,6 @@ $stmt->close();
         <div class="balance-info">
             <h3>Balance Summary</h3>
             <p>Total Amount Paid: <?php echo number_format($total_paid, 2); ?></p>
-            <p>
-                <?php if ($balance <= 0): ?>
-                    <span style="color:green">PAID IN FULL</span>
-                <?php else: ?>
-                    <span style="color:red">UNPAID</span>
-                <?php endif; ?>
-            </p>
             <p>Total Balance: <span style="color:red"><?php echo number_format($balance, 2); ?></span></p>
         </div>
 
