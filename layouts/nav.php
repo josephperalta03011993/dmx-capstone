@@ -67,6 +67,7 @@
             <li><a href="manage_payments.php"><i class="fa-solid fa-file"></i> Manage Payments</a></li>
         
         <?php } else if($user_type == 'teacher') {?>
+            <li><a href="profile.php"><i class="fa-solid fa-user"></i> Profile</a></li>
             <li><a href="classes.php"><i class="fa-solid fa-list"></i> View Class List</a></li>
             <li><a href="class_schedule.php"><i class="fa-solid fa-calendar-days"></i> Class Schedule</a></li>
             <!-- <li>
