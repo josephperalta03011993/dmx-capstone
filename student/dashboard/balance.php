@@ -3,6 +3,10 @@ $page_title = "Payment History - Datamex College of Saint Adeline";
 include_once('../../database/conn.php'); // Database connection (includes sanitize_input)
 include('../../layouts/header.php'); // Header layout
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../../login.php");
     exit();
@@ -15,7 +19,11 @@ $user_id = $_SESSION['user_id'];
 $sql = "SELECT student_id, first_name, last_name, tuition_fee FROM students WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
-$stmt->execute();
+if (!$stmt->execute()) {
+    echo "Error fetching student: " . $stmt->error;
+    $conn->close();
+    exit();
+}
 $result = $stmt->get_result();
 $student = $result->fetch_assoc();
 
@@ -43,7 +51,11 @@ $sql = "SELECT SUM(amount) as total_paid
         WHERE student_id = ? AND payment_status = 'Completed'";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $student_id);
-$stmt->execute();
+if (!$stmt->execute()) {
+    echo "Error calculating total paid: " . $stmt->error;
+    $conn->close();
+    exit();
+}
 $result = $stmt->get_result();
 $total_paid_row = $result->fetch_assoc();
 $total_paid = $total_paid_row['total_paid'] ?? 0.00;
@@ -55,20 +67,21 @@ $balance = $total_due - $total_paid;
 $stmt->close();
 ?>
 
-<br><br>
 <div class="content">
     <div class="header-container">
         <!-- Balance Info (Top Left) -->
         <div class="balance-info">
             <h3>Balance Summary</h3>
             <p>Total Amount Paid: <?php echo number_format($total_paid, 2); ?></p>
-            <p>Total Balance: <span style="color:red"><?php echo number_format($balance, 2); ?></span></p>
+            <p>Total Balance: <?php echo number_format($balance, 2); ?></p>
+            <!-- Debugging -->
+            <p>Debug - Total Due: <?php echo number_format($total_due, 2); ?></p>
+            <p>Debug - Student ID: <?php echo htmlspecialchars($student_id); ?></p>
         </div>
 
         <!-- QR Code Placeholder (Top Right) -->
         <div class="qr-code-placeholder">
-            <p><img src="../../images/gcash-qr-code.png" alt="Gcash QR Code"></p>
-            <p>To pay your remaining balance, please scan the QR code provided.</p>
+            <p>To pay your remaining balance, please scan the QR code (Coming Soon).</p>
         </div>
     </div>
 
