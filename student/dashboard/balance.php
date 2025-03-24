@@ -55,6 +55,7 @@ $balance = $total_due - $total_paid;
 $stmt->close();
 ?>
 
+<br><br>
 <div class="content">
     <div class="header-container">
         <!-- Balance Info (Top Left) -->

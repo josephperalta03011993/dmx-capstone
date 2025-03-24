@@ -738,3 +738,41 @@ input[type="submit"]:hover {
 .chatbot-footer button:hover {
     background-color: #00014B;
 }
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.balance-info {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.balance-info h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.balance-info p {
+    margin: 5px 0;
+}
+
+.qr-code-placeholder {
+    width: 250px;
+    height: 150px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 2px dashed #ccc;
+    font-size: 14px;
+    color: #666;
+    padding: 1rem;
+}
