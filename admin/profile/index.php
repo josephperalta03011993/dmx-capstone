@@ -8,16 +8,16 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Get teacher data based on user_id
+// Get admin data based on user_id
 $user_id = $_SESSION['user_id'];
-$sql = "SELECT * FROM teachers WHERE user_id = ?";
+$sql = "SELECT * FROM admins WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
-$teacher = $result->fetch_assoc();
+$admin = $result->fetch_assoc();
 
-if (!$teacher) {
+if (!$admin) {
     echo "<p class='error-message'>No profile found for this user.</p>";
     $conn->close();
     include('../../layouts/footer.php');
@@ -53,7 +53,7 @@ $stmt->close();
 
     <div class="profile-grid">
         <form action="update.php" method="POST">
-            <!-- Hidden user_id field to identify the teacher -->
+            <!-- Hidden user_id field to identify the admin -->
             <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
 
             <!-- Column 1: Personal Information -->
@@ -62,26 +62,26 @@ $stmt->close();
                 <div class="form-container">
                     <div class="form-group">
                         <label>First Name:</label>
-                        <input style="background-color: #f0f0f0; color: #6c757d; cursor: not-allowed" type="text" name="first_name" value="<?php echo sanitize_input($conn, $teacher['first_name']); ?>" disabled>
+                        <input style="background-color: #f0f0f0; color: #6c757d; cursor: not-allowed" type="text" name="first_name" value="<?php echo sanitize_input($conn, $admin['first_name']); ?>" disabled>
                     </div>
                     <div class="form-group">
                         <label>Last Name:</label>
-                        <input style="background-color: #f0f0f0; color: #6c757d; cursor: not-allowed" type="text" name="last_name" value="<?php echo sanitize_input($conn, $teacher['last_name']); ?>" disabled>
+                        <input style="background-color: #f0f0f0; color: #6c757d; cursor: not-allowed" type="text" name="last_name" value="<?php echo sanitize_input($conn, $admin['last_name']); ?>" disabled>
                     </div>
                     <div class="form-group">
                         <label>Middle Name:</label>
-                        <input style="background-color: #f0f0f0; color: #6c757d; cursor: not-allowed" type="text" name="middle_name" value="<?php echo sanitize_input($conn, $teacher['middle_name']) ?: 'N/A'; ?>" disabled>
+                        <input style="background-color: #f0f0f0; color: #6c757d; cursor: not-allowed" type="text" name="middle_name" value="<?php echo sanitize_input($conn, $admin['middle_name']) ?: 'N/A'; ?>" disabled>
                     </div>
                     <div class="form-group">
                         <label>Date of Birth:</label>
-                        <input type="date" name="date_of_birth" value="<?php echo sanitize_input($conn, $teacher['date_of_birth']) ?: ''; ?>">
+                        <input type="date" name="date_of_birth" value="<?php echo sanitize_input($conn, $admin['date_of_birth']) ?: ''; ?>">
                     </div>
                     <div class="form-group">
                         <label>Gender:</label>
                         <select name="gender">
-                            <option value="Male" <?php echo $teacher['gender'] == 'Male' ? 'selected' : ''; ?>>Male</option>
-                            <option value="Female" <?php echo $teacher['gender'] == 'Female' ? 'selected' : ''; ?>>Female</option>
-                            <option value="Other" <?php echo $teacher['gender'] == 'Other' ? 'selected' : ''; ?>>Other</option>
+                            <option value="Male" <?php echo $admin['gender'] == 'Male' ? 'selected' : ''; ?>>Male</option>
+                            <option value="Female" <?php echo $admin['gender'] == 'Female' ? 'selected' : ''; ?>>Female</option>
+                            <option value="Other" <?php echo $admin['gender'] == 'Other' ? 'selected' : ''; ?>>Other</option>
                         </select>
                     </div>
                 </div>
@@ -93,35 +93,35 @@ $stmt->close();
                 <div class="form-container">
                     <div class="form-group">
                         <label>Email:</label>
-                        <input type="email" name="email" value="<?php echo sanitize_input($conn, $teacher['email']); ?>">
+                        <input type="email" name="email" value="<?php echo sanitize_input($conn, $admin['email']); ?>">
                     </div>
                     <div class="form-group">
                         <label>Phone Number:</label>
-                        <input type="text" name="phone_number" value="<?php echo sanitize_input($conn, $teacher['phone_number']) ?: ''; ?>">
+                        <input type="text" name="phone_number" value="<?php echo sanitize_input($conn, $admin['phone_number']) ?: ''; ?>">
                     </div>
                     <div class="form-group">
                         <label>Address Line 1:</label>
-                        <input type="text" name="address_line1" value="<?php echo sanitize_input($conn, $teacher['address_line1']) ?: ''; ?>">
+                        <input type="text" name="address_line1" value="<?php echo sanitize_input($conn, $admin['address_line1']) ?: ''; ?>">
                     </div>
                     <div class="form-group">
                         <label>Address Line 2:</label>
-                        <input type="text" name="address_line2" value="<?php echo sanitize_input($conn, $teacher['address_line2']) ?: ''; ?>">
+                        <input type="text" name="address_line2" value="<?php echo sanitize_input($conn, $admin['address_line2']) ?: ''; ?>">
                     </div>
                     <div class="form-group">
                         <label>City:</label>
-                        <input type="text" name="city" value="<?php echo sanitize_input($conn, $teacher['city']) ?: ''; ?>">
+                        <input type="text" name="city" value="<?php echo sanitize_input($conn, $admin['city']) ?: ''; ?>">
                     </div>
                     <div class="form-group">
                         <label>State:</label>
-                        <input type="text" name="state" value="<?php echo sanitize_input($conn, $teacher['state']) ?: ''; ?>">
+                        <input type="text" name="state" value="<?php echo sanitize_input($conn, $admin['state']) ?: ''; ?>">
                     </div>
                     <div class="form-group">
                         <label>Zip Code:</label>
-                        <input type="text" name="zip_code" value="<?php echo sanitize_input($conn, $teacher['zip_code']) ?: ''; ?>">
+                        <input type="text" name="zip_code" value="<?php echo sanitize_input($conn, $admin['zip_code']) ?: ''; ?>">
                     </div>
                     <div class="form-group">
                         <label>Country:</label>
-                        <input type="text" name="country" value="<?php echo sanitize_input($conn, $teacher['country']) ?: ''; ?>">
+                        <input type="text" name="country" value="<?php echo sanitize_input($conn, $admin['country']) ?: ''; ?>">
                     </div>
                 </div>
             </div>
@@ -132,11 +132,11 @@ $stmt->close();
                 <div class="form-container">
                     <div class="form-group">
                         <label>Emergency Contact Name:</label>
-                        <input type="text" name="emergency_contact_name" value="<?php echo sanitize_input($conn, $teacher['emergency_contact_name']) ?: ''; ?>">
+                        <input type="text" name="emergency_contact_name" value="<?php echo sanitize_input($conn, $admin['emergency_contact_name']) ?: ''; ?>">
                     </div>
                     <div class="form-group">
                         <label>Emergency Contact Phone:</label>
-                        <input type="text" name="emergency_contact_phone" value="<?php echo sanitize_input($conn, $teacher['emergency_contact_phone']) ?: ''; ?>">
+                        <input type="text" name="emergency_contact_phone" value="<?php echo sanitize_input($conn, $admin['emergency_contact_phone']) ?: ''; ?>">
                     </div>
                 </div>
             </div>
