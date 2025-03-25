@@ -158,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["enroll-now"])) {
         <div class="form-group" id="strands-group" style="display: none;">
             <label for="strand"><span style='color:red'>*</span> Strand:</label>
             <select id="strand" name="strand">
-                <option value="N/A" disabled selected>N/A</option>
+                <option value="N/A" disabled selected>Choose a STRAND</option>
                 <option value="STEM">Science, Technology, Engineering, and Mathematics (STEM)</option>
                 <option value="HUMSS">Humanities and Social Sciences (HUMSS)</option>
                 <option value="GAS">General Academic Strand (GAS)</option>
