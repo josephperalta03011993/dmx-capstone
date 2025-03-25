@@ -42,6 +42,7 @@
                 <li>
                     <a href="../sections/teacher_assignments.php"><i class="fa-solid fa-chalkboard-user"></i> Assign Teacher</a>
                 </li>
+                <li><a href="../sections/assign_course_section.php"><i class="fa-solid fa-book-open-reader"></i> Assign Course</a></li>
             </ul>
         </li>
 
