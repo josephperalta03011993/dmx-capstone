@@ -70,11 +70,24 @@ $user_type = get_user_type();
     </header>
     <main>
         <?php 
+
+            // $user_type = strtolower(get_user_type());
+            // $current_page = basename($_SERVER['PHP_SELF']); // Get the current file name
+
+            // if($user_type === 'admin' || 
+            //            $user_type === 'student' || 
+            //            $user_type === 'teacher' || 
+            //            $user_type === 'registrar')
+            // {
+            //     include('nav.php'); 
+            // }
+
             $user_type = strtolower(get_user_type());
-            if($user_type === 'admin' || 
-                       $user_type === 'student' || 
-                       $user_type === 'teacher' || 
-                       $user_type === 'registrar')
+            $current_page = basename($_SERVER['PHP_SELF']); // Get the current file name
+
+            // Show navigation only if NOT on index.php (login page) and user has a valid role
+            if ($current_page !== 'index.php' && 
+                in_array($user_type, ['admin', 'student', 'teacher', 'registrar'])) 
             {
                 include('nav.php'); 
             }
