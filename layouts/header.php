@@ -70,25 +70,12 @@ $user_type = get_user_type();
     </header>
     <main>
         <?php 
-
-            // $user_type = strtolower(get_user_type());
-            // $current_page = basename($_SERVER['PHP_SELF']); // Get the current file name
-
-            // if($user_type === 'admin' || 
-            //            $user_type === 'student' || 
-            //            $user_type === 'teacher' || 
-            //            $user_type === 'registrar')
-            // {
-            //     include('nav.php'); 
-            // }
-
             $user_type = strtolower(get_user_type());
-            $current_page = basename($_SERVER['PHP_SELF']); // Get the current file name
-
-            // Show navigation only if NOT on index.php (login page) and user has a valid role
-            if ($current_page !== 'index.php' && 
-                in_array($user_type, ['admin', 'student', 'teacher', 'registrar'])) 
-            {
+            $full_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; // Get the full URL
+            $root_url = "https://datamexadelinesucat.com/"; // Define your root URL
+        
+            // Show navigation only if NOT on the root URL and user has a valid role
+            if ($full_url !== $root_url && in_array($user_type, ['admin', 'student', 'teacher', 'registrar'])) {
                 include('nav.php'); 
             }
         ?>
