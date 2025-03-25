@@ -1,28 +1,28 @@
 <?php
 
-// Function to check if the user is logged in
-function is_logged_in() {
-    return isset($_SESSION["user_id"]);
-}
+    // Function to check if the user is logged in
+    function is_logged_in() {
+        return isset($_SESSION["user_id"]);
+    }
 
-// Function to get the current user's type
-function get_user_type() {
-    return isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
-}
+    // Function to get the current user's type
+    function get_user_type() {
+        return isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
+    }
 
-// Function to get the username
-function get_username(){
-    return isset($_SESSION["username"]) ? $_SESSION["username"] : null;
-}
+    // Function to get the username
+    function get_username(){
+        return isset($_SESSION["username"]) ? $_SESSION["username"] : null;
+    }
 
 
-function get_fullname(){
-    $first_name = isset($_SESSION["first_name"]) ? $_SESSION["first_name"] : null;
-    $last_name = isset($_SESSION["last_name"]) ? $_SESSION["last_name"] : null;
-    return $first_name . " " . $last_name;
-}
+    function get_fullname(){
+        $first_name = isset($_SESSION["first_name"]) ? $_SESSION["first_name"] : null;
+        $last_name = isset($_SESSION["last_name"]) ? $_SESSION["last_name"] : null;
+        return $first_name . " " . $last_name;
+    }
 
-$user_type = get_user_type();
+    $user_type = get_user_type();
 ?>
 
 <!DOCTYPE html>
@@ -71,12 +71,6 @@ $user_type = get_user_type();
     <main>
         <?php 
             $user_type = strtolower(get_user_type());
-            $full_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; // Get the full URL
-            $root_url = "https://datamexadelinesucat.com/"; // Define your root URL
-        
-            // Show navigation only if NOT on the root URL and user has a valid role
-            if ($full_url !== $root_url && in_array($user_type, ['admin', 'student', 'teacher', 'registrar'])) {
-                include('nav.php'); 
-            }
+            include('nav.php'); 
         ?>
         <div class="content">
