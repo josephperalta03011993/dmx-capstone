@@ -236,6 +236,18 @@ form {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.btn-enrollment {
+    background-color: #800000;
+    color: white;
+    border: none;
+    padding: .7rem 3rem;
+}
+
+.btn-enrollment:hover {
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+    background-color: #00014B;
+}
+
 .login-container {
     display: flex;
     flex-direction: row;
@@ -774,5 +786,5 @@ input[type="submit"]:hover {
     border: 2px dashed #ccc;
     font-size: 14px;
     color: #666;
-    padding: 1rem;
+    padding: 2rem;
 }

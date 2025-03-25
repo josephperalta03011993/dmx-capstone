@@ -67,7 +67,7 @@ $stmt->close();
 
         <!-- QR Code Placeholder (Top Right) -->
         <div class="qr-code-placeholder">
-            <p><img src="../../images/gcash-qr-code.png" alt="Gcash QR Code"></p>
+            <p><img src="../../images/gcash-qr-code.png" alt="Gcash QR Code" width="200" height="200"></p>
             <p>To pay your remaining balance, please scan the QR code provided.</p>
         </div>
     </div>
