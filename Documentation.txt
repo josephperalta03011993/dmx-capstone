@@ -173,3 +173,10 @@ location
 hello
 bye
 help
+
+========================================= 
+MARCH 3, 2025 Update 
+- student_num added when registrar click admin
+  a. registrar/dashboard/manage_students.php
+- Student admitted successfully with student number: 20250403004
+  a. ex. registrar/dashboard/manage_students.php?admit_id=38

@@ -43,14 +43,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_student"])) {
 // Admit Student
 if (isset($_GET['admit_id'])) {
     $admit_id = sanitize_input($conn, $_GET['admit_id']);
-    $admit_sql = "UPDATE students SET status = 'enrolled' WHERE student_id = ?";
+    
+    // Set timezone to Philippine time (Asia/Manila)
+    date_default_timezone_set('Asia/Manila');
+    
+    // Get the current date
+    $current_date = date('Ymd'); // e.g., 20250402
+    
+    // Find the next sequence number for today
+    $seq_sql = "SELECT COUNT(*) + 1 AS next_seq FROM students WHERE student_num LIKE ?";
+    $seq_stmt = mysqli_prepare($conn, $seq_sql);
+    $like_pattern = $current_date . '%';
+    mysqli_stmt_bind_param($seq_stmt, "s", $like_pattern);
+    mysqli_stmt_execute($seq_stmt);
+    mysqli_stmt_bind_result($seq_stmt, $next_seq);
+    mysqli_stmt_fetch($seq_stmt);
+    mysqli_stmt_close($seq_stmt);
+
+    // Generate the student number
+    $student_num = $current_date . str_pad($next_seq, 3, '0', STR_PAD_LEFT); // e.g., 20250402001
+    
+    // Update both status and student_num
+    $admit_sql = "UPDATE students SET status = 'enrolled', student_num = ? WHERE student_id = ?";
     $admit_stmt = mysqli_prepare($conn, $admit_sql);
-    mysqli_stmt_bind_param($admit_stmt, "i", $admit_id);
+    mysqli_stmt_bind_param($admit_stmt, "si", $student_num, $admit_id);
 
     if (mysqli_stmt_execute($admit_stmt)) {
-        $success = "Student admitted successfully!";
+        $success = "Student admitted successfully with student number: " . htmlspecialchars($student_num);
     } else {
         $error = "Error admitting student: " . mysqli_error($conn);
+        if (mysqli_errno($conn) == 1062) {
+            $error = "Student number $student_num is already in use. Please try again.";
+        }
     }
 }
 
