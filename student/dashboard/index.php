@@ -20,8 +20,8 @@ $student_result = mysqli_stmt_get_result($student_stmt);
 if ($student_row = mysqli_fetch_assoc($student_result)) {
     $student_id = $student_row['student_id'];
 
-    // Fetch enrolled courses
-    $enrollment_sql = "SELECT e.enrollment_id, e.course_id, e.section_id, e.status, e.enrollment_date,
+    // Fetch enrolled courses with DISTINCT to avoid duplicates
+    $enrollment_sql = "SELECT DISTINCT e.enrollment_id, e.course_id, e.section_id, e.status, e.enrollment_date,
                              c.course_code, c.course_name, s.section_name
                        FROM enrollments e
                        INNER JOIN courses c ON e.course_id = c.course_id
@@ -32,6 +32,17 @@ if ($student_row = mysqli_fetch_assoc($student_result)) {
     mysqli_stmt_execute($enrollment_stmt);
     $enrollment_result = mysqli_stmt_get_result($enrollment_stmt);
     $enrollments = mysqli_fetch_all($enrollment_result, MYSQLI_ASSOC);
+
+    // Optional: Check for duplicates in the result set (in case DISTINCT isn't enough)
+    $unique_enrollments = [];
+    $course_ids = [];
+    foreach ($enrollments as $enrollment) {
+        if (!in_array($enrollment['course_id'], $course_ids)) {
+            $unique_enrollments[] = $enrollment;
+            $course_ids[] = $enrollment['course_id'];
+        }
+    }
+    $enrollments = $unique_enrollments; // Replace with filtered unique enrollments
 } else {
     $enrollments = []; // No student found
 }
