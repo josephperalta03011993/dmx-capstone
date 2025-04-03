@@ -25,13 +25,30 @@ $user_type = get_user_type();
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize and capture form data
     $name = sanitize_input($conn, $_POST["name"]);
     $email = sanitize_input($conn, $_POST["email"]);
     $message = sanitize_input($conn, $_POST["message"]);
-    
-    // Here you could add code to save to database or send an email
-    // For now, we'll just set a success message
-    $success_message = "Thank you for your message! We'll get back to you soon.";
+
+    // SQL query to insert form data into the contact_us table
+    $sql = "INSERT INTO contact_us (name, email, message) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if ($stmt) {
+        // Bind parameters
+        mysqli_stmt_bind_param($stmt, "sss", $name, $email, $message);
+
+        // Execute the statement
+        if (mysqli_stmt_execute($stmt)) {
+            $success_message = "Thank you for your message! We'll get back to you soon.";
+        } else {
+            $error_message = "Error saving your message: " . mysqli_error($conn);
+        }
+
+        mysqli_stmt_close($stmt);
+    } else {
+        $error_message = "Error preparing the query: " . mysqli_error($conn);
+    }
 }
 ?>
 
@@ -90,6 +107,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <hr>
                 <?php if (isset($success_message)) { ?>
                     <p class="success-message"><?php echo $success_message; ?></p>
+                <?php } ?>
+                <?php if (isset($error_message)) { ?>
+                    <p class="error-message"><?php echo $error_message; ?></p>
                 <?php } ?>
                 
                 <div class="contact-content">
