@@ -38,8 +38,16 @@
         $password = sanitize_input($conn, $_POST["password"]);
 
         // Query the database based on username
-        $sql = "SELECT user_id, user_type, first_name, last_name, password FROM users WHERE username = '$username'";
-        $result = $conn->query($sql);
+        // Prepared statement to prevent SQL injection
+        $sql = "SELECT u.user_id, u.user_type, u.first_name, u.last_name, u.password, s.student_num AS student_num
+        FROM users AS u
+        JOIN students AS s ON u.user_id = s.user_id
+        WHERE u.username = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $username); // Bind the username as a string
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
@@ -63,6 +71,7 @@
                         header("Location: teacher/dashboard/classes.php");
                         break;
                     case "student":
+                        $_SESSION["student_num"] = $row["student_num"];
                         header("Location: student/dashboard/index.php");
                         break;
                     default:

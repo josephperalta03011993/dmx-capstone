@@ -6,9 +6,18 @@
                     <strong><span>Welcome, <?php echo get_fullname(); ?>!</span></strong>
                 <?php endif; ?>
             </div>
+            <div>
+            <?php 
+                $user_type = get_user_type();
+                if($user_type == 'student') {
+                    ?>
+                        <p><?php echo 'Student Num: '. get_student_num(); ?></p>
+                    <?php
+                }
+            ?>
+            </div>
             <hr>
         </li>
-
         <?php
             $user_type = get_user_type();
             if($user_type == 'admin') { 

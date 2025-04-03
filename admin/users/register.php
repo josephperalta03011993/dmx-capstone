@@ -47,69 +47,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $effective_student_id = !empty($selected_student_id) ? $selected_student_id : $enrolled_student;
 
-        $check_existing_account_sql = "SELECT user_id FROM students WHERE student_id = ? AND user_id IS NOT NULL";
-        $check_stmt = mysqli_prepare($conn, $check_existing_account_sql);
-        mysqli_stmt_bind_param($check_stmt, "i", $effective_student_id);
+        // Check if username already exists in users table
+        $check_username_sql = "SELECT user_id FROM users WHERE username = ?";
+        $check_stmt = mysqli_prepare($conn, $check_username_sql);
+        mysqli_stmt_bind_param($check_stmt, "s", $username);
         mysqli_stmt_execute($check_stmt);
         $check_result = mysqli_stmt_get_result($check_stmt);
         if (mysqli_num_rows($check_result) > 0) {
-            $registration_error = "This student already has an account.";
+            $registration_error = "Username already exists.";
         } else {
-            $check_username_sql = "SELECT username FROM users WHERE username = ?";
-            $check_stmt = mysqli_prepare($conn, $check_username_sql);
-            mysqli_stmt_bind_param($check_stmt, "s", $username);
-            mysqli_stmt_execute($check_stmt);
-            $check_result = mysqli_stmt_get_result($check_stmt);
-            if (mysqli_num_rows($check_result) > 0) {
-                $registration_error = "Username already exists.";
-            }
-        }
-
-        $first_name = $last_name = '';
-        if ($user_type === "student" && !empty($effective_student_id)) {
-            $fetch_student_sql = "SELECT first_name, last_name FROM students WHERE student_id = ?";
-            $fetch_stmt = mysqli_prepare($conn, $fetch_student_sql);
-            mysqli_stmt_bind_param($fetch_stmt, "i", $effective_student_id);
-            mysqli_stmt_execute($fetch_stmt);
-            $fetch_result = mysqli_stmt_get_result($fetch_stmt);
-            if ($student = mysqli_fetch_assoc($fetch_result)) {
-                $first_name = $student['first_name'];
-                $last_name = $student['last_name'];
-            } else {
-                $registration_error = "Selected student not found.";
-            }
-            mysqli_stmt_close($fetch_stmt);
-        } else {
-            $first_name = trim($reg_first_name);
-            $last_name = trim($reg_last_name);
-        }
-
-        if (!$registration_error) {
-            $sql = "INSERT INTO users (username, password, user_type, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
-            $stmt = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt, "sssss", $username, $hashed_password, $user_type, $first_name, $last_name);
-            if (mysqli_stmt_execute($stmt)) {
-                $user_id = mysqli_insert_id($conn);
-                if ($user_type === "student" && !empty($effective_student_id)) {
-                    $update_sql = "UPDATE students SET user_id = ? WHERE student_id = ?";
-                    $update_stmt = mysqli_prepare($conn, $update_sql);
-                    mysqli_stmt_bind_param($update_stmt, "ii", $user_id, $effective_student_id);
-                    mysqli_stmt_execute($update_stmt);
-                    mysqli_stmt_close($update_stmt);
+            $first_name = $last_name = '';
+            if ($user_type === "student" && !empty($effective_student_id)) {
+                // Fetch student name from the students table if student user type is selected
+                $fetch_student_sql = "SELECT first_name, last_name FROM students WHERE student_id = ?";
+                $fetch_stmt = mysqli_prepare($conn, $fetch_student_sql);
+                mysqli_stmt_bind_param($fetch_stmt, "i", $effective_student_id);
+                mysqli_stmt_execute($fetch_stmt);
+                $fetch_result = mysqli_stmt_get_result($fetch_stmt);
+                if ($student = mysqli_fetch_assoc($fetch_result)) {
+                    $first_name = $student['first_name'];
+                    $last_name = $student['last_name'];
                 } else {
-                    $tables = ['admin' => 'admins', 'registrar' => 'registrars', 'teacher' => 'teachers'];
-                    if (isset($tables[$user_type])) {
-                        insert_user_type($conn, $tables[$user_type], $user_id, $first_name, $last_name);
-                    }
+                    $registration_error = "Selected student not found.";
                 }
-                $registration_success = "Registration successful!";
+                mysqli_stmt_close($fetch_stmt);
             } else {
-                $registration_error = "Error inserting user: " . mysqli_error($conn);
+                // Use entered first and last names if not student user type
+                $first_name = trim($reg_first_name);
+                $last_name = trim($reg_last_name);
             }
-            mysqli_stmt_close($stmt);
+
+            if (!$registration_error) {
+                // Insert user into the users table
+                $sql = "INSERT INTO users (username, password, user_type, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
+                $stmt = mysqli_prepare($conn, $sql);
+                mysqli_stmt_bind_param($stmt, "sssss", $username, $hashed_password, $user_type, $first_name, $last_name);
+                if (mysqli_stmt_execute($stmt)) {
+                    $user_id = mysqli_insert_id($conn);
+                    
+                    // Associate student with user_id if user type is student
+                    if ($user_type === "student" && !empty($effective_student_id)) {
+                        // Update student record with the user_id
+                        $update_sql = "UPDATE students SET user_id = ? WHERE student_id = ?";
+                        $update_stmt = mysqli_prepare($conn, $update_sql);
+                        mysqli_stmt_bind_param($update_stmt, "ii", $user_id, $effective_student_id);
+                        mysqli_stmt_execute($update_stmt);
+                        mysqli_stmt_close($update_stmt);
+                    } else {
+                        // Insert into specific user type table (admin, registrar, teacher)
+                        $tables = ['admin' => 'admins', 'registrar' => 'registrars', 'teacher' => 'teachers'];
+                        if (isset($tables[$user_type])) {
+                            insert_user_type($conn, $tables[$user_type], $user_id, $first_name, $last_name);
+                        }
+                    }
+
+                    $registration_success = "Registration successful!";
+                } else {
+                    $registration_error = "Error inserting user: " . mysqli_error($conn);
+                }
+                mysqli_stmt_close($stmt);
+            }
+        }
+        // Close the check_stmt if it's set
+        if (isset($check_stmt)) {
+            mysqli_stmt_close($check_stmt);
         }
     }
-    mysqli_stmt_close($check_stmt);
 }
 ?>
 
@@ -205,7 +208,6 @@ if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"
     document.getElementById('enrolled_student').addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
         document.getElementById('selected_student_id').value = this.value;
-        console.log("Selected student_id: " + this.value);
     });
 </script>
 
