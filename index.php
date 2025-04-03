@@ -1,19 +1,15 @@
 <?php
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Session is already started in conn.php, no need to start it again here
 
 $page_title = "Login - Datamex College of Saint Adeline";
 include_once('database/conn.php');
 
-// Define BASE_URL for consistent paths
-define('BASE_URL', '/'); // Adjust this based on your server configuration
+// Define BASE_URL based on environment
+$is_local = ($_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['SERVER_NAME'] === '127.0.0.1');
+define('BASE_URL', $is_local ? 'http://localhost/dmx-capstone/' : 'https://datamexadelinesucat.com/');
 
-// Sanitization function
-function sanitize_input($conn, $data) {
-    return mysqli_real_escape_string($conn, trim(htmlspecialchars($data)));
-}
+// Initialize user_type to avoid undefined variable warnings
+$user_type = null;
 
 // Function to check if the user is logged in
 function is_logged_in() {
@@ -49,6 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE username = ?";
     
     $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        die("Prepare failed: " . $conn->error);
+    }
+    
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -66,6 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($row["user_type"] === "student") {
                 $student_sql = "SELECT student_num FROM students WHERE user_id = ?";
                 $student_stmt = $conn->prepare($student_sql);
+                if ($student_stmt === false) {
+                    die("Prepare failed: " . $conn->error);
+                }
                 $student_stmt->bind_param("i", $row["user_id"]);
                 $student_stmt->execute();
                 $student_result = $student_stmt->get_result();
@@ -166,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             ORDER BY created_at DESC";
                     $result = $conn->query($sql);
 
-                    if($result->num_rows > 0) {
+                    if($result && $result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
                             $createdDate = new DateTime($row["created_at"]);
                             $content = $row["content"];

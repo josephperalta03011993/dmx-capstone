@@ -25,7 +25,7 @@
     $user_type = get_user_type();
 
     function get_student_num() {
-        $student_num = isset($_SESSION["student_num"]) ? $_SESSION["student_num"] : null;
+        $student_num = isset($_SESSION["student_num"]) ? $_SESSION["student_num"] : "N/A";
         return $student_num;
     }
 ?>
