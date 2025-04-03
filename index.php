@@ -121,6 +121,15 @@
                 <a href="../../logout.php" class="bg-white p-8 btn">Logout</a>
             <?php } ?>
         </div>
+
+        <!-- Navigation Menu -->
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="about.php" class="nav-link">About</a></li>
+                <li><a href="contact.php" class="nav-link">Contact</a></li>
+                <li><a href="gallery.php" class="nav-link">Gallery</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <?php 

@@ -17,6 +17,8 @@
 
         <li><a href="../announcement/manage_announcement.php"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
         
+        <li><a href="../gallery/add_gallery.php"><i class="fa-solid fa-image"></i> Gallery</a></li>
+
         <li><a href="#"><i class="fa-solid fa-user"></i> Users</a>
             <ul>
                 <li><a href="../users/register.php">Create New User</a></li> 
