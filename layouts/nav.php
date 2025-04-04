@@ -60,6 +60,8 @@
         <li><a href="../rooms/manage_rooms.php"><i class="fa-solid fa-door-open"></i> Rooms</a>
         </li>
         
+        <li><a href="../contact/index.php"><i class="fa-solid fa-phone"></i> Contact</a></li>
+
         <li><a href="../profile/index.php"><i class="fa-solid fa-user"></i> Profile</a></li>
 
         <?php } else if($user_type == 'registrar') { ?>
