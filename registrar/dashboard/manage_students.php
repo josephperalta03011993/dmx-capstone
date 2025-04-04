@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_student"])) {
 }
 
 // Admit Student
+// UPDATE STUDENT NUMBER
 if (isset($_GET['admit_id'])) {
     $admit_id = sanitize_input($conn, $_GET['admit_id']);
     
@@ -59,7 +60,7 @@ if (isset($_GET['admit_id'])) {
     mysqli_stmt_bind_result($seq_stmt, $next_seq);
     mysqli_stmt_fetch($seq_stmt);
     mysqli_stmt_close($seq_stmt);
-
+    
     // Generate the student number
     $student_num = $current_date . str_pad($next_seq, 3, '0', STR_PAD_LEFT); // e.g., 20250402001
     

@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_payment"])) {
 }
 
 // Get Student Payment Data
-$payments_sql = "SELECT s.student_id AS student_id, s.first_name, s.last_name, p.payment_id, p.amount, p.payment_date, 
+$payments_sql = "SELECT s.student_num, s.student_id AS student_id, s.first_name, s.last_name, p.payment_id, p.amount, p.payment_date, 
                 p.payment_method, p.transaction_id, p.receipt_number, p.description, p.payment_status
                 FROM students s
                 LEFT JOIN payments p ON s.student_id = p.student_id";
@@ -105,6 +105,7 @@ $payments_result = $conn->query($payments_sql);
 <table id="myTable" class="display">
     <thead>
         <tr>
+            <th>Student Number</th>
             <th>Student Name</th>
             <th>Amount</th>
             <th>Payment Date</th>
@@ -121,6 +122,7 @@ $payments_result = $conn->query($payments_sql);
         if ($payments_result && $payments_result->num_rows > 0) {
             while ($row = $payments_result->fetch_assoc()) {
                 echo "<tr>";
+                echo "<td data-value='" . htmlspecialchars($row['student_num']) ."'>" . htmlspecialchars($row['student_num']) . "</td>";
                 echo "<td data-value='" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "'>" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "</td>";
                 echo "<td data-value='" . (isset($row['amount']) && !empty($row['amount']) ? htmlspecialchars($row['amount']) : 'N/A') . "'>";
                 echo "<form method='POST'>";
