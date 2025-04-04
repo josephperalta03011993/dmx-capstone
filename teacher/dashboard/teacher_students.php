@@ -150,21 +150,23 @@ if ($teacher_row = mysqli_fetch_assoc($teacher_result)) {
 <!-- Grades Input Form -->
 <?php if ($selected_course_id) { ?>
     <form method="post">
-        <table id="myTable" class="display">
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Prelim</th>
-                    <th>Midterm</th>
-                    <th>Pre-Final</th>
-                    <th>Finals</th>
-                    <th>Average Grade</th>
-                    <th>Remarks</th>
-                </tr>
-            </thead>
-            <tbody>
                 <?php
                 if (!empty($students)) {
+                ?>
+                <table id="myTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Prelim</th>
+                            <th>Midterm</th>
+                            <th>Pre-Final</th>
+                            <th>Finals</th>
+                            <th>Average Grade</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                <?php
                     foreach ($students as $student) {
                         $student_id = $student['student_id'];
                         $grade_data = isset($grades[$student_id]) ? $grades[$student_id] : [
