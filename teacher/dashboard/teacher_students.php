@@ -31,7 +31,7 @@ if ($teacher_row = mysqli_fetch_assoc($teacher_result)) {
     // Fetch students enrolled in the selected section
     $students = [];
     if ($selected_course_id) {
-        $students_sql = "SELECT students.student_id, students.first_name, students.last_name 
+        $students_sql = "SELECT students.student_id, students.first_name, students.last_name, students.student_num 
                          FROM students 
                          INNER JOIN enrollments ON students.student_id = enrollments.student_id 
                          WHERE enrollments.section_id = ?";
@@ -178,7 +178,7 @@ if ($teacher_row = mysqli_fetch_assoc($teacher_result)) {
                             'remarks' => ''
                         ];
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($student['first_name'] . " " . $student['last_name']) . "</td>";
+                        echo "<td>" . htmlspecialchars($student['first_name'] . " " . $student['last_name']) . (!empty($student['student_num']) ? " (".$student['student_num'].")" : '') . "</td>";
                         echo "<td><input type='number' name='grades[" . $student_id . "][prelim]' step='0.01' min='0' max='100' value='" . htmlspecialchars($grade_data['prelim']) . "'></td>";
                         echo "<td><input type='number' name='grades[" . $student_id . "][midterm]' step='0.01' min='0' max='100' value='" . htmlspecialchars($grade_data['midterm']) . "'></td>";
                         echo "<td><input type='number' name='grades[" . $student_id . "][pre_final]' step='0.01' min='0' max='100' value='" . htmlspecialchars($grade_data['pre_final']) . "'></td>";
