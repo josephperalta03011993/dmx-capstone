@@ -204,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["enroll-now"])) {
 
         <div class="form-group">
             <label for="phone_number"><span style='color:red'>*</span> Phone Number:</label>
-            <input type="text" id="phone_number" name="phone_number" required><br>
+            <input type="text" maxlength="11" id="phone_number" name="phone_number" onkeypress="return isNumberKey(event)" required><br>
         </div>
 
         <div class="form-group">
@@ -244,7 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["enroll-now"])) {
 
         <div class="form-group">
             <label for="parent_guardian_phone">Parent/Guardian Phone:</label>
-            <input type="text" id="parent_guardian_phone" name="parent_guardian_phone"><br>
+            <input type="text" id="parent_guardian_phone" name="parent_guardian_phone" onkeypress="return isNumberKey(event)" maxlength="11"><br>
         </div>
 
         <div class="form-group">
@@ -259,7 +259,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["enroll-now"])) {
 
         <div class="form-group">
             <label for="emergency_contact_phone">Emergency Contact Phone:</label>
-            <input type="text" id="emergency_contact_phone" name="emergency_contact_phone"><br>
+            <input type="text" id="emergency_contact_phone" name="emergency_contact_phone" maxlength="11" onkeypress="return isNumberKey(event)"><br>
         </div>
     </div>
     <input type="submit" name="enroll-now" value="RESERVE SLOT">
@@ -284,6 +284,14 @@ function toggleStrands() {
 document.addEventListener('DOMContentLoaded', function() {
     toggleStrands();
 });
+
+function isNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}
+
 </script>
 
 <?php include('layouts/footer.php'); ?>

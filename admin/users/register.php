@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
     $username = trim($reg_username);
     $password = $_POST["reg_password"];
     $confirm_password = $_POST["reg_confirm_password"];
+    $effective_student_id = !empty($selected_student_id) ? $selected_student_id : $enrolled_student;
 
     if (empty($username) || empty($password) || empty($confirm_password)) {
         $registration_error = "All fields are required.";
@@ -45,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
         $registration_error = "Password must be at least 8 characters long.";
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $effective_student_id = !empty($selected_student_id) ? $selected_student_id : $enrolled_student;
 
         // Check if username already exists in users table
         $check_username_sql = "SELECT user_id FROM users WHERE username = ?";
@@ -55,22 +55,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
         $check_result = mysqli_stmt_get_result($check_stmt);
         if (mysqli_num_rows($check_result) > 0) {
             $registration_error = "Username already exists.";
+            mysqli_stmt_close($check_stmt);
         } else {
             $first_name = $last_name = '';
             if ($user_type === "student" && !empty($effective_student_id)) {
-                // Fetch student name from the students table if student user type is selected
-                $fetch_student_sql = "SELECT first_name, last_name FROM students WHERE student_id = ?";
-                $fetch_stmt = mysqli_prepare($conn, $fetch_student_sql);
-                mysqli_stmt_bind_param($fetch_stmt, "i", $effective_student_id);
-                mysqli_stmt_execute($fetch_stmt);
-                $fetch_result = mysqli_stmt_get_result($fetch_stmt);
-                if ($student = mysqli_fetch_assoc($fetch_result)) {
-                    $first_name = $student['first_name'];
-                    $last_name = $student['last_name'];
+                // Check if the student already has a user account
+                $check_student_account_sql = "SELECT user_id FROM users WHERE user_type = 'student' AND first_name = (SELECT first_name FROM students WHERE student_id = ?) AND last_name = (SELECT last_name FROM students WHERE student_id = ?)";
+                $check_student_stmt = mysqli_prepare($conn, $check_student_account_sql);
+                mysqli_stmt_bind_param($check_student_stmt, "ii", $effective_student_id, $effective_student_id);
+                mysqli_stmt_execute($check_student_stmt);
+                $check_student_result = mysqli_stmt_get_result($check_student_stmt);
+                if (mysqli_num_rows($check_student_result) > 0) {
+                    $registration_error = "A user account already exists for this student.";
+                    mysqli_stmt_close($check_student_stmt);
                 } else {
-                    $registration_error = "Selected student not found.";
+                    // Fetch student name from the students table if student user type is selected
+                    $fetch_student_sql = "SELECT first_name, last_name FROM students WHERE student_id = ?";
+                    $fetch_stmt = mysqli_prepare($conn, $fetch_student_sql);
+                    mysqli_stmt_bind_param($fetch_stmt, "i", $effective_student_id);
+                    mysqli_stmt_execute($fetch_stmt);
+                    $fetch_result = mysqli_stmt_get_result($fetch_stmt);
+                    if ($student = mysqli_fetch_assoc($fetch_result)) {
+                        $first_name = $student['first_name'];
+                        $last_name = $student['last_name'];
+                    } else {
+                        $registration_error = "Selected student not found.";
+                    }
+                    mysqli_stmt_close($fetch_stmt);
                 }
-                mysqli_stmt_close($fetch_stmt);
             } else {
                 // Use entered first and last names if not student user type
                 $first_name = trim($reg_first_name);
@@ -84,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                 mysqli_stmt_bind_param($stmt, "sssss", $username, $hashed_password, $user_type, $first_name, $last_name);
                 if (mysqli_stmt_execute($stmt)) {
                     $user_id = mysqli_insert_id($conn);
-                    
+
                     // Associate student with user_id if user type is student
                     if ($user_type === "student" && !empty($effective_student_id)) {
                         // Update student record with the user_id
@@ -116,13 +128,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
 }
 ?>
 
-<?php 
-include('../../layouts/header.php'); 
+<?php
+include('../../layouts/header.php');
 ?>
 
 <h2>User Registration</h2><hr><br>
 
-<?php 
+<?php
 if ($registration_success) { echo "<p style='color: green;'>$registration_success</p>"; }
 if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"; }
 ?>
@@ -211,6 +223,6 @@ if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"
     });
 </script>
 
-<?php 
-include('../../layouts/footer.php'); 
+<?php
+include('../../layouts/footer.php');
 ?>
