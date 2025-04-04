@@ -21,6 +21,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create_enrollment"]))
     $enrollment_date = sanitize_input($conn, $_POST["enrollment_date"]);
     $status = sanitize_input($conn, $_POST['status']);
 
+    // Check for duplicate course enrollment
+    $check_sql = "SELECT COUNT(*) FROM enrollments WHERE student_id = ? AND course_id = ?";
+    $check_stmt = mysqli_prepare($conn, $check_sql);
+    mysqli_stmt_bind_param($check_stmt, "ii", $student_id, $course_id);
+    mysqli_stmt_execute($check_stmt);
+    mysqli_stmt_bind_result($check_stmt, $count);
+    mysqli_stmt_fetch($check_stmt);
+    mysqli_stmt_close($check_stmt);
+
+    if ($count > 0) {
+        $error = "Student is already enrolled in this course.";
+    } else {
+        
     $overlap = false;
     $schedule_sql = "SELECT day_of_week, start_time, end_time FROM schedules WHERE section_id = ?";
     $schedule_stmt = mysqli_prepare($conn, $schedule_sql);
@@ -87,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create_enrollment"]))
             $error = "Error preparing enrollment statement: " . mysqli_error($conn);
         }
     }
+}
 }
 
 ?>
