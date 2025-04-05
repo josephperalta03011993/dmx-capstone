@@ -27,7 +27,7 @@ if (!$student) {
 }
 
 // Use the student_id to fetch payment history
-$student_id = $student['student_num'];
+$student_num = $student['student_num'];
 $sql = "SELECT payment_id, amount, payment_date, payment_method, transaction_id, receipt_number, description, payment_status, created_at 
         FROM payments 
         WHERE student_id = ? 
