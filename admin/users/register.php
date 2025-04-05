@@ -100,16 +100,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                 if (mysqli_stmt_execute($stmt)) {
                     $user_id = mysqli_insert_id($conn);
 
-                    // No need to update students table anymore since student_id is in users table
-                    if ($user_type !== "student") {
-                        // Insert into specific user type table (admin, registrar, teacher)
+                    // Update students table with user_id if user type is student
+                    if ($user_type === "student" && !empty($student_id)) {
+                        $update_sql = "UPDATE students SET user_id = ? WHERE student_id = ?";
+                        $update_stmt = mysqli_prepare($conn, $update_sql);
+                        mysqli_stmt_bind_param($update_stmt, "ii", $user_id, $student_id);
+                        if (!mysqli_stmt_execute($update_stmt)) {
+                            $registration_error = "Error updating student record: " . mysqli_error($conn);
+                        }
+                        mysqli_stmt_close($update_stmt);
+                    }
+
+                    // Insert into specific user type table (admin, registrar, teacher)
+                    if ($user_type !== "student" && !$registration_error) {
                         $tables = ['admin' => 'admins', 'registrar' => 'registrars', 'teacher' => 'teachers'];
                         if (isset($tables[$user_type])) {
-                            insert_user_type($conn, $tables[$user_type], $user_id, $first_name, $last_name);
+                            $result = insert_user_type($conn, $tables[$user_type], $user_id, $first_name, $last_name);
+                            if (!$result['success']) {
+                                $registration_error = "Error inserting into $user_type table: " . $result['error'];
+                            }
                         }
                     }
 
-                    $registration_success = "Registration successful!";
+                    if (!$registration_error) {
+                        $registration_success = "Registration successful!";
+                    }
                 } else {
                     $registration_error = "Error inserting user: " . mysqli_error($conn);
                 }
@@ -152,7 +167,6 @@ if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"
                 <select name="enrolled_student" id="enrolled_student">
                     <option value="">-- Select a Student --</option>
                     <?php
-                        // Updated query to check users.student_id instead of joining on user_id
                         $enrolled_students_sql = "SELECT 
                             s.student_id, 
                             s.first_name, 
