@@ -126,7 +126,7 @@ $payments_result = $conn->query($payments_sql);
                 echo "<tr>";
                 echo "<td data-value='" . htmlspecialchars($row['student_num']) ."'>" . htmlspecialchars($row['student_num']) . "</td>";
                 echo "<td data-value='" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "'>" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "</td>";
-                echo "<input type='number' name='tuition_fee' value='" . (isset($row['tuition_fee']) ? htmlspecialchars($row['tuition_fee']) : '') . "'>"; // Not in a <td>
+                echo "<td data-value='" . htmlspecialchars($row['tuition_fee']) . "'>" . htmlspecialchars($row['tuition_fee']) . "</td>";
                 echo "<td data-value='" . (isset($row['amount']) && !empty($row['amount']) ? htmlspecialchars($row['amount']) : 'N/A') . "'>";
                 echo "<form method='POST'>";
                 echo "<input type='hidden' name='payment_id' value='" . (isset($row['payment_id']) ? htmlspecialchars($row['payment_id']) : '') . "'>";
@@ -134,70 +134,35 @@ $payments_result = $conn->query($payments_sql);
                 echo "<input type='number' name='amount' value='" . (isset($row['amount']) ? htmlspecialchars($row['amount']) : '') . "'>";
                 echo "</td>";
                 echo "<td data-value='" . (isset($row['payment_date']) && !empty($row['payment_date']) ? htmlspecialchars($row['payment_date']) : 'N/A') . "'>
-                    <input type='date' name='payment_date' value='" . (isset($row['payment_date']) ? htmlspecialchars($row['payment_date']) : date('Y-m-d')) . "' max='" . date('Y-m-d') ."'>
-                </td>";
+                        <input 
+                            type='date' 
+                            name='payment_date' 
+                            value='" . (isset($row['payment_date']) ? htmlspecialchars($row['payment_date']) : date('Y-m-d')) . "'
+                            max='" . date('Y-m-d') ."'    
+                        >
+                    </td>";
                 echo "<td data-value='" . (isset($row['payment_method']) && !empty($row['payment_method']) ? htmlspecialchars($row['payment_method']) : 'N/A') . "'>
-                <select name='payment_method'>";
+                    <select name='payment_method'>";
                 foreach ($payment_method_options as $option) {
-                echo "<option value='" . htmlspecialchars($option) . "'" . (isset($row['payment_method']) && $row['payment_method'] === $option ? " selected" : "") . ">" . htmlspecialchars($option) . "</option>";
+                    echo "<option value='" . htmlspecialchars($option) . "'" . (isset($row['payment_method']) && $row['payment_method'] === $option ? " selected" : "") . ">" . htmlspecialchars($option) . "</option>";
                 }
                 echo "</select></td>";
                 echo "<td data-value='" . (isset($row['transaction_id']) && !empty($row['transaction_id']) ? htmlspecialchars($row['transaction_id']) : 'N/A') . "'>
-                <input type='text' name='transaction_id' value='" . (isset($row['transaction_id']) ? htmlspecialchars($row['transaction_id']) : '') . "'></td>";
+                    <input type='text' name='transaction_id' value='" . (isset($row['transaction_id']) ? htmlspecialchars($row['transaction_id']) : '') . "'></td>";
                 echo "<td data-value='" . (isset($row['receipt_number']) && !empty($row['receipt_number']) ? htmlspecialchars($row['receipt_number']) : 'N/A') . "'>
-                <input type='text' name='receipt_number' value='" . (isset($row['receipt_number']) ? htmlspecialchars($row['receipt_number']) : '') . "'></td>";
+                    <input type='text' name='receipt_number' value='" . (isset($row['receipt_number']) ? htmlspecialchars($row['receipt_number']) : '') . "'></td>";
                 echo "<td data-value='" . (isset($row['description']) && !empty($row['description']) ? htmlspecialchars($row['description']) : 'N/A') . "'>
-                <input type='text' name='description' value='" . (isset($row['description']) ? htmlspecialchars($row['description']) : '') . "'></td>";
+                    <input type='text' name='description' value='" . (isset($row['description']) ? htmlspecialchars($row['description']) : '') . "'></td>";
                 echo "<td data-value='" . (isset($row['payment_status']) && !empty($row['payment_status']) ? htmlspecialchars($row['payment_status']) : 'N/A') . "'>
-                <select name='payment_status'>";
+                    <select name='payment_status'>";
                 foreach ($payment_status_options as $option) {
-                $option = trim($option);
-                $selected = (isset($row['payment_status']) && trim($row['payment_status']) === $option) ? " selected" : "";
-                echo "<option value='" . htmlspecialchars($option) . "'$selected>" . htmlspecialchars($option) . "</option>";
+                    $option = trim($option);
+                    $selected = (isset($row['payment_status']) && trim($row['payment_status']) === $option) ? " selected" : "";
+                    echo "<option value='" . htmlspecialchars($option) . "'$selected>" . htmlspecialchars($option) . "</option>";
                 }
                 echo "</select></td>";
                 echo "<td><button type='submit' name='update_payment' id='btn_edit' class='btn'>Update</button></form></td>";
                 echo "</tr>";
-                // echo "<tr>";
-                // echo "<td data-value='" . htmlspecialchars($row['student_num']) ."'>" . htmlspecialchars($row['student_num']) . "</td>";
-                // echo "<td data-value='" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "'>" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "</td>";
-                // echo "<input type='number' name='tuition_fee' value='" . (isset($row['tuition_fee']) ? htmlspecialchars($row['tuition_fee']) : '') . "'>";
-                // echo "<td data-value='" . (isset($row['amount']) && !empty($row['amount']) ? htmlspecialchars($row['amount']) : 'N/A') . "'>";
-                // echo "<form method='POST'>";
-                // echo "<input type='hidden' name='payment_id' value='" . (isset($row['payment_id']) ? htmlspecialchars($row['payment_id']) : '') . "'>";
-                // echo "<input type='hidden' name='student_id' value='" . htmlspecialchars($row['student_id']) . "'>";
-                // echo "<input type='number' name='amount' value='" . (isset($row['amount']) ? htmlspecialchars($row['amount']) : '') . "'>";
-                // echo "</td>";
-                // echo "<td data-value='" . (isset($row['payment_date']) && !empty($row['payment_date']) ? htmlspecialchars($row['payment_date']) : 'N/A') . "'>
-                //         <input 
-                //             type='date' 
-                //             name='payment_date' 
-                //             value='" . (isset($row['payment_date']) ? htmlspecialchars($row['payment_date']) : date('Y-m-d')) . "'
-                //             max='" . date('Y-m-d') ."'    
-                //         >
-                //     </td>";
-                // echo "<td data-value='" . (isset($row['payment_method']) && !empty($row['payment_method']) ? htmlspecialchars($row['payment_method']) : 'N/A') . "'>
-                //     <select name='payment_method'>";
-                // foreach ($payment_method_options as $option) {
-                //     echo "<option value='" . htmlspecialchars($option) . "'" . (isset($row['payment_method']) && $row['payment_method'] === $option ? " selected" : "") . ">" . htmlspecialchars($option) . "</option>";
-                // }
-                // echo "</select></td>";
-                // echo "<td data-value='" . (isset($row['transaction_id']) && !empty($row['transaction_id']) ? htmlspecialchars($row['transaction_id']) : 'N/A') . "'>
-                //     <input type='text' name='transaction_id' value='" . (isset($row['transaction_id']) ? htmlspecialchars($row['transaction_id']) : '') . "'></td>";
-                // echo "<td data-value='" . (isset($row['receipt_number']) && !empty($row['receipt_number']) ? htmlspecialchars($row['receipt_number']) : 'N/A') . "'>
-                //     <input type='text' name='receipt_number' value='" . (isset($row['receipt_number']) ? htmlspecialchars($row['receipt_number']) : '') . "'></td>";
-                // echo "<td data-value='" . (isset($row['description']) && !empty($row['description']) ? htmlspecialchars($row['description']) : 'N/A') . "'>
-                //     <input type='text' name='description' value='" . (isset($row['description']) ? htmlspecialchars($row['description']) : '') . "'></td>";
-                // echo "<td data-value='" . (isset($row['payment_status']) && !empty($row['payment_status']) ? htmlspecialchars($row['payment_status']) : 'N/A') . "'>
-                //     <select name='payment_status'>";
-                // foreach ($payment_status_options as $option) {
-                //     $option = trim($option); // Already trimmed, but ensure consistency
-                //     $selected = (isset($row['payment_status']) && trim($row['payment_status']) === $option) ? " selected" : "";
-                //     echo "<option value='" . htmlspecialchars($option) . "'$selected>" . htmlspecialchars($option) . "</option>";
-                // }
-                // echo "</select></td>";
-                // echo "<td><button type='submit' name='update_payment' id='btn_edit' class='btn'>Update</button></form></td>";
-                // echo "</tr>";
             }
         } else {
             echo "<tr><td colspan='9'>No payment data found.</td></tr>";
