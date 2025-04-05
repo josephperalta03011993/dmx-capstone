@@ -157,7 +157,16 @@ if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"
                 <select name="enrolled_student" id="enrolled_student">
                     <option value="">-- Select a Student --</option>
                     <?php
-                    $enrolled_students_sql = "SELECT student_id, first_name, last_name FROM students WHERE status = 'enrolled'";
+                        $enrolled_students_sql = "SELECT 
+                        s.student_id, 
+                        s.first_name, 
+                        s.last_name 
+                    FROM students AS s 
+                    LEFT JOIN users AS u 
+                    ON s.student_id = u.user_id
+                    WHERE u.user_id IS NULL 
+                    AND s.status = 'enrolled'";
+                    
                     $enrolled_students_result = mysqli_query($conn, $enrolled_students_sql);
                     if ($enrolled_students_result === false) {
                         echo "Query Error: " . mysqli_error($conn);
