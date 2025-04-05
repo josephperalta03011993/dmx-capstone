@@ -115,7 +115,7 @@ $stmt->close();
                 </tbody>
             </table>
         <?php else: ?>
-            <p class="no-data">No payment history found for Student ID: <?php echo htmlspecialchars($student_num); ?></p>
+            <p class="no-data">No payment history found.</p>
         <?php endif; ?>
     </div>
 </div>
