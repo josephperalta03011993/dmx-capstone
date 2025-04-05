@@ -57,6 +57,8 @@
             </ul>
         </li>
 
+        <li><a href="index.php"><i class="fa-solid fa-file"></i> View Grades</a></li>
+
         <li><a href="../rooms/manage_rooms.php"><i class="fa-solid fa-door-open"></i> Rooms</a>
         </li>
         
