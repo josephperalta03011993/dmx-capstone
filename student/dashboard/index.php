@@ -21,7 +21,7 @@ if ($student_row = mysqli_fetch_assoc($student_result)) {
     $student_id = $student_row['student_id'];
 
     // Fetch enrolled courses with DISTINCT to avoid duplicates
-    $enrollment_sql = "SELECT DISTINCT e.enrollment_id, e.course_id, e.section_id, e.status, e.enrollment_date,
+    $enrollment_sql = "SELECT e.enrollment_id, e.course_id, e.section_id, e.status, e.enrollment_date,
                              c.course_code, c.course_name, s.section_name
                        FROM enrollments e
                        INNER JOIN courses c ON e.course_id = c.course_id
