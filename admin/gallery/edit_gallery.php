@@ -62,9 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_gallery"])) {
     
     if (!$error) {
         $updatedAt = date("Y-m-d H:i:s");
-        $sql = "UPDATE gallery SET image_url = ?, title = ?, description = ?, updated_at = ? WHERE id = ?";
+        $sql = "UPDATE gallery SET image_url = ?, title = ?, description = ? WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "ssssi", $image_url, $title, $description, $updatedAt, $id);
+        mysqli_stmt_bind_param($stmt, "sssi", $image_url, $title, $description, $id);
         
         if (mysqli_stmt_execute($stmt)) {
             $success = "Gallery item updated successfully!";
@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_gallery"])) {
     <textarea id="gallery_description" name="gallery_description" rows="4" cols="50" required><?php echo htmlspecialchars($gallery_item['description']); ?></textarea><br><br>
     
     <label>Current Image:</label><br>
-    <img src="/<?php echo $gallery_item['image_url']; ?>" alt="Current gallery image" style="max-width: 200px;"><br><br>
+    <img src="../../<?php echo $gallery_item['image_url']; ?>" alt="Current gallery image" style="max-width: 200px;"><br><br>
     
     <label for="gallery_image">New Image (optional):</label>
     <input type="file" id="gallery_image" name="gallery_image" accept="image/*"><br><br>

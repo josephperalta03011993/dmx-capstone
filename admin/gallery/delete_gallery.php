@@ -25,10 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["delete_gallery"])) {
         
         if (mysqli_stmt_execute($stmt)) {
             // Redirect back to gallery list or dashboard
-            header("Location: ../gallery_list.php?success=Gallery item deleted successfully");
+            header("Location: ../gallery/gallery_list.php?success=Gallery item deleted successfully");
             exit();
         } else {
-            header("Location: ../gallery_list.php?error=Error deleting gallery item");
+            header("Location: ../gallery/gallery_list.php?error=Error deleting gallery item");
             exit();
         }
     }
