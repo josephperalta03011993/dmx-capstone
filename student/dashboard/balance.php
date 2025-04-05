@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Verify the user is a student and get their student_id and tuition_fee
-$sql = "SELECT student_id, first_name, last_name, tuition_fee, student_num FROM students WHERE user_id = ?";
+$sql = "SELECT student_id, first_name, last_name, tuition_fee FROM students WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -27,7 +27,7 @@ if (!$student) {
 }
 
 // Use the student_id to fetch payment history
-$student_num = $student['student_num'];
+$student_id = $student['student_id'];
 $sql = "SELECT payment_id, amount, payment_date, payment_method, transaction_id, receipt_number, description, payment_status, created_at 
         FROM payments 
         WHERE student_id = ? 
