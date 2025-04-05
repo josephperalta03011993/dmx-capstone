@@ -27,7 +27,7 @@ if (!$student) {
 }
 
 // Use the student_id to fetch payment history
-$student_id = $student['student_id'];
+$student_id = $student['student_num'];
 $sql = "SELECT payment_id, amount, payment_date, payment_method, transaction_id, receipt_number, description, payment_status, created_at 
         FROM payments 
         WHERE student_id = ? 
@@ -115,7 +115,7 @@ $stmt->close();
                 </tbody>
             </table>
         <?php else: ?>
-            <p class="no-data">No payment history found for Student ID: <?php echo htmlspecialchars($student_id); ?></p>
+            <p class="no-data">No payment history found for Student ID: <?php echo htmlspecialchars($student_num); ?></p>
         <?php endif; ?>
     </div>
 </div>
