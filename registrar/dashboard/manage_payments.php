@@ -3,21 +3,16 @@ $page_title = "Manage Payments";
 include_once('../../database/conn.php');
 include_once('../../layouts/header.php');
 
-// Helper function
-function sanitize_input($conn, $data) {
-    return mysqli_real_escape_string($conn, trim($data));
-}
-
 $success = null;
 $error = null;
 
-// Get ENUM values from database for payment_status
+// Get Payment Status and Method Options
 $payment_status_options = [];
 $payment_status_sql = "SHOW COLUMNS FROM payments LIKE 'payment_status'";
 $payment_status_result = $conn->query($payment_status_sql);
 if ($payment_status_result && $payment_status_row = $payment_status_result->fetch_assoc()) {
     if (preg_match("/^enum\(\'(.*)\'\)$/", $payment_status_row['Type'], $matches)) {
-        $payment_status_options = explode("','", $matches[1]);
+        $payment_status_options = array_map('trim', explode("','", $matches[1]));
     } else {
         $error = "Error: Could not parse payment_status ENUM values.";
     }
@@ -25,13 +20,12 @@ if ($payment_status_result && $payment_status_row = $payment_status_result->fetc
     $error = "Error: Failed to retrieve payment_status column info.";
 }
 
-// Get ENUM values for payment_method
 $payment_method_options = [];
 $payment_method_sql = "SHOW COLUMNS FROM payments LIKE 'payment_method'";
 $payment_method_result = $conn->query($payment_method_sql);
 if ($payment_method_result && $payment_method_row = $payment_method_result->fetch_assoc()) {
     if (preg_match("/^enum\(\'(.*)\'\)$/", $payment_method_row['Type'], $matches)) {
-        $payment_method_options = explode("','", $matches[1]);
+        $payment_method_options = array_map('trim', explode("','", $matches[1]));
     } else {
         $error = "Error: Could not parse payment_method ENUM values.";
     }
@@ -39,178 +33,228 @@ if ($payment_method_result && $payment_method_row = $payment_method_result->fetc
     $error = "Error: Failed to retrieve payment_method column info.";
 }
 
-// Update Tuition Fee
+// Update Tuition Fee in students table
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_tuition"])) {
     $student_id = sanitize_input($conn, $_POST["student_id"]);
     $tuition_fee = sanitize_input($conn, $_POST["tuition_fee"]);
 
-    $check_stmt = $conn->prepare("SELECT student_id FROM students WHERE student_id = ?");
-    $check_stmt->bind_param("i", $student_id);
-    $check_stmt->execute();
-    $check_stmt->store_result();
+    $check_student = "SELECT student_id FROM students WHERE student_id = ?";
+    $check_stmt = mysqli_prepare($conn, $check_student);
+    mysqli_stmt_bind_param($check_stmt, "i", $student_id);
+    mysqli_stmt_execute($check_stmt);
+    mysqli_stmt_store_result($check_stmt);
 
-    if ($check_stmt->num_rows === 0) {
+    if (mysqli_stmt_num_rows($check_stmt) == 0) {
         $error = "Error: Student ID does not exist.";
     } else {
-        $update_stmt = $conn->prepare("UPDATE students SET tuition_fee = ? WHERE student_id = ?");
-        $update_stmt->bind_param("di", $tuition_fee, $student_id);
-        if ($update_stmt->execute()) {
+        $update_sql = "UPDATE students SET tuition_fee = ? WHERE student_id = ?";
+        $update_stmt = mysqli_prepare($conn, $update_sql);
+        mysqli_stmt_bind_param($update_stmt, "di", $tuition_fee, $student_id);
+        if (mysqli_stmt_execute($update_stmt)) {
             $success = "Tuition fee updated successfully!";
         } else {
-            $error = "Error updating tuition fee: " . $conn->error;
+            $error = "Error updating tuition fee: " . mysqli_error($conn);
         }
-        $update_stmt->close();
+        mysqli_stmt_close($update_stmt);
     }
-    $check_stmt->close();
+    mysqli_stmt_close($check_stmt);
 }
 
 // Update or Insert Payment
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_payment"])) {
-    if (
-        isset($_POST["student_id"], $_POST["amount"], $_POST["payment_date"], $_POST["payment_method"],
-        $_POST["payment_status"], $_POST["tuition_fee"])
-    ) {
+    if (isset($_POST["payment_id"]) || (isset($_POST["new_payment"]) && isset($_POST["student_id"]))) {
         $payment_id = isset($_POST["payment_id"]) ? sanitize_input($conn, $_POST["payment_id"]) : null;
         $student_id = sanitize_input($conn, $_POST["student_id"]);
-        $amount = sanitize_input($conn, $_POST["amount"]);
+        $amount_paid = sanitize_input($conn, $_POST["amount_paid"]);
         $payment_date = sanitize_input($conn, $_POST["payment_date"]);
         $payment_method = sanitize_input($conn, $_POST["payment_method"]);
         $transaction_id = isset($_POST["transaction_id"]) ? sanitize_input($conn, $_POST["transaction_id"]) : '';
         $receipt_number = isset($_POST["receipt_number"]) ? sanitize_input($conn, $_POST["receipt_number"]) : '';
         $description = isset($_POST["description"]) ? sanitize_input($conn, $_POST["description"]) : '';
-        $payment_status = sanitize_input($conn, $_POST["payment_status"]);
-        $tuition_fee = sanitize_input($conn, $_POST["tuition_fee"]);
-        $created_by = $_SESSION['user_id'] ?? 0;
+        $payment_status = trim(sanitize_input($conn, $_POST["payment_status"]));
+        $created_by = $_SESSION['user_id'];
+        $tuition_fee = sanitize_input($conn, $_POST["tuition_fee"]); // Tuition fee for payments table
 
-        $check_stmt = $conn->prepare("SELECT student_id FROM students WHERE student_id = ?");
-        $check_stmt->bind_param("i", $student_id);
-        $check_stmt->execute();
-        $check_stmt->store_result();
+        $check_student = "SELECT student_id FROM students WHERE student_id = ?";
+        $check_stmt = mysqli_prepare($conn, $check_student);
+        mysqli_stmt_bind_param($check_stmt, "i", $student_id);
+        mysqli_stmt_execute($check_stmt);
+        mysqli_stmt_store_result($check_stmt);
 
-        if ($check_stmt->num_rows === 0) {
+        if (mysqli_stmt_num_rows($check_stmt) == 0) {
             $error = "Error: Student ID does not exist.";
-        } elseif (!in_array($payment_status, $payment_status_options)) {
-            $error = "Error: Invalid payment status.";
+        } elseif (empty($payment_status_options) || !in_array($payment_status, $payment_status_options, true)) {
+            $error = "Error: Invalid payment status value submitted.";
         } else {
             if (empty($payment_id)) {
-                $insert_stmt = $conn->prepare(
-                    "INSERT INTO payments (student_id, amount, payment_date, payment_method, transaction_id, receipt_number, description, payment_status, created_by, tuition_fee) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-                );
-                $insert_stmt->bind_param("idssssssid", $student_id, $amount, $payment_date, $payment_method, $transaction_id, $receipt_number, $description, $payment_status, $created_by, $tuition_fee);
-                if ($insert_stmt->execute()) {
+                $insert_sql = "INSERT INTO payments (student_id, amount, payment_date, payment_method, transaction_id, receipt_number, description, payment_status, created_by, tuition_fee) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $insert_stmt = mysqli_prepare($conn, $insert_sql);
+                mysqli_stmt_bind_param($insert_stmt, "idssssssid", $student_id, $amount_paid, $payment_date, $payment_method, $transaction_id, $receipt_number, $description, $payment_status, $created_by, $tuition_fee);
+                if (mysqli_stmt_execute($insert_stmt)) {
                     $success = "Payment recorded successfully!";
                 } else {
-                    $error = "Error recording payment: " . $conn->error;
+                    $error = "Error recording payment: " . mysqli_error($conn);
                 }
-                $insert_stmt->close();
+                mysqli_stmt_close($insert_stmt);
             } else {
-                $update_stmt = $conn->prepare(
-                    "UPDATE payments SET amount = ?, payment_date = ?, payment_method = ?, transaction_id = ?, receipt_number = ?, description = ?, payment_status = ?, created_by = ?, tuition_fee = ? 
-                     WHERE payment_id = ?"
-                );
-                $update_stmt->bind_param("dssssssidi", $amount, $payment_date, $payment_method, $transaction_id, $receipt_number, $description, $payment_status, $created_by, $tuition_fee, $payment_id);
-                if ($update_stmt->execute()) {
+                $update_sql = "UPDATE payments SET amount = ?, payment_date = ?, payment_method = ?, transaction_id = ?, receipt_number = ?, description = ?, payment_status = ?, created_by = ?, tuition_fee = ? WHERE payment_id = ?";
+                $update_stmt = mysqli_prepare($conn, $update_sql);
+                mysqli_stmt_bind_param($update_stmt, "dssssssid", $amount_paid, $payment_date, $payment_method, $transaction_id, $receipt_number, $description, $payment_status, $created_by, $tuition_fee, $payment_id);
+                if (mysqli_stmt_execute($update_stmt)) {
                     $success = "Payment updated successfully!";
                 } else {
-                    $error = "Error updating payment: " . $conn->error;
+                    $error = "Error updating payment: " . mysqli_error($conn);
                 }
-                $update_stmt->close();
+                mysqli_stmt_close($update_stmt);
             }
         }
-        $check_stmt->close();
+        mysqli_stmt_close($check_stmt);
     } else {
-        $error = "Missing required fields for payment update.";
+        $error = "Missing required fields for payment update/insert";
     }
 }
 
-// Fetch student + payment records
-$payments_sql = "
-SELECT s.tuition_fee AS student_tuition_fee, s.student_num, s.student_id, s.first_name, s.last_name,
-       p.payment_id, p.amount, p.payment_date, p.payment_method, p.transaction_id, p.receipt_number,
-       p.description, p.payment_status, p.tuition_fee AS payment_tuition_fee
-FROM students s
-LEFT JOIN payments p ON s.student_id = p.student_id
-";
+// Get Student Payment Data (include payments.tuition_fee)
+$payments_sql = "SELECT s.tuition_fee AS student_tuition_fee, s.student_num, s.student_id AS student_id, s.first_name, s.last_name,
+                    p.payment_id, p.amount AS amount_paid, p.payment_date, p.payment_method, p.transaction_id, p.receipt_number, p.description,
+                    p.payment_status, p.tuition_fee AS payment_tuition_fee
+                    FROM students s
+                    LEFT JOIN payments p ON s.student_id = p.student_id";
 $payments_result = $conn->query($payments_sql);
 ?>
 
 <h2>Manage Payments</h2>
 
-<?php if ($success) echo "<p style='color: green;'>$success</p>"; ?>
-<?php if ($error) echo "<p style='color: red;'>$error</p>"; ?>
+<?php if ($success) { echo "<p style='color: green;'>$success</p>"; } ?>
+<?php if ($error) { echo "<p style='color: red;'>$error</p>"; } ?>
 
 <table id="myTable" class="display">
     <thead>
         <tr>
             <th>Student Number</th>
-            <th>Name</th>
-            <th>Tuition Fee (Current)</th>
-            <th>Tuition Fee (Payment)</th>
-            <th>Amount</th>
+            <th>Student Name</th>
+            <th>Tuition Fee (Needs to Pay)</th>
+            <th>Amount Paid</th>
             <th>Payment Date</th>
-            <th>Method</th>
+            <th>Payment Method</th>
             <th>Transaction ID</th>
-            <th>Receipt #</th>
+            <th>Receipt Number</th>
             <th>Description</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>Payment Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        <?php if ($payments_result && $payments_result->num_rows > 0): ?>
-            <?php while ($row = $payments_result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['student_num']) ?></td>
-                    <td><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></td>
-
-                    <!-- Tuition Fee Current -->
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="student_id" value="<?= $row['student_id'] ?>">
-                            <input type="number" name="tuition_fee" value="<?= htmlspecialchars($row['student_tuition_fee']) ?>" step="0.01">
-                            <button type="submit" name="update_tuition">Update</button>
-                        </form>
-                    </td>
-
-                    <!-- Tuition Fee Payment -->
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="payment_id" value="<?= $row['payment_id'] ?? '' ?>">
-                            <input type="hidden" name="student_id" value="<?= $row['student_id'] ?>">
-                            <input type="number" name="tuition_fee" value="<?= $row['payment_tuition_fee'] ?? $row['student_tuition_fee'] ?>" step="0.01">
-                    </td>
-
-                    <td><input type="number" name="amount" value="<?= $row['amount'] ?? '' ?>" step="0.01"></td>
-                    <td><input type="date" name="payment_date" value="<?= $row['payment_date'] ?? date('Y-m-d') ?>" max="<?= date('Y-m-d') ?>"></td>
-                    <td>
-                        <select name="payment_method">
-                            <?php foreach ($payment_method_options as $method): ?>
-                                <option value="<?= $method ?>" <?= ($row['payment_method'] ?? '') === $method ? 'selected' : '' ?>><?= $method ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </td>
-                    <td><input type="text" name="transaction_id" value="<?= $row['transaction_id'] ?? '' ?>"></td>
-                    <td><input type="text" name="receipt_number" value="<?= $row['receipt_number'] ?? '' ?>"></td>
-                    <td><input type="text" name="description" value="<?= $row['description'] ?? '' ?>"></td>
-                    <td>
-                        <select name="payment_status">
-                            <?php foreach ($payment_status_options as $status): ?>
-                                <option value="<?= $status ?>" <?= ($row['payment_status'] ?? '') === $status ? 'selected' : '' ?>><?= $status ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </td>
-                    <td><button type="submit" name="update_payment">Save</button></form></td>
-                </tr>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <tr><td colspan="12">No data available.</td></tr>
-        <?php endif; ?>
+        <?php
+        if ($payments_result && $payments_result->num_rows > 0) {
+            while ($row = $payments_result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td data-value='" . htmlspecialchars($row['student_num']) ."'>" . htmlspecialchars($row['student_num']) . "</td>";
+                echo "<td data-value='" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "'>" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "</td>";
+                // Tuition Fee (Current) - Editable for students table
+                echo "<td data-value='" . htmlspecialchars($row['student_tuition_fee']) . "'>";
+                echo "<form method='POST'>";
+                echo "<input type='hidden' name='student_id' value='" . htmlspecialchars($row['student_id']) . "'>";
+                echo "<input type='number' name='tuition_fee' value='" . htmlspecialchars($row['student_tuition_fee']) . "' step='0.01'>";
+                echo "<button type='submit' name='update_tuition' class='btn btn-sm btn-primary'>Update Tuition</button>";
+                echo "</form>";
+                echo "</td>";
+                // Amount Paid - Editable for payments table
+                echo "<td data-value='" . (isset($row['amount_paid']) && !empty($row['amount_paid']) ? htmlspecialchars($row['amount_paid']) : 'N/A') . "'>";
+                echo "<form method='POST'>";
+                echo "<input type='hidden' name='update_payment'>";
+                echo "<input type='hidden' name='payment_id' value='" . (isset($row['payment_id']) ? htmlspecialchars($row['payment_id']) : '') . "'>";
+                echo "<input type='hidden' name='student_id' value='" . htmlspecialchars($row['student_id']) . "'>";
+                echo "<input type='hidden' name='tuition_fee' value='" . htmlspecialchars($row['student_tuition_fee']) . "'>";
+                echo "<input type='number' name='amount_paid' value='" . (isset($row['amount_paid']) ? htmlspecialchars($row['amount_paid']) : '') . "' step='0.01'>";
+                echo "</td>";
+                echo "<td data-value='" . (isset($row['payment_date']) && !empty($row['payment_date']) ? htmlspecialchars($row['payment_date']) : 'N/A') . "'>";
+                echo "<input type='date' name='payment_date' value='" . (isset($row['payment_date']) ? htmlspecialchars($row['payment_date']) : date('Y-m-d')) . "' max='" . date('Y-m-d') ."'></td>";
+                echo "<td data-value='" . (isset($row['payment_method']) && !empty($row['payment_method']) ? htmlspecialchars($row['payment_method']) : 'N/A') . "'>";
+                echo "<select name='payment_method'>";
+                foreach ($payment_method_options as $option) {
+                    echo "<option value='" . htmlspecialchars($option) . "'" . (isset($row['payment_method']) && $row['payment_method'] === $option ? " selected" : "") . ">" . htmlspecialchars($option) . "</option>";
+                }
+                echo "</select></td>";
+                echo "<td data-value='" . (isset($row['transaction_id']) && !empty($row['transaction_id']) ? htmlspecialchars($row['transaction_id']) : 'N/A') . "'>";
+                echo "<input type='text' name='transaction_id' value='" . (isset($row['transaction_id']) ? htmlspecialchars($row['transaction_id']) : '') . "'></td>";
+                echo "<td data-value='" . (isset($row['receipt_number']) && !empty($row['receipt_number']) ? htmlspecialchars($row['receipt_number']) : 'N/A') . "'>";
+                echo "<input type='text' name='receipt_number' value='" . (isset($row['receipt_number']) ? htmlspecialchars($row['receipt_number']) : '') . "'></td>";
+                echo "<td data-value='" . (isset($row['description']) && !empty($row['description']) ? htmlspecialchars($row['description']) : 'N/A') . "'>";
+                echo "<input type='text' name='description' value='" . (isset($row['description']) ? htmlspecialchars($row['description']) : '') . "'></td>";
+                echo "<td data-value='" . (isset($row['payment_status']) && !empty($row['payment_status']) ? htmlspecialchars($row['payment_status']) : 'N/A') . "'>";
+                echo "<select name='payment_status'>";
+                foreach ($payment_status_options as $option) {
+                    $option = trim($option);
+                    $selected = (isset($row['payment_status']) && trim($row['payment_status']) === $option) ? " selected" : "";
+                    echo "<option value='" . htmlspecialchars($option) . "'$selected>" . htmlspecialchars($option) . "</option>";
+                }
+                echo "</select></td>";
+                echo "<td><button type='submit' class='btn btn-sm btn-success'>Update Payment</button></form></td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='11'>No payment data found.</td></tr>";
+        }
+        ?>
     </tbody>
 </table>
+
+<h3>Record New Payment</h3>
+<form method="POST">
+    <input type="hidden" name="new_payment">
+    <div class="form-group">
+        <label for="student_id">Student ID:</label>
+        <input type="number" class="form-control" id="student_id" name="student_id" required>
+    </div>
+    <div class="form-group">
+        <label for="tuition_fee">Tuition Fee (Needs to Pay):</label>
+        <input type="number" class="form-control" id="tuition_fee" name="tuition_fee" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="amount_paid">Amount Paid:</label>
+        <input type="number" class="form-control" id="amount_paid" name="amount_paid" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="payment_date">Payment Date:</label>
+        <input type="date" class="form-control" id="payment_date" name="payment_date" value="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d'); ?>" required>
+    </div>
+    <div class="form-group">
+        <label for="payment_method">Payment Method:</label>
+        <select class="form-control" id="payment_method" name="payment_method" required>
+            <?php
+            foreach ($payment_method_options as $option) {
+                echo "<option value='" . htmlspecialchars($option) . "'>" . htmlspecialchars($option) . "</option>";
+            }
+            ?>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="transaction_id">Transaction ID:</label>
+        <input type="text" class="form-control" id="transaction_id" name="transaction_id">
+    </div>
+    <div class="form-group">
+        <label for="receipt_number">Receipt Number:</label>
+        <input type="text" class="form-control" id="receipt_number" name="receipt_number">
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <input type="text" class="form-control" id="description" name="description">
+    </div>
+    <div class="form-group">
+        <label for="payment_status">Payment Status:</label>
+        <select class="form-control" id="payment_status" name="payment_status" required>
+            <?php
+            foreach ($payment_status_options as $option) {
+                echo "<option value='" . htmlspecialchars($option) . "'>" . htmlspecialchars($option) . "</option>";
+            }
+            ?>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Record Payment</button>
+</form>
 
 <script>
     var pageTitle = '<?php echo $page_title; ?>';
 </script>
-
 <?php include('../../layouts/footer.php'); ?>
