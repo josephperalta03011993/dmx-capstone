@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_payment"])) {
         $description = isset($_POST["description"]) ? sanitize_input($conn, $_POST["description"]) : '';
         $payment_status = trim(sanitize_input($conn, $_POST["payment_status"])); // Trim to avoid whitespace issues
         $created_by = $_SESSION['user_id'];
+        $tuition_fee = sanitize_input($conn, $_POST["tuition_fee"]);
 
         // Debug: Show submitted value and options
         $debug_info = "Submitted payment_status: '$payment_status'<br>";
@@ -65,18 +66,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_payment"])) {
             $error = "Error: Invalid payment status value submitted.";
         } else {
             if (empty($payment_id)) {
-                $insert_sql = "INSERT INTO payments (student_id, amount, payment_date, payment_method, transaction_id, receipt_number, description, payment_status, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $insert_sql = "INSERT INTO payments (student_id, amount, payment_date, payment_method, transaction_id, receipt_number, description, payment_status, created_by, tuition_fee) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $insert_stmt = mysqli_prepare($conn, $insert_sql);
-                mysqli_stmt_bind_param($insert_stmt, "idssssssi", $student_id, $amount, $payment_date, $payment_method, $transaction_id, $receipt_number, $description, $payment_status, $created_by);
+                mysqli_stmt_bind_param($insert_stmt, "idssssssid", $student_id, $amount, $payment_date, $payment_method, $transaction_id, $receipt_number, $description, $payment_status, $created_by, $tuition_fee);
                 if (mysqli_stmt_execute($insert_stmt)) {
                     $success = "Payment recorded successfully!";
                 } else {
                     $error = "Error recording payment: " . mysqli_error($conn);
                 }
             } else {
-                $update_sql = "UPDATE payments SET amount = ?, payment_date = ?, payment_method = ?, transaction_id = ?, receipt_number = ?, description = ?, payment_status = ?, created_by = ? WHERE payment_id = ?";
+                $update_sql = "UPDATE payments SET amount = ?, payment_date = ?, payment_method = ?, transaction_id = ?, receipt_number = ?, description = ?, payment_status = ?, created_by = ?, tuition_fee = ? WHERE payment_id = ?";
                 $update_stmt = mysqli_prepare($conn, $update_sql);
-                mysqli_stmt_bind_param($update_stmt, "dssssssii", $amount, $payment_date, $payment_method, $transaction_id, $receipt_number, $description, $payment_status, $created_by, $payment_id);
+                mysqli_stmt_bind_param($update_stmt, "dssssssiid", $amount, $payment_date, $payment_method, $transaction_id, $receipt_number, $description, $payment_status, $created_by, $payment_id, $tuition_fee);
                 if (mysqli_stmt_execute($update_stmt)) {
                     $success = "Payment updated successfully!";
                 } else {
@@ -125,7 +126,7 @@ $payments_result = $conn->query($payments_sql);
                 echo "<tr>";
                 echo "<td data-value='" . htmlspecialchars($row['student_num']) ."'>" . htmlspecialchars($row['student_num']) . "</td>";
                 echo "<td data-value='" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "'>" . htmlspecialchars($row['first_name'] . " " . $row['last_name']) . "</td>";
-                echo "<td data-value='" . htmlspecialchars($row['tuition_fee']). "'>" . htmlspecialchars($row['tuition_fee']) . "</td>";
+                echo "<input type='number' name='tuition_fee' value='" . (isset($row['tuition_fee']) ? htmlspecialchars($row['tuition_fee']) : '') . "'>";
                 echo "<td data-value='" . (isset($row['amount']) && !empty($row['amount']) ? htmlspecialchars($row['amount']) : 'N/A') . "'>";
                 echo "<form method='POST'>";
                 echo "<input type='hidden' name='payment_id' value='" . (isset($row['payment_id']) ? htmlspecialchars($row['payment_id']) : '') . "'>";
