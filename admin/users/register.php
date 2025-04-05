@@ -58,18 +58,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
             mysqli_stmt_close($check_stmt);
         } else {
             $first_name = $last_name = '';
+            $student_id = null; // Initialize student_id as null
+
             if ($user_type === "student" && !empty($effective_student_id)) {
-                // Check if the student already has a user account
-                $check_student_account_sql = "SELECT user_id FROM users WHERE user_type = 'student' AND first_name = (SELECT first_name FROM students WHERE student_id = ?) AND last_name = (SELECT last_name FROM students WHERE student_id = ?)";
+                // Check if the student already has a user account using student_id
+                $check_student_account_sql = "SELECT user_id FROM users WHERE student_id = ?";
                 $check_student_stmt = mysqli_prepare($conn, $check_student_account_sql);
-                mysqli_stmt_bind_param($check_student_stmt, "ii", $effective_student_id, $effective_student_id);
+                mysqli_stmt_bind_param($check_student_stmt, "i", $effective_student_id);
                 mysqli_stmt_execute($check_student_stmt);
                 $check_student_result = mysqli_stmt_get_result($check_student_stmt);
                 if (mysqli_num_rows($check_student_result) > 0) {
                     $registration_error = "A user account already exists for this student.";
                     mysqli_stmt_close($check_student_stmt);
                 } else {
-                    // Fetch student name from the students table if student user type is selected
+                    // Fetch student name from the students table
                     $fetch_student_sql = "SELECT first_name, last_name FROM students WHERE student_id = ?";
                     $fetch_stmt = mysqli_prepare($conn, $fetch_student_sql);
                     mysqli_stmt_bind_param($fetch_stmt, "i", $effective_student_id);
@@ -78,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                     if ($student = mysqli_fetch_assoc($fetch_result)) {
                         $first_name = $student['first_name'];
                         $last_name = $student['last_name'];
+                        $student_id = $effective_student_id; // Set student_id for insertion
                     } else {
                         $registration_error = "Selected student not found.";
                     }
@@ -90,22 +93,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
             }
 
             if (!$registration_error) {
-                // Insert user into the users table
-                $sql = "INSERT INTO users (username, password, user_type, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
+                // Insert user into the users table with student_id
+                $sql = "INSERT INTO users (username, password, user_type, first_name, last_name, student_id) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = mysqli_prepare($conn, $sql);
-                mysqli_stmt_bind_param($stmt, "sssss", $username, $hashed_password, $user_type, $first_name, $last_name);
+                mysqli_stmt_bind_param($stmt, "sssssi", $username, $hashed_password, $user_type, $first_name, $last_name, $student_id);
                 if (mysqli_stmt_execute($stmt)) {
                     $user_id = mysqli_insert_id($conn);
 
-                    // Associate student with user_id if user type is student
-                    if ($user_type === "student" && !empty($effective_student_id)) {
-                        // Update student record with the user_id
-                        $update_sql = "UPDATE students SET user_id = ? WHERE student_id = ?";
-                        $update_stmt = mysqli_prepare($conn, $update_sql);
-                        mysqli_stmt_bind_param($update_stmt, "ii", $user_id, $effective_student_id);
-                        mysqli_stmt_execute($update_stmt);
-                        mysqli_stmt_close($update_stmt);
-                    } else {
+                    // No need to update students table anymore since student_id is in users table
+                    if ($user_type !== "student") {
                         // Insert into specific user type table (admin, registrar, teacher)
                         $tables = ['admin' => 'admins', 'registrar' => 'registrars', 'teacher' => 'teachers'];
                         if (isset($tables[$user_type])) {
@@ -120,7 +116,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])) {
                 mysqli_stmt_close($stmt);
             }
         }
-        // Close the check_stmt if it's set
         if (isset($check_stmt)) {
             mysqli_stmt_close($check_stmt);
         }
@@ -157,27 +152,28 @@ if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"
                 <select name="enrolled_student" id="enrolled_student">
                     <option value="">-- Select a Student --</option>
                     <?php
+                        // Updated query to check users.student_id instead of joining on user_id
                         $enrolled_students_sql = "SELECT 
-                        s.student_id, 
-                        s.first_name, 
-                        s.last_name 
-                    FROM students AS s 
-                    LEFT JOIN users AS u 
-                    ON s.student_id = u.user_id
-                    WHERE u.student_id IS NULL 
-                    AND s.status = 'enrolled'";
-                    
-                    $enrolled_students_result = mysqli_query($conn, $enrolled_students_sql);
-                    if ($enrolled_students_result === false) {
-                        echo "Query Error: " . mysqli_error($conn);
-                    } elseif (mysqli_num_rows($enrolled_students_result) > 0) {
-                        while ($row = mysqli_fetch_assoc($enrolled_students_result)) {
-                            $selected = ($enrolled_student == $row['student_id']) ? 'selected' : '';
-                            echo "<option value='{$row['student_id']}' data-first-name='{$row['first_name']}' data-last-name='{$row['last_name']}' $selected>{$row['first_name']} {$row['last_name']}</option>";
+                            s.student_id, 
+                            s.first_name, 
+                            s.last_name 
+                        FROM students AS s 
+                        LEFT JOIN users AS u 
+                        ON s.student_id = u.student_id
+                        WHERE u.student_id IS NULL 
+                        AND s.status = 'enrolled'";
+                        
+                        $enrolled_students_result = mysqli_query($conn, $enrolled_students_sql);
+                        if ($enrolled_students_result === false) {
+                            echo "Query Error: " . mysqli_error($conn);
+                        } elseif (mysqli_num_rows($enrolled_students_result) > 0) {
+                            while ($row = mysqli_fetch_assoc($enrolled_students_result)) {
+                                $selected = ($enrolled_student == $row['student_id']) ? 'selected' : '';
+                                echo "<option value='{$row['student_id']}' data-first-name='{$row['first_name']}' data-last-name='{$row['last_name']}' $selected>{$row['first_name']} {$row['last_name']}</option>";
+                            }
+                        } else {
+                            echo "<option value='' disabled>No enrolled students found</option>";
                         }
-                    } else {
-                        echo "<option value='' disabled>No enrolled students found</option>";
-                    }
                     ?>
                 </select>
             </div>
