@@ -224,7 +224,7 @@ $payments_result = $conn->query($payments_sql);
     </tbody>
 </table>
 
-<h3>Record New Payment</h3>
+<!-- <h3>Record New Payment</h3>
 <form method="POST">
     <input type="hidden" name="new_payment">
     <div class="form-group">
@@ -276,7 +276,7 @@ $payments_result = $conn->query($payments_sql);
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Record Payment</button>
-</form>
+</form> -->
 
 <script>
     var pageTitle = '<?php echo $page_title; ?>';
