@@ -47,7 +47,7 @@
 
                         // Execute the statement
                         if (mysqli_stmt_execute($stmt)) {
-                            $success = "Gallery item created successfully!";
+                            $success = "Gallery item created successfully! <a href='gallery_list.php'>View all gallery items</a>";
                         } else {
                             $error = "Error creating gallery item: " . mysqli_error($conn);
                         }
@@ -83,5 +83,12 @@
         <i class="fa-solid fa-floppy-disk"></i> Add Gallery Item
     </button>
 </form>
+
+<!-- Add navigation link to gallery list -->
+<div style="margin-top: 20px;">
+    <a href="gallery_list.php" class="btn_submit" style="background-color: #007bff; text-decoration: none; padding: 10px 15px; color: white;">
+        <i class="fa-solid fa-list"></i> View Gallery List
+    </a>
+</div>
 
 <?php include('../../layouts/footer.php'); ?>

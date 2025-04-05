@@ -164,7 +164,7 @@ if ($registration_error) { echo "<p style='color: red;'>$registration_error</p>"
                     FROM students AS s 
                     LEFT JOIN users AS u 
                     ON s.student_id = u.user_id
-                    WHERE u.user_id IS NULL 
+                    WHERE u.student_id IS NULL 
                     AND s.status = 'enrolled'";
                     
                     $enrolled_students_result = mysqli_query($conn, $enrolled_students_sql);
